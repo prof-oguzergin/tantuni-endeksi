@@ -130,16 +130,22 @@
     }
 
     .hero-price-display {
-      display: inline-flex;
-      align-items: center;
-      gap: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 0;
       background: rgba(255, 140, 66, 0.1);
       border: 1px solid rgba(255, 140, 66, 0.3);
       border-radius: 16px;
-      padding: 16px 24px;
+      padding: 16px 24px 14px;
       backdrop-filter: blur(10px);
       margin-bottom: 12px;
       width: fit-content;
+    }
+
+    .hero-price-stats-row {
+      display: flex;
+      align-items: center;
+      gap: 16px;
     }
 
     .hero-price-value {
@@ -690,37 +696,52 @@
       .hero-table-header span { font-size: 0.65rem; }
     }
 
-    /* Last price change indicator */
-    .last-change {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 6px 14px;
-      background: rgba(255,140,66,0.1);
-      border: 1px solid rgba(255,140,66,0.2);
-      border-radius: 8px;
-      font-size: 0.85rem;
-      color: var(--text-secondary);
-      margin-top: 10px;
+    /* Price change annotation inside card */
+    .price-change-annotation {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      margin-top: 4px;
     }
-    .last-change .arrow-up {
+    .price-change-annotation .up-arrow {
       color: var(--accent-red);
       font-weight: 700;
     }
 
-    /* Gold indicator badge */
-    .gold-badge {
+    /* Mini info pills row */
+    .hero-pills-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 14px;
+    }
+
+    .hero-pill {
       display: inline-flex;
       align-items: center;
-      gap: 6px;
-      padding: 4px 12px;
-      background: rgba(255,215,0,0.08);
-      border: 1px solid rgba(255,215,0,0.18);
-      border-radius: 8px;
-      font-size: 0.82rem;
+      gap: 5px;
+      padding: 4px 11px;
+      border-radius: 20px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+
+    .hero-pill.dollar {
+      background: rgba(30, 144, 255, 0.12);
+      border: 1px solid rgba(30, 144, 255, 0.25);
+      color: #6ab8ff;
+    }
+
+    .hero-pill.wage {
+      background: rgba(46, 213, 115, 0.1);
+      border: 1px solid rgba(46, 213, 115, 0.2);
+      color: #2ed573;
+    }
+
+    .hero-pill.gold {
+      background: rgba(255, 215, 0, 0.08);
+      border: 1px solid rgba(255, 215, 0, 0.2);
       color: #ffd700;
-      font-weight: 500;
-      margin-top: 6px;
     }
 
     /* Update date badge */
@@ -803,6 +824,66 @@
     .data-table td.base-row {
       background: rgba(255, 140, 66, 0.06);
     }
+
+    /* Citation blocks */
+    .cite-block {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .cite-label {
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--accent-amber);
+    }
+
+    .cite-box {
+      position: relative;
+      background: #12121a;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 16px 110px 16px 18px;
+    }
+
+    .cite-box code {
+      font-family: 'Courier New', Courier, monospace;
+      font-size: 0.82rem;
+      color: #c9d1d9;
+      line-height: 1.7;
+      white-space: pre-wrap;
+      word-break: break-all;
+    }
+
+    .cite-copy-btn {
+      position: absolute;
+      top: 50%;
+      right: 14px;
+      transform: translateY(-50%);
+      background: rgba(255, 140, 66, 0.15);
+      border: 1px solid rgba(255, 140, 66, 0.3);
+      border-radius: 6px;
+      color: var(--accent-amber);
+      font-size: 0.75rem;
+      font-weight: 600;
+      padding: 5px 12px;
+      cursor: pointer;
+      transition: background 0.2s, color 0.2s;
+      white-space: nowrap;
+    }
+
+    .cite-copy-btn:hover {
+      background: rgba(255, 140, 66, 0.28);
+      color: #fff;
+    }
+
+    .cite-copy-btn.copied {
+      background: rgba(46, 213, 115, 0.15);
+      border-color: rgba(46, 213, 115, 0.3);
+      color: var(--accent-green);
+    }
   </style>
 </head>
 <body>
@@ -815,7 +896,8 @@
       <a href="#ucret">Asgari Ücret</a>
       <a href="#altin">Altın</a>
       <a href="#enflasyon">Enflasyon</a>
-      <a href="#bilgi">Bilgi</a>
+      <a href="#bilgi">Tespitler</a>
+      <a href="#atif">Atıf</a>
     </div>
   </div>
 </nav>
@@ -832,30 +914,29 @@
       <p class="hero-tagline">Türkiye'nin en lezzetli ekonomik göstergesi</p>
 
       <div class="hero-price-display">
-        <div>
-          <div class="stat-label" style="color:var(--text-muted); font-size:0.72rem; letter-spacing:1px; text-transform:uppercase;">Güncel Fiyat (Mart 2026)</div>
-          <div class="hero-price-value">₺395</div>
-          <div class="hero-price-label">$8,99 · Asgari ücretle 71 tantuni</div>
+        <div class="hero-price-stats-row">
+          <div>
+            <div class="stat-label" style="color:var(--text-muted); font-size:0.72rem; letter-spacing:1px; text-transform:uppercase;">Güncel Fiyat (Mart 2026)</div>
+            <div class="hero-price-value">₺395</div>
+            <div class="price-change-annotation"><span class="up-arrow">↑</span> ₺370'den → <strong>+%6,8</strong> · 15 Şub 2026</div>
+          </div>
+          <div class="hero-divider"></div>
+          <div>
+            <div class="hero-price-since">23,2×</div>
+            <div class="hero-since-label">₺17'den bu yana</div>
+          </div>
+          <div class="hero-divider"></div>
+          <div>
+            <div class="hero-price-since">%2.224</div>
+            <div class="hero-since-label">Toplam artış (5,5 yılda)</div>
+          </div>
         </div>
-        <div class="hero-divider"></div>
-        <div>
-          <div class="hero-price-since">23,2×</div>
-          <div class="hero-since-label">₺17'den bu yana</div>
-        </div>
-        <div class="hero-divider"></div>
-        <div>
-          <div class="hero-price-since">%2.224</div>
-          <div class="hero-since-label">Toplam artış (5,5 yılda)</div>
-        </div>
-      </div>
 
-      <div class="last-change">
-        <span class="arrow-up">↑</span>
-        <span>₺370 → ₺395 <strong>(+%6,8)</strong> · 15 Şubat 2026</span>
-      </div>
-
-      <div class="gold-badge">
-        🥇 1 gram altın = 16,9 tantuni
+        <div class="hero-pills-row">
+          <span class="hero-pill dollar">$8,99</span>
+          <span class="hero-pill wage">71 tantuni/maaş</span>
+          <span class="hero-pill gold">🥇 16,9 tantuni/gr altın</span>
+        </div>
       </div>
 
       <div>
@@ -1036,6 +1117,49 @@
     </div>
   </section>
 
+  <!-- CITATION SECTION -->
+  <section class="section" id="atif">
+    <div class="section-title"><span class="icon">📚</span> Atıf ve Kaynak</div>
+    <p class="section-subtitle">Bu endeksi akademik veya medya çalışmalarınızda kullanmak isterseniz, aşağıdaki formatlardan birini tercih edebilirsiniz.</p>
+
+    <div style="display:flex; flex-direction:column; gap:20px; max-width:860px;">
+
+      <!-- APA -->
+      <div class="cite-block">
+        <div class="cite-label">APA</div>
+        <div class="cite-box">
+          <code id="cite-apa">Ergin, O. (2026). Tantuni Endeksi: Türkiye'nin En Lezzetli Ekonomik Göstergesi. https://prof-oguzergin.github.io/tantuni-endeksi/</code>
+          <button class="cite-copy-btn" onclick="copyCite('cite-apa', this)">Kopyala</button>
+        </div>
+      </div>
+
+      <!-- BibTeX -->
+      <div class="cite-block">
+        <div class="cite-label">BibTeX</div>
+        <div class="cite-box">
+          <code id="cite-bibtex">@misc{ergin2026tantuni,
+  author = {Ergin, O&#287;uz},
+  title  = {Tantuni Endeksi: T&#252;rkiye'nin En Lezzetli Ekonomik G&#246;stergesi},
+  year   = {2026},
+  url    = {https://prof-oguzergin.github.io/tantuni-endeksi/},
+  note   = {Ki&#351;isel ekonomik g&#246;sterge, 2020'den beri g&#252;ncelleniyor}
+}</code>
+          <button class="cite-copy-btn" onclick="copyCite('cite-bibtex', this)">Kopyala</button>
+        </div>
+      </div>
+
+      <!-- Plain text -->
+      <div class="cite-block">
+        <div class="cite-label">Düz Metin</div>
+        <div class="cite-box">
+          <code id="cite-plain">Prof. Dr. O&#287;uz Ergin, "Tantuni Endeksi", 2020-2026. https://prof-oguzergin.github.io/tantuni-endeksi/</code>
+          <button class="cite-copy-btn" onclick="copyCite('cite-plain', this)">Kopyala</button>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
 
 </div><!-- /container -->
 
@@ -1053,12 +1177,46 @@
     <a href="https://www.instagram.com/prof.dr.oguzergin/" target="_blank" style="color:var(--text-secondary); text-decoration:none; font-size:0.9rem;">Instagram</a>
   </div>
   <div class="footer-disclaimer">
-    Bu endeks resmi bir ekonomik gösterge değildir. Eğlence ve farkındalık amaçlıdır.
-    Tüm fiyatlar bizzat alınan fişlerden derlenmiştir.
+    Bu endeks resmi bir ekonomik gösterge değildir. Eğlence ve farkındalık amaçlıdır.<br>
+    Tüm fiyatlar Getir uygulaması üzerinden takip edilmektedir.
+  </div>
+  <div style="margin-top:16px; padding-top:16px; border-top:1px solid var(--border); color:var(--text-muted); font-size:0.75rem;">
+    © 2020–2026 Prof. Dr. Oğuz Ergin. Tüm hakları saklıdır.
   </div>
 </footer>
 
 <script>
+// ============================================================
+// CITATION COPY
+// ============================================================
+function copyCite(id, btn) {
+  const text = document.getElementById(id).innerText;
+  navigator.clipboard.writeText(text).then(() => {
+    btn.textContent = '✓ Kopyalandı';
+    btn.classList.add('copied');
+    setTimeout(() => {
+      btn.textContent = 'Kopyala';
+      btn.classList.remove('copied');
+    }, 2000);
+  }).catch(() => {
+    // fallback for older browsers
+    const ta = document.createElement('textarea');
+    ta.value = text;
+    ta.style.position = 'fixed';
+    ta.style.opacity = '0';
+    document.body.appendChild(ta);
+    ta.select();
+    document.execCommand('copy');
+    document.body.removeChild(ta);
+    btn.textContent = '✓ Kopyalandı';
+    btn.classList.add('copied');
+    setTimeout(() => {
+      btn.textContent = 'Kopyala';
+      btn.classList.remove('copied');
+    }, 2000);
+  });
+}
+
 // ============================================================
 // DATA
 // ============================================================
