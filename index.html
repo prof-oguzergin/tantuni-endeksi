@@ -782,8 +782,8 @@
     <div class="section-subtitle">Yıllık tantuni-spesifik enflasyon oranları</div>
 
     <div class="chart-card">
-      <div class="chart-card-title">📉 Yıllık Tantuni Enflasyon Oranı (%)</div>
-      <div class="chart-card-desc">Ölçüm tarihlerindeki yıllık tantuni fiyat artış oranı. Resmi TÜFE ile karşılaştırma için referans noktaları seçilmiştir.</div>
+      <div class="chart-card-title">📉 Tantuni vs TÜİK vs ENAG Enflasyonu</div>
+      <div class="chart-card-desc">Yıllık enflasyon oranları karşılaştırması. Tantuni (turuncu), TÜİK resmi TÜFE (kırmızı), ENAG bağımsız TÜFE (altın).</div>
       <div class="chart-container medium">
         <canvas id="inflationChart"></canvas>
       </div>
@@ -863,9 +863,14 @@
   <div class="footer-logo">🌯</div>
   <div class="footer-title">Tantuni Endeksi</div>
   <div class="footer-text">
-    Veri kaynağı: Kişisel tantuni alışverişleri (Mersin/İstanbul) | 2020–2026<br>
-    Hazırlayan: <strong>Prof. Dr. Oğuz Ergin</strong> · <a href="mailto:bilgi@oguzergin.net">bilgi@oguzergin.net</a><br>
-    Sharjah Üniversitesi, Bilgisayar Mühendisliği
+    Veri kaynağı: Kişisel tantuni alışverişleri (Ankara) | 2020–2026<br>
+    Hazırlayan: <strong>Prof. Dr. Oğuz Ergin</strong> · <a href="mailto:bilgi@oguzergin.net">bilgi@oguzergin.net</a>
+  </div>
+  <div class="footer-social" style="margin:16px 0; display:flex; gap:18px; justify-content:center; align-items:center;">
+    <a href="https://x.com/profoguzergin" target="_blank" style="color:var(--text-secondary); text-decoration:none; font-size:0.9rem;">𝕏</a>
+    <a href="https://www.linkedin.com/in/oguzergin/" target="_blank" style="color:var(--text-secondary); text-decoration:none; font-size:0.9rem;">LinkedIn</a>
+    <a href="https://www.youtube.com/@profoguzergin" target="_blank" style="color:var(--text-secondary); text-decoration:none; font-size:0.9rem;">YouTube</a>
+    <a href="https://www.instagram.com/prof.dr.oguzergin/" target="_blank" style="color:var(--text-secondary); text-decoration:none; font-size:0.9rem;">Instagram</a>
   </div>
   <div class="footer-disclaimer">
     Bu endeks resmi bir ekonomik gösterge değildir. Eğlence ve farkındalık amaçlıdır.
@@ -1358,48 +1363,144 @@ const gridColor = 'rgba(42,42,62,0.8)';
 })();
 
 // ============================================================
-// CHART 4: Inflation
+// CHART 4: Inflation Comparison (Tantuni vs TÜİK vs ENAG)
 // ============================================================
 (function buildInflationChart() {
   const ctx = document.getElementById('inflationChart').getContext('2d');
 
-  const labels = inflationData.map(d => d.label);
-  const values = inflationData.map(d => d.value);
+  // All unique labels from tantuni data (canonical time axis)
+  const tantuniLabels = inflationData.map(d => d.label);
+  const tantuniValues = inflationData.map(d => d.value);
 
-  const colors = values.map(v => {
-    if (v >= 150) return 'rgba(255,71,87,0.85)';
-    if (v >= 100) return 'rgba(255,140,66,0.85)';
-    return 'rgba(255,179,71,0.85)';
-  });
+  // TÜİK official CPI (yıllık TÜFE) — matched to same time points as tantuni
+  const tuikData = [
+    {label:'Eki 2021', value:19.9},
+    {label:'Ara 2021', value:36.1},
+    {label:'Şub 2022', value:54.4},
+    {label:'Haz 2022', value:78.6},
+    {label:'Tem 2022', value:79.6},
+    {label:'Ağu 2022', value:80.2},
+    {label:'Eyl 2022', value:83.5},
+    {label:'Eki 2022', value:85.5},
+    {label:'Kas 2022', value:84.4},
+    {label:'Kas\'22 son', value:84.4},
+    {label:'Ara 2022', value:64.3},
+    {label:'Oca 2023', value:57.7},
+    {label:'Mar 2023', value:50.5},
+    {label:'Nis 2023', value:43.7},
+    {label:'Haz 2023', value:38.2},
+    {label:'Tem 2023', value:47.8},
+    {label:'Eyl 2023', value:61.5},
+    {label:'Ara 2023', value:64.8},
+    {label:'Oca 2024', value:64.9},
+    {label:'Kas 2024', value:47.1},
+  ];
+
+  // ENAG independent CPI (yıllık) — null where no data
+  const enagData = [
+    {label:'Eki 2021', value:47.7},
+    {label:'Ara 2021', value:82.8},
+    {label:'Şub 2022', value:105.3},
+    {label:'Haz 2022', value:175.5},
+    {label:'Tem 2022', value:176.0},
+    {label:'Ağu 2022', value:181.4},
+    {label:'Eyl 2022', value:186.3},
+    {label:'Eki 2022', value:185.3},
+    {label:'Kas 2022', value:170.7},
+    {label:'Kas\'22 son', value:170.7},
+    {label:'Ara 2022', value:137.6},
+    {label:'Oca 2023', value:121.0},
+    {label:'Mar 2023', value:106.4},
+    {label:'Nis 2023', value:101.6},
+    {label:'Haz 2023', value:105.2},
+    {label:'Tem 2023', value:122.9},
+    {label:'Eyl 2023', value:128.8},
+    {label:'Ara 2023', value:127.2},
+    {label:'Oca 2024', value:120.7},
+    {label:'Kas 2024', value:null},  // ENAG stopped publishing after early 2024
+  ];
+
+  // Build lookup maps for TÜİK and ENAG by label
+  const tuikMap = Object.fromEntries(tuikData.map(d => [d.label, d.value]));
+  const enagMap = Object.fromEntries(enagData.map(d => [d.label, d.value !== undefined ? d.value : null]));
+
+  const tuikValues = tantuniLabels.map(l => tuikMap[l] !== undefined ? tuikMap[l] : null);
+  const enagValues = tantuniLabels.map(l => enagMap[l] !== undefined ? enagMap[l] : null);
 
   new Chart(ctx, {
-    type: 'bar',
+    type: 'line',
     data: {
-      labels,
-      datasets: [{
-        label: 'Tantuni Enflasyonu (%)',
-        data: values,
-        backgroundColor: colors,
-        borderColor: colors.map(c => c.replace('0.85', '1')),
-        borderWidth: 1,
-        borderRadius: 4,
-      }]
+      labels: tantuniLabels,
+      datasets: [
+        {
+          label: 'Tantuni Enflasyonu',
+          data: tantuniValues,
+          borderColor: '#1e90ff',
+          backgroundColor: 'rgba(30,144,255,0.12)',
+          borderWidth: 3,
+          pointRadius: 5,
+          pointHoverRadius: 8,
+          pointBackgroundColor: '#1e90ff',
+          fill: false,
+          tension: 0.3,
+          spanGaps: true,
+        },
+        {
+          label: 'TÜİK Resmi TÜFE',
+          data: tuikValues,
+          borderColor: '#ff4757',
+          backgroundColor: 'rgba(255,71,87,0.10)',
+          borderWidth: 2.5,
+          pointRadius: 4,
+          pointHoverRadius: 7,
+          pointBackgroundColor: '#ff4757',
+          fill: false,
+          tension: 0.3,
+          spanGaps: true,
+          borderDash: [6, 3],
+        },
+        {
+          label: 'ENAG Bağımsız TÜFE',
+          data: enagValues,
+          borderColor: '#ffd700',
+          backgroundColor: 'rgba(255,215,0,0.10)',
+          borderWidth: 2.5,
+          pointRadius: 4,
+          pointHoverRadius: 7,
+          pointBackgroundColor: '#ffd700',
+          fill: false,
+          tension: 0.3,
+          spanGaps: false,
+          borderDash: [3, 3],
+        },
+      ]
     },
     options: {
       responsive: true,
       maintainAspectRatio: false,
+      interaction: { mode: 'index', intersect: false },
       plugins: {
-        legend: { display: false },
+        legend: {
+          display: true,
+          position: 'top',
+          labels: {
+            usePointStyle: true,
+            padding: 20,
+            color: '#c0c0d8',
+          }
+        },
         tooltip: {
           backgroundColor: '#1e1e2e',
           borderColor: '#2a2a3e',
           borderWidth: 1,
           padding: 14,
           callbacks: {
-            label(ctx) { return `  Enflasyon: %${ctx.raw}`; }
+            label(ctx) {
+              if (ctx.raw === null) return `  ${ctx.dataset.label}: veri yok`;
+              return `  ${ctx.dataset.label}: %${ctx.raw}`;
+            }
           }
         },
-        datalabels: undefined,
       },
       scales: {
         x: {
@@ -1410,29 +1511,11 @@ const gridColor = 'rgba(42,42,62,0.8)';
           grid: { color: gridColor },
           ticks: { callback: v => '%' + v },
           title: { display: true, text: 'Yıllık Artış (%)', color: '#9090b0' },
-          suggestedMax: 180
+          suggestedMin: 0,
+          suggestedMax: 200
         }
       }
-    },
-    plugins: [{
-      id: 'valueLabels',
-      afterDatasetsDraw(chart) {
-        const { ctx, data } = chart;
-        ctx.save();
-        data.datasets.forEach((dataset, i) => {
-          const meta = chart.getDatasetMeta(i);
-          meta.data.forEach((bar, index) => {
-            const value = dataset.data[index];
-            ctx.fillStyle = '#f0f0f5';
-            ctx.font = 'bold 11px Inter, sans-serif';
-            ctx.textAlign = 'center';
-            ctx.textBaseline = 'bottom';
-            ctx.fillText('%' + value, bar.x, bar.y - 4);
-          });
-        });
-        ctx.restore();
-      }
-    }]
+    }
   });
 })();
 
