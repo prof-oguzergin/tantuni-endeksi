@@ -1,0 +1,1456 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tantuni Endeksi 🌯 - Türkiye'nin En Lezzetli Ekonomik Göstergesi</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@3.0.1/dist/chartjs-plugin-annotation.min.js"></script>
+  <style>
+    :root {
+      --bg-primary: #0f0f13;
+      --bg-secondary: #1a1a24;
+      --bg-card: #1e1e2e;
+      --bg-card-hover: #252538;
+      --accent-orange: #ff8c42;
+      --accent-amber: #ffb347;
+      --accent-red: #ff4757;
+      --accent-green: #2ed573;
+      --accent-blue: #1e90ff;
+      --accent-purple: #a855f7;
+      --text-primary: #f0f0f5;
+      --text-secondary: #9090b0;
+      --text-muted: #5a5a7a;
+      --border: #2a2a3e;
+      --shadow: 0 8px 32px rgba(0,0,0,0.4);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar { width: 8px; }
+    ::-webkit-scrollbar-track { background: var(--bg-secondary); }
+    ::-webkit-scrollbar-thumb { background: var(--accent-orange); border-radius: 4px; }
+
+    /* Hero Section */
+    .hero {
+      background: linear-gradient(135deg, #0f0f13 0%, #1a0f05 40%, #0f0a05 100%);
+      padding: 80px 20px 60px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(ellipse at center, rgba(255, 140, 66, 0.08) 0%, transparent 60%);
+      animation: pulse 6s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); opacity: 0.5; }
+      50% { transform: scale(1.1); opacity: 1; }
+    }
+
+    .hero-emoji {
+      font-size: 5rem;
+      margin-bottom: 16px;
+      display: block;
+      animation: float 3s ease-in-out infinite;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-10px); }
+    }
+
+    .hero h1 {
+      font-size: clamp(2.5rem, 6vw, 5rem);
+      font-weight: 900;
+      background: linear-gradient(135deg, var(--accent-orange), var(--accent-amber), #ffcc80);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 12px;
+      letter-spacing: -1px;
+    }
+
+    .hero-tagline {
+      font-size: clamp(0.9rem, 2vw, 1.2rem);
+      color: var(--text-secondary);
+      margin-bottom: 48px;
+      font-weight: 400;
+    }
+
+    .hero-price-display {
+      display: inline-flex;
+      align-items: center;
+      gap: 16px;
+      background: rgba(255, 140, 66, 0.1);
+      border: 1px solid rgba(255, 140, 66, 0.3);
+      border-radius: 20px;
+      padding: 20px 40px;
+      backdrop-filter: blur(10px);
+    }
+
+    .hero-price-value {
+      font-size: clamp(2.5rem, 5vw, 4rem);
+      font-weight: 900;
+      color: var(--accent-orange);
+    }
+
+    .hero-price-label {
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+      text-align: left;
+    }
+
+    .hero-price-since {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--accent-amber);
+    }
+
+    .hero-since-label {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+
+    .hero-divider {
+      width: 1px;
+      height: 50px;
+      background: rgba(255, 140, 66, 0.3);
+    }
+
+    /* Main Container */
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    /* Section Headers */
+    .section {
+      padding: 48px 0;
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+
+    .section.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .section-title {
+      font-size: clamp(1.4rem, 3vw, 2rem);
+      font-weight: 800;
+      color: var(--text-primary);
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .section-title .icon {
+      font-size: 1.5rem;
+    }
+
+    .section-subtitle {
+      color: var(--text-secondary);
+      font-size: 0.95rem;
+      margin-bottom: 32px;
+    }
+
+    /* Stats Cards */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 20px;
+      margin-bottom: 0;
+    }
+
+    .stat-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 28px 24px;
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .stat-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+    }
+
+    .stat-card.orange::before { background: linear-gradient(90deg, var(--accent-orange), var(--accent-amber)); }
+    .stat-card.red::before { background: linear-gradient(90deg, #ff4757, #ff6b81); }
+    .stat-card.blue::before { background: linear-gradient(90deg, #1e90ff, #00d2ff); }
+    .stat-card.green::before { background: linear-gradient(90deg, #2ed573, #7bed9f); }
+
+    .stat-card:hover {
+      transform: translateY(-4px);
+      border-color: rgba(255, 140, 66, 0.3);
+      box-shadow: var(--shadow);
+    }
+
+    .stat-icon {
+      font-size: 2rem;
+      margin-bottom: 12px;
+    }
+
+    .stat-label {
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 8px;
+    }
+
+    .stat-value {
+      font-size: clamp(1.8rem, 3vw, 2.5rem);
+      font-weight: 900;
+      line-height: 1;
+      margin-bottom: 6px;
+    }
+
+    .stat-card.orange .stat-value { color: var(--accent-orange); }
+    .stat-card.red .stat-value { color: #ff4757; }
+    .stat-card.blue .stat-value { color: #1e90ff; }
+    .stat-card.green .stat-value { color: var(--accent-green); }
+
+    .stat-sub {
+      font-size: 0.82rem;
+      color: var(--text-secondary);
+    }
+
+    .stat-change {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      margin-top: 6px;
+    }
+
+    .change-up { background: rgba(255, 71, 87, 0.15); color: #ff4757; }
+    .change-down { background: rgba(46, 213, 115, 0.15); color: var(--accent-green); }
+
+    /* Chart Cards */
+    .chart-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 32px;
+      margin-bottom: 28px;
+      box-shadow: var(--shadow);
+    }
+
+    .chart-card-title {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .chart-card-desc {
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+      margin-bottom: 28px;
+    }
+
+    .chart-container {
+      position: relative;
+      width: 100%;
+    }
+
+    .chart-container.tall { height: 420px; }
+    .chart-container.medium { height: 360px; }
+    .chart-container.short { height: 300px; }
+
+    /* Grid layouts */
+    .two-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 28px;
+    }
+
+    @media (max-width: 900px) {
+      .two-col { grid-template-columns: 1fr; }
+    }
+
+    /* Fun Facts */
+    .fun-facts {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+    }
+
+    .fun-fact {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 28px;
+      position: relative;
+      overflow: hidden;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .fun-fact:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 12px 40px rgba(255, 140, 66, 0.1);
+    }
+
+    .fun-fact-emoji {
+      font-size: 2.5rem;
+      margin-bottom: 14px;
+      display: block;
+    }
+
+    .fun-fact-title {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--accent-amber);
+      margin-bottom: 10px;
+    }
+
+    .fun-fact-text {
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+      line-height: 1.7;
+    }
+
+    .fun-fact-highlight {
+      color: var(--accent-orange);
+      font-weight: 700;
+    }
+
+    /* Timeline milestones (removed) */
+    .milestones_unused {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      position: relative;
+      padding-left: 32px;
+    }
+
+    .milestones::before {
+      content: '';
+      position: absolute;
+      left: 10px;
+      top: 8px;
+      bottom: 8px;
+      width: 2px;
+      background: linear-gradient(to bottom, var(--accent-orange), transparent);
+    }
+
+    .milestone {
+      display: flex;
+      gap: 16px;
+      padding: 16px 0;
+      position: relative;
+    }
+
+    .milestone::before {
+      content: '';
+      position: absolute;
+      left: -28px;
+      top: 22px;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--accent-orange);
+      border: 2px solid var(--bg-card);
+    }
+
+    .milestone-date {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      font-weight: 600;
+      min-width: 80px;
+      padding-top: 2px;
+    }
+
+    .milestone-content {
+      flex: 1;
+    }
+
+    .milestone-price {
+      font-size: 1.3rem;
+      font-weight: 800;
+      color: var(--accent-orange);
+    }
+
+    .milestone-note {
+      font-size: 0.82rem;
+      color: var(--text-secondary);
+      margin-top: 2px;
+    }
+
+    /* Legend items */
+    .legend-row {
+      display: flex;
+      gap: 24px;
+      flex-wrap: wrap;
+      margin-bottom: 16px;
+    }
+
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.82rem;
+      color: var(--text-secondary);
+    }
+
+    .legend-dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+    }
+
+    /* Inflation label badges */
+    .badge {
+      display: inline-block;
+      padding: 3px 10px;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+
+    .badge-orange { background: rgba(255, 140, 66, 0.15); color: var(--accent-orange); }
+    .badge-red { background: rgba(255, 71, 87, 0.15); color: #ff4757; }
+    .badge-green { background: rgba(46, 213, 115, 0.15); color: var(--accent-green); }
+
+    /* Footer */
+    footer {
+      background: var(--bg-secondary);
+      border-top: 1px solid var(--border);
+      padding: 40px 20px;
+      text-align: center;
+      margin-top: 40px;
+    }
+
+    .footer-logo {
+      font-size: 2rem;
+      margin-bottom: 12px;
+    }
+
+    .footer-title {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--accent-orange);
+      margin-bottom: 8px;
+    }
+
+    .footer-text {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      line-height: 1.8;
+    }
+
+    .footer-text a {
+      color: var(--accent-amber);
+      text-decoration: none;
+    }
+
+    .footer-disclaimer {
+      margin-top: 16px;
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      font-style: italic;
+    }
+
+    /* Base date marker */
+    .base-marker {
+      display: inline-block;
+      background: rgba(255, 179, 71, 0.15);
+      border: 1px solid rgba(255, 179, 71, 0.3);
+      border-radius: 6px;
+      padding: 2px 8px;
+      font-size: 0.75rem;
+      color: var(--accent-amber);
+      font-weight: 600;
+      margin-left: 8px;
+    }
+
+    /* Sparkle decorations */
+    .sparkle {
+      color: var(--accent-amber);
+      animation: sparkle 2s ease-in-out infinite;
+    }
+
+    @keyframes sparkle {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.6; transform: scale(0.9); }
+    }
+
+    /* Top Navigation */
+    nav {
+      background: rgba(15, 15, 19, 0.95);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--border);
+      padding: 12px 20px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .nav-inner {
+      max-width: 1400px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .nav-brand {
+      font-size: 1.1rem;
+      font-weight: 800;
+      color: var(--accent-orange);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 20px;
+    }
+
+    .nav-links a {
+      color: var(--text-secondary);
+      text-decoration: none;
+      font-size: 0.85rem;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover { color: var(--accent-orange); }
+
+    @media (max-width: 600px) {
+      .nav-links { display: none; }
+      .hero-price-display { flex-direction: column; gap: 12px; }
+      .hero-divider { width: 50px; height: 1px; }
+    }
+
+    /* Update date badge */
+    .update-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(46, 213, 115, 0.1);
+      border: 1px solid rgba(46, 213, 115, 0.2);
+      border-radius: 20px;
+      padding: 4px 14px;
+      font-size: 0.78rem;
+      color: var(--accent-green);
+      font-weight: 500;
+      margin-top: 16px;
+    }
+
+    .update-dot {
+      width: 6px;
+      height: 6px;
+      background: var(--accent-green);
+      border-radius: 50%;
+      animation: blink 1.5s ease-in-out infinite;
+    }
+
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.3; }
+    }
+
+    /* Table */
+    .data-table-wrapper {
+      overflow-x: auto;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+    }
+
+    .data-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.85rem;
+    }
+
+    .data-table th {
+      background: rgba(255, 140, 66, 0.1);
+      padding: 12px 16px;
+      text-align: left;
+      font-weight: 600;
+      color: var(--accent-amber);
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      border-bottom: 1px solid var(--border);
+      white-space: nowrap;
+    }
+
+    .data-table td {
+      padding: 11px 16px;
+      border-bottom: 1px solid rgba(42, 42, 62, 0.5);
+      color: var(--text-secondary);
+      white-space: nowrap;
+    }
+
+    .data-table tr:last-child td { border-bottom: none; }
+
+    .data-table tr:hover td {
+      background: rgba(255, 140, 66, 0.03);
+      color: var(--text-primary);
+    }
+
+    .data-table td.price-cell {
+      font-weight: 700;
+      color: var(--accent-orange);
+    }
+
+    .data-table td.highlight {
+      background: rgba(255, 179, 71, 0.05);
+    }
+
+    .data-table td.base-row {
+      background: rgba(255, 140, 66, 0.06);
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <div class="nav-brand">🌯 Tantuni Endeksi</div>
+    <div class="nav-links">
+      <a href="#fiyat">Fiyat</a>
+      <a href="#ucret">Asgari Ücret</a>
+      <a href="#altin">Altın</a>
+      <a href="#enflasyon">Enflasyon</a>
+      <a href="#bilgi">Bilgi</a>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <span class="hero-emoji">🌯</span>
+  <h1>Tantuni Endeksi</h1>
+  <p class="hero-tagline">Türkiye'nin en lezzetli ekonomik göstergesi • 2020–2026</p>
+
+  <div class="hero-price-display">
+    <div>
+      <div class="stat-label" style="color:var(--text-muted); font-size:0.75rem; letter-spacing:1px; text-transform:uppercase;">Güncel Fiyat (Mart 2026)</div>
+      <div class="hero-price-value">₺395</div>
+      <div class="hero-price-label">$8,99 · Asgari ücretle 71 tantuni</div>
+    </div>
+    <div class="hero-divider"></div>
+    <div>
+      <div class="hero-price-since">23,2×</div>
+      <div class="hero-since-label">₺17'den bu yana</div>
+    </div>
+    <div class="hero-divider"></div>
+    <div>
+      <div class="hero-price-since">%2.224</div>
+      <div class="hero-since-label">Toplam artış (5,5 yılda)</div>
+    </div>
+  </div>
+  <div>
+    <span class="update-badge"><span class="update-dot"></span>Son güncelleme: 2 Nisan 2026</span>
+  </div>
+</section>
+
+<!-- STATS CARDS -->
+<div class="container">
+  <section class="section" id="istatistik">
+    <div class="section-title"><span class="icon">📊</span> Temel Göstergeler</div>
+    <div class="section-subtitle">17 Aralık 2020 baz tarihi ile karşılaştırma <span class="base-marker">BAZA = 100%</span></div>
+
+    <div class="stats-grid">
+      <div class="stat-card orange">
+        <div class="stat-icon">🌯</div>
+        <div class="stat-label">Güncel Tantuni Fiyatı</div>
+        <div class="stat-value">₺395</div>
+        <div class="stat-sub">2020: ₺17 · Artış: ₺378</div>
+        <span class="stat-change change-up">▲ %2.224 artış</span>
+      </div>
+
+      <div class="stat-card red">
+        <div class="stat-icon">📈</div>
+        <div class="stat-label">Toplam Fiyat Artışı</div>
+        <div class="stat-value">%2.224</div>
+        <div class="stat-sub">₺17 → ₺395 (5,5 yılda)</div>
+        <span class="stat-change change-up">23,2 kat pahalandı</span>
+      </div>
+
+      <div class="stat-card blue">
+        <div class="stat-icon">💵</div>
+        <div class="stat-label">Dolar Bazında Fiyat</div>
+        <div class="stat-value">$8,99</div>
+        <div class="stat-sub">2020: $2,19 · Artış: $6,80</div>
+        <span class="stat-change change-up">▲ %310 dolar artışı</span>
+      </div>
+
+      <div class="stat-card green">
+        <div class="stat-icon">💰</div>
+        <div class="stat-label">Asgari Ücretle Tantuni</div>
+        <div class="stat-value">71</div>
+        <div class="stat-sub">2020: 137 tantuni · Kayıp: 66</div>
+        <span class="stat-change change-down">▼ %48 satın alma gücü</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- CHART 1: Fiyat Grafiği -->
+  <section class="section" id="fiyat">
+    <div class="section-title"><span class="icon">📈</span> Tantuni Fiyat Grafiği</div>
+    <div class="section-subtitle">TL ve dolar bazında zaman içindeki fiyat değişimi</div>
+
+    <div class="chart-card">
+      <div class="chart-card-title">🌯 Tantuni Fiyatı — TL & Dolar</div>
+      <div class="chart-card-desc">Sol eksen: Türk Lirası fiyatı | Sağ eksen: ABD Doları fiyatı. Tüm veri noktaları işaretlenmiştir.</div>
+      <div class="legend-row">
+        <div class="legend-item"><div class="legend-dot" style="background:var(--accent-orange)"></div>Fiyat (TL)</div>
+        <div class="legend-item"><div class="legend-dot" style="background:var(--accent-blue)"></div>Fiyat ($)</div>
+      </div>
+      <div class="chart-container tall">
+        <canvas id="priceChart"></canvas>
+      </div>
+    </div>
+  </section>
+
+  <!-- CHART 2: Asgari Ücret -->
+  <section class="section" id="ucret">
+    <div class="section-title"><span class="icon">💰</span> Asgari Ücretle Kaç Tantuni?</div>
+    <div class="section-subtitle">Net asgari ücretle alınabilecek tantuni adedi — satın alma gücü göstergesi</div>
+
+    <div class="chart-card">
+      <div class="chart-card-title">🧮 Asgari Ücretle Tantuni Sayısı</div>
+      <div class="chart-card-desc">
+        <span class="badge badge-green">🟢 100+ : İyi dönem</span> &nbsp;
+        <span class="badge badge-orange">🟠 80–100 : Orta dönem</span> &nbsp;
+        <span class="badge badge-red">🔴 80 altı : Zor dönem</span>
+      </div>
+      <div class="chart-container tall">
+        <canvas id="wageChart"></canvas>
+      </div>
+    </div>
+  </section>
+
+  <!-- CHART 3: Tantuni vs Altın (indexlenmiş) -->
+  <section class="section" id="altin">
+    <div class="section-title"><span class="icon">🥇</span> Tantuni vs Altın Karşılaştırması</div>
+    <div class="section-subtitle">Her ikisi de 17 Aralık 2020 baz tarihine göre 100'e endekslenmiştir</div>
+
+    <div class="chart-card">
+      <div class="chart-card-title">📊 Endekslenmiş Karşılaştırma (Baz: 17 Aralık 2020 = 100)</div>
+      <div class="chart-card-desc">Tantuni fiyatı ve altın fiyatı hangi hızda büyüdü?</div>
+      <div class="legend-row">
+        <div class="legend-item"><div class="legend-dot" style="background:var(--accent-orange)"></div>Tantuni Endeksi (TL)</div>
+        <div class="legend-item"><div class="legend-dot" style="background:#ffd700)"></div>Altın Endeksi (TL)</div>
+        <div class="legend-item"><div class="legend-dot" style="background:var(--accent-blue)"></div>Tantuni Endeksi ($)</div>
+      </div>
+      <div class="chart-container tall">
+        <canvas id="goldChart"></canvas>
+      </div>
+    </div>
+  </section>
+
+  <!-- CHART 4: Enflasyon -->
+  <section class="section" id="enflasyon">
+    <div class="section-title"><span class="icon">🔥</span> Tantuni Enflasyonu</div>
+    <div class="section-subtitle">Yıllık tantuni-spesifik enflasyon oranları</div>
+
+    <div class="chart-card">
+      <div class="chart-card-title">📉 Yıllık Tantuni Enflasyon Oranı (%)</div>
+      <div class="chart-card-desc">Ölçüm tarihlerindeki yıllık tantuni fiyat artış oranı. Resmi TÜFE ile karşılaştırma için referans noktaları seçilmiştir.</div>
+      <div class="chart-container medium">
+        <canvas id="inflationChart"></canvas>
+      </div>
+    </div>
+  </section>
+
+  <!-- FUN FACTS -->
+  <section class="section" id="bilgi">
+    <div class="section-title"><span class="icon">🎯</span> İlginç Tespitler</div>
+    <div class="section-subtitle">Tantuni endeksinin anlattığı hikaye</div>
+
+    <div class="fun-facts">
+      <div class="fun-fact">
+        <span class="fun-fact-emoji">🥇</span>
+        <div class="fun-fact-title">Altın ile Tantuni Yarışı</div>
+        <div class="fun-fact-text">
+          2020'de 1 gram altınla <span class="fun-fact-highlight">27,5 tantuni</span> alınırdı.
+          Mart 2026'da aynı gramla sadece <span class="fun-fact-highlight">~15,8 tantuni</span> alınıyor.
+          Altın fiyatları da arttı ama tantuni daha hızlı pahalandı!
+        </div>
+      </div>
+
+      <div class="fun-fact">
+        <span class="fun-fact-emoji">💵</span>
+        <div class="fun-fact-title">Dolar Bazında Artış</div>
+        <div class="fun-fact-text">
+          Tantuni fiyatı dolar bazında da <span class="fun-fact-highlight">4,1 kat</span> arttı: $2,19'dan $8,99'a.
+          Bu, sadece kur etkisiyle değil, gerçek bir fiyat artışı olduğunu gösteriyor.
+        </div>
+      </div>
+
+      <div class="fun-fact">
+        <span class="fun-fact-emoji">💰</span>
+        <div class="fun-fact-title">Satın Alma Gücü Eriyor</div>
+        <div class="fun-fact-text">
+          2020'de asgari ücretli işçi <span class="fun-fact-highlight">137 tantuni</span> alabiliyordu.
+          Mart 2026'da aynı işçi sadece <span class="fun-fact-highlight">71 tantuni</span> alabiliyor.
+          5 yılda satın alma gücü yarıya düştü.
+        </div>
+      </div>
+
+      <div class="fun-fact">
+        <span class="fun-fact-emoji">📅</span>
+        <div class="fun-fact-title">En Büyük Sıçrama</div>
+        <div class="fun-fact-text">
+          En hızlı fiyat artışı <span class="fun-fact-highlight">Kasım–Aralık 2021</span> döneminde yaşandı:
+          ₺25'ten ₺30'a ve ardından kısa sürede ₺70'e. Döviz kriziyle birlikte tantuni de zorlandı.
+        </div>
+      </div>
+
+      <div class="fun-fact">
+        <span class="fun-fact-emoji">🏆</span>
+        <div class="fun-fact-title">En Verimli Dönem</div>
+        <div class="fun-fact-text">
+          Şubat–Mart 2021 en verimli dönemdi: asgari ücret artışıyla
+          <span class="fun-fact-highlight">156,9 tantuni</span> alınabiliyordu.
+          Bu zirve 2026'da hâlâ kırılamamıştır.
+        </div>
+      </div>
+
+      <div class="fun-fact">
+        <span class="fun-fact-emoji">📊</span>
+        <div class="fun-fact-title">Yeni Yıl Zammı Geleneği</div>
+        <div class="fun-fact-text">
+          2022, 2023, 2024, 2025 ve 2026 yıllarının başında asgari ücret zammıyla birlikte
+          <span class="fun-fact-highlight">tantuni de zamlandı.</span>
+          "Yeni yıl, yeni zam" artık bir gelenek oldu.
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+</div><!-- /container -->
+
+<footer>
+  <div class="footer-logo">🌯</div>
+  <div class="footer-title">Tantuni Endeksi</div>
+  <div class="footer-text">
+    Veri kaynağı: Kişisel tantuni alışverişleri (Mersin/İstanbul) | 2020–2026<br>
+    Hazırlayan: <strong>Prof. Dr. Oğuz Ergin</strong> · <a href="mailto:bilgi@oguzergin.net">bilgi@oguzergin.net</a><br>
+    Sharjah Üniversitesi, Bilgisayar Mühendisliği
+  </div>
+  <div class="footer-disclaimer">
+    Bu endeks resmi bir ekonomik gösterge değildir. Eğlence ve farkındalık amaçlıdır.
+    Tüm fiyatlar bizzat alınan fişlerden derlenmiştir.
+  </div>
+</footer>
+
+<script>
+// ============================================================
+// DATA
+// ============================================================
+const tantuniData = [
+  {date:'2020-10-29', price:17, usd:2.04, minWage:2324, count:136.7, goldTL:498.53},
+  {date:'2020-12-17', price:17, usd:2.19, minWage:2324, count:136.7, goldTL:466.99}, // BASE
+  {date:'2021-02-27', price:18, usd:2.43, minWage:2825, count:156.9, goldTL:412.33},
+  {date:'2021-04-10', price:18, usd:2.20, minWage:2825, count:156.9, goldTL:457.31},
+  {date:'2021-04-12', price:18, usd:2.20, minWage:2825, count:156.9, goldTL:453.61},
+  {date:'2021-04-29', price:18, usd:2.19, minWage:2825, count:156.9, goldTL:467.76},
+  {date:'2021-05-02', price:18, usd:2.16, minWage:2825, count:156.9, goldTL:470.33},
+  {date:'2021-05-28', price:20, usd:2.33, minWage:2825, count:141.3, goldTL:524.06},
+  {date:'2021-06-20', price:20, usd:2.30, minWage:2825, count:141.3, goldTL:494.22},
+  {date:'2021-07-31', price:20, usd:2.37, minWage:2825, count:141.3, goldTL:491.39},
+  {date:'2021-08-30', price:22, usd:2.64, minWage:2825, count:128.4, goldTL:487.41},
+  {date:'2021-09-03', price:22, usd:2.64, minWage:2825, count:128.4, goldTL:488.63},
+  {date:'2021-09-10', price:25, usd:2.96, minWage:2825, count:113.0, goldTL:486.12},
+  {date:'2021-10-05', price:25, usd:2.82, minWage:2825, count:113.0, goldTL:501.55},
+  {date:'2021-10-30', price:25, usd:2.63, minWage:2825, count:113.0, goldTL:550.84},
+  {date:'2021-11-07', price:25, usd:2.57, minWage:2825, count:113.0, goldTL:565.53},
+  {date:'2021-11-13', price:25, usd:2.51, minWage:2825, count:113.0, goldTL:598.49},
+  {date:'2021-11-20', price:25, usd:2.26, minWage:2825, count:113.0, goldTL:667.77},
+  {date:'2021-11-27', price:28, usd:2.31, minWage:2825, count:100.9, goldTL:714.58},
+  {date:'2021-12-04', price:30, usd:2.19, minWage:2825, count:94.2, goldTL:786.31},
+  {date:'2021-12-05', price:30, usd:2.17, minWage:2825, count:94.2, goldTL:786.31},
+  {date:'2022-01-01', price:30, usd:2.23, minWage:4253, count:141.8, goldTL:778.95},
+  {date:'2022-01-07', price:30, usd:2.17, minWage:4253, count:141.8, goldTL:797.02},
+  {date:'2022-01-15', price:33, usd:2.44, minWage:4253, count:128.9, goldTL:789.43},
+  {date:'2022-02-27', price:33, usd:2.38, minWage:4253, count:128.9, goldTL:840.16},
+  {date:'2022-03-04', price:35, usd:2.46, minWage:4253, count:121.5, goldTL:899.45},
+  {date:'2022-03-14', price:35, usd:2.36, minWage:4253, count:121.5, goldTL:929.16},
+  {date:'2022-03-18', price:40, usd:2.70, minWage:4253, count:106.3, goldTL:914.53},
+  {date:'2022-05-18', price:40, usd:2.50, minWage:4253, count:106.3, goldTL:931.41},
+  {date:'2022-06-01', price:40, usd:2.43, minWage:4253, count:106.3, goldTL:973.53},
+  {date:'2022-06-03', price:45, usd:2.72, minWage:4253, count:94.5, goldTL:974.68},
+  {date:'2022-06-07', price:45, usd:2.68, minWage:4253, count:94.5, goldTL:999.14},
+  {date:'2022-07-02', price:45, usd:2.68, minWage:5500, count:122.2, goldTL:972.31},
+  {date:'2022-07-19', price:50, usd:2.84, minWage:5500, count:110.0, goldTL:966.45},
+  {date:'2022-07-26', price:50, usd:2.81, minWage:5500, count:110.0, goldTL:985.75},
+  {date:'2022-08-02', price:50, usd:2.78, minWage:5500, count:110.0, goldTL:1016.15},
+  {date:'2022-08-11', price:50, usd:2.78, minWage:5500, count:110.0, goldTL:1032.43},
+  {date:'2022-08-23', price:50, usd:2.76, minWage:5500, count:110.0, goldTL:1017.74},
+  {date:'2022-08-29', price:50, usd:2.74, minWage:5500, count:110.0, goldTL:1015.90},
+  {date:'2022-09-02', price:50, usd:2.74, minWage:5500, count:110.0, goldTL:1001.63},
+  {date:'2022-09-12', price:50, usd:2.74, minWage:5500, count:110.0, goldTL:1010.48},
+  {date:'2022-09-17', price:50, usd:2.73, minWage:5500, count:110.0, goldTL:982.26},
+  {date:'2022-09-18', price:55, usd:3.00, minWage:5500, count:100.0, goldTL:982.26},
+  {date:'2022-10-01', price:55, usd:2.96, minWage:5500, count:100.0, goldTL:987.21},
+  {date:'2022-10-05', price:55, usd:2.95, minWage:5500, count:100.0, goldTL:1024.43},
+  {date:'2022-10-07', price:55, usd:2.95, minWage:5500, count:100.0, goldTL:1012.98},
+  {date:'2022-11-02', price:55, usd:2.95, minWage:5500, count:100.0, goldTL:979.18},
+  {date:'2022-11-13', price:55, usd:2.95, minWage:5500, count:100.0, goldTL:1054.64},
+  {date:'2022-11-14', price:60, usd:3.22, minWage:5500, count:91.7, goldTL:1058.51},
+  {date:'2022-11-30', price:60, usd:3.21, minWage:5500, count:91.7, goldTL:1059.03},
+  {date:'2022-12-02', price:60, usd:3.21, minWage:5500, count:91.7, goldTL:1077.04},
+  {date:'2022-12-17', price:60, usd:3.21, minWage:5500, count:91.7, goldTL:1075.08},
+  {date:'2022-12-19', price:65, usd:3.48, minWage:5500, count:84.6, goldTL:1071.94},
+  {date:'2022-12-22', price:65, usd:3.47, minWage:5500, count:84.6, goldTL:1076.10},
+  {date:'2022-12-23', price:70, usd:3.74, minWage:5500, count:78.6, goldTL:1080.00},
+  {date:'2022-12-31', price:70, usd:3.73, minWage:5500, count:78.6, goldTL:1097.02},
+  {date:'2023-01-01', price:70, usd:3.73, minWage:8506, count:121.5, goldTL:1097.02},
+  {date:'2023-01-07', price:70, usd:3.72, minWage:8506, count:121.5, goldTL:1123.25},
+  {date:'2023-01-10', price:70, usd:3.72, minWage:8506, count:121.5, goldTL:1132.87},
+  {date:'2023-01-14', price:70, usd:3.72, minWage:8506, count:121.5, goldTL:1160.13},
+  {date:'2023-01-16', price:75, usd:3.98, minWage:8506, count:113.4, goldTL:1154.80},
+  {date:'2023-01-30', price:75, usd:3.98, minWage:8506, count:113.4, goldTL:1162.10},
+  {date:'2023-02-07', price:75, usd:3.97, minWage:8506, count:113.4, goldTL:1133.57},
+  {date:'2023-02-09', price:80, usd:4.24, minWage:8506, count:106.3, goldTL:1127.42},
+  {date:'2023-02-28', price:80, usd:4.23, minWage:8506, count:106.3, goldTL:1108.87},
+  {date:'2023-03-12', price:80, usd:4.21, minWage:8506, count:106.3, goldTL:1140.43},
+  {date:'2023-03-20', price:90, usd:4.72, minWage:8506, count:94.5, goldTL:1209.87},
+  {date:'2023-04-20', price:90, usd:4.63, minWage:8506, count:94.5, goldTL:1249.13},
+  {date:'2023-04-22', price:100, usd:5.14, minWage:8506, count:85.1, goldTL:1249.13},
+  {date:'2023-06-27', price:100, usd:3.86, minWage:8506, count:85.1, goldTL:1600.06},
+  {date:'2023-06-28', price:120, usd:4.63, minWage:8506, count:70.9, goldTL:1600.06},
+  {date:'2023-06-30', price:120, usd:4.59, minWage:8506, count:70.9, goldTL:1600.06},
+  {date:'2023-07-01', price:120, usd:4.59, minWage:11402, count:95.0, goldTL:1600.06},
+  {date:'2023-09-08', price:120, usd:4.46, minWage:11402, count:95.0, goldTL:1656.54},
+  {date:'2023-09-12', price:130, usd:4.82, minWage:11402, count:87.7, goldTL:1654.50},
+  {date:'2023-12-26', price:130, usd:4.43, minWage:11402, count:87.7, goldTL:1938.96},
+  {date:'2023-12-27', price:150, usd:5.10, minWage:11402, count:76.0, goldTL:1964.26},
+  {date:'2023-12-31', price:150, usd:5.08, minWage:11402, count:76.0, goldTL:1954.97},
+  {date:'2024-01-01', price:150, usd:5.04, minWage:17002, count:113.3, goldTL:1954.97},
+  {date:'2024-02-05', price:150, usd:5.02, minWage:17002, count:113.3, goldTL:1989.21},
+  {date:'2024-02-08', price:175, usd:5.71, minWage:17002, count:97.2, goldTL:2006.56},
+  {date:'2024-04-08', price:175, usd:5.45, minWage:17002, count:97.2, goldTL:2416.19},
+  {date:'2024-04-12', price:200, usd:6.17, minWage:17002, count:85.0, goldTL:2436.53},
+  {date:'2024-05-18', price:200, usd:6.19, minWage:17002, count:85.0, goldTL:2504.14},
+  {date:'2024-05-24', price:210, usd:6.51, minWage:17002, count:81.0, goldTL:2418.16},
+  {date:'2024-05-31', price:210, usd:6.50, minWage:17002, count:81.0, goldTL:2411.59},
+  {date:'2024-06-13', price:210, usd:6.50, minWage:17002, count:81.0, goldTL:2411.48},
+  {date:'2024-06-21', price:220, usd:6.69, minWage:17002, count:77.3, goldTL:2452.21},
+  {date:'2024-10-28', price:220, usd:6.42, minWage:17002, count:77.3, goldTL:3022.57},
+  {date:'2024-11-04', price:225, usd:6.55, minWage:17002, count:75.6, goldTL:3022.56},
+  {date:'2024-12-09', price:225, usd:6.51, minWage:17002, count:75.6, goldTL:2979.63},
+  {date:'2024-12-15', price:235, usd:6.80, minWage:17002, count:72.3, goldTL:2974.77},
+  {date:'2024-12-24', price:235, usd:6.68, minWage:17002, count:72.3, goldTL:2953.81},
+  {date:'2025-01-01', price:235, usd:6.64, minWage:22104, count:94.1, goldTL:2981.87},
+  {date:'2025-01-02', price:245, usd:6.93, minWage:22104, count:90.2, goldTL:3025.20},
+  {date:'2025-03-19', price:245, usd:6.71, minWage:22104, count:90.2, goldTL:3727.81},
+  {date:'2025-04-08', price:245, usd:6.44, minWage:22104, count:90.2, goldTL:3642.97},
+  {date:'2025-04-10', price:260, usd:6.83, minWage:22104, count:85.0, goldTL:3880.24},
+  {date:'2025-05-12', price:260, usd:6.74, minWage:22104, count:85.0, goldTL:4035.34},
+  {date:'2025-05-17', price:280, usd:7.23, minWage:22104, count:78.9, goldTL:3987.43},
+  {date:'2025-06-19', price:280, usd:7.07, minWage:22104, count:78.9, goldTL:4301.51},
+  {date:'2025-09-30', price:280, usd:6.73, minWage:22104, count:78.9, goldTL:5159.07},
+  {date:'2025-10-02', price:300, usd:7.21, minWage:22104, count:73.7, goldTL:5152.80},
+  {date:'2025-11-21', price:300, usd:7.14, minWage:22104, count:73.7, goldTL:5550.92},
+  {date:'2025-11-30', price:320, usd:7.53, minWage:22104, count:69.1, goldTL:5810.12},
+  {date:'2025-12-21', price:320, usd:7.51, minWage:22104, count:69.1, goldTL:5972.13},
+  {date:'2025-12-22', price:350, usd:8.16, minWage:22104, count:63.2, goldTL:6097.61},
+  {date:'2025-12-31', price:350, usd:8.16, minWage:22104, count:63.2, goldTL:5960.53},
+  {date:'2026-01-01', price:360, usd:8.39, minWage:28075, count:78.0, goldTL:5966.21},
+  {date:'2026-01-31', price:360, usd:8.28, minWage:28075, count:78.0, goldTL:6788.96},
+  {date:'2026-02-01', price:370, usd:8.51, minWage:28075, count:75.9, goldTL:6788.96},
+  {date:'2026-02-10', price:370, usd:8.49, minWage:28075, count:75.9, goldTL:6230.26},
+  {date:'2026-02-15', price:395, usd:9.04, minWage:28075, count:71.1, goldTL:6230.26},
+  {date:'2026-03-30', price:395, usd:8.99, minWage:28075, count:71.1, goldTL:6230.26},
+  {date:'2026-04-02', price:395, usd:8.86, minWage:28075, count:71.1, goldTL:6697.50},
+];
+
+const inflationData = [
+  {date:'2021-10-30', value:47.1, label:'Eki 2021'},
+  {date:'2021-12-05', value:76.5, label:'Ara 2021'},
+  {date:'2022-02-27', value:83.3, label:'Şub 2022'},
+  {date:'2022-06-01', value:100.0, label:'Haz 2022'},
+  {date:'2022-07-02', value:125.0, label:'Tem 2022'},
+  {date:'2022-08-02', value:150.0, label:'Ağu 2022'},
+  {date:'2022-09-02', value:127.3, label:'Eyl 2022'},
+  {date:'2022-10-01', value:120.0, label:'Eki 2022'},
+  {date:'2022-11-02', value:120.0, label:'Kas 2022'},
+  {date:'2022-11-30', value:114.3, label:'Kas\'22 son'},
+  {date:'2022-12-23', value:133.3, label:'Ara 2022'},
+  {date:'2023-01-30', value:127.3, label:'Oca 2023'},
+  {date:'2023-03-12', value:128.6, label:'Mar 2023'},
+  {date:'2023-04-20', value:125.0, label:'Nis 2023'},
+  {date:'2023-06-27', value:150.0, label:'Haz 2023'},
+  {date:'2023-07-01', value:166.7, label:'Tem 2023'},
+  {date:'2023-09-08', value:140.0, label:'Eyl 2023'},
+  {date:'2023-12-26', value:136.4, label:'Ara 2023'},
+  {date:'2024-01-01', value:114.3, label:'Oca 2024'},
+  {date:'2024-11-04', value:73.1, label:'Kas 2024'},
+];
+
+// ============================================================
+// HELPERS
+// ============================================================
+function fmtDate(d) {
+  const [y, m, day] = d.split('-');
+  const months = ['Oca','Şub','Mar','Nis','May','Haz','Tem','Ağu','Eyl','Eki','Kas','Ara'];
+  return `${parseInt(day)} ${months[parseInt(m)-1]} ${y}`;
+}
+
+function fmtDateShort(d) {
+  const [y, m] = d.split('-');
+  const months = ['Oca','Şub','Mar','Nis','May','Haz','Tem','Ağu','Eyl','Eki','Kas','Ara'];
+  return `${months[parseInt(m)-1]} ${y.slice(2)}`;
+}
+
+// Base date index
+const BASE_DATE = '2020-12-17';
+const baseEntry = tantuniData.find(d => d.date === BASE_DATE);
+const basePriceTL = baseEntry.price;   // 17
+const basePriceUSD = baseEntry.usd;    // 2.19
+const baseGoldTL = baseEntry.goldTL;   // 466.99
+
+// ============================================================
+// CHART DEFAULTS
+// ============================================================
+Chart.defaults.color = '#9090b0';
+Chart.defaults.font.family = "'Inter', sans-serif";
+Chart.defaults.font.size = 12;
+Chart.defaults.plugins.legend.labels.usePointStyle = true;
+Chart.defaults.plugins.legend.labels.padding = 20;
+
+const gridColor = 'rgba(42,42,62,0.8)';
+
+// ============================================================
+// CHART 1: Price (TL + USD)
+// ============================================================
+(function buildPriceChart() {
+  const ctx = document.getElementById('priceChart').getContext('2d');
+
+  const labels = tantuniData.map(d => fmtDate(d.date));
+  const priceTL = tantuniData.map(d => d.price);
+  const priceUSD = tantuniData.map(d => d.usd);
+
+  // Gradient for TL
+  const gradTL = ctx.createLinearGradient(0, 0, 0, 400);
+  gradTL.addColorStop(0, 'rgba(255,140,66,0.4)');
+  gradTL.addColorStop(1, 'rgba(255,140,66,0.01)');
+
+  // Gradient for USD
+  const gradUSD = ctx.createLinearGradient(0, 0, 0, 400);
+  gradUSD.addColorStop(0, 'rgba(30,144,255,0.3)');
+  gradUSD.addColorStop(1, 'rgba(30,144,255,0.01)');
+
+  new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels,
+      datasets: [
+        {
+          label: 'Tantuni Fiyatı (₺)',
+          data: priceTL,
+          borderColor: '#ff8c42',
+          backgroundColor: gradTL,
+          borderWidth: 2.5,
+          pointRadius: 2,
+          pointHoverRadius: 6,
+          pointBackgroundColor: '#ff8c42',
+          fill: true,
+          tension: 0.3,
+          yAxisID: 'yTL',
+        },
+        {
+          label: 'Tantuni Fiyatı ($)',
+          data: priceUSD,
+          borderColor: '#1e90ff',
+          backgroundColor: gradUSD,
+          borderWidth: 2,
+          pointRadius: 2,
+          pointHoverRadius: 6,
+          pointBackgroundColor: '#1e90ff',
+          fill: true,
+          tension: 0.3,
+          yAxisID: 'yUSD',
+          borderDash: [5, 3],
+        }
+      ]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      interaction: { mode: 'index', intersect: false },
+      plugins: {
+        legend: { position: 'top' },
+        tooltip: {
+          backgroundColor: '#1e1e2e',
+          borderColor: '#2a2a3e',
+          borderWidth: 1,
+          padding: 14,
+          callbacks: {
+            label(ctx) {
+              if (ctx.datasetIndex === 0) return `  ₺${ctx.raw}`;
+              return `  $${ctx.raw.toFixed(2)}`;
+            }
+          }
+        }
+      },
+      scales: {
+        x: {
+          grid: { color: gridColor },
+          ticks: {
+            maxTicksLimit: 14,
+            maxRotation: 45,
+          }
+        },
+        yTL: {
+          type: 'linear',
+          position: 'left',
+          grid: { color: gridColor },
+          ticks: {
+            callback: v => '₺' + v,
+            color: '#ff8c42'
+          },
+          title: { display: true, text: 'Türk Lirası (₺)', color: '#ff8c42' }
+        },
+        yUSD: {
+          type: 'linear',
+          position: 'right',
+          grid: { drawOnChartArea: false },
+          ticks: {
+            callback: v => '$' + v.toFixed(1),
+            color: '#1e90ff'
+          },
+          title: { display: true, text: 'ABD Doları ($)', color: '#1e90ff' }
+        }
+      }
+    }
+  });
+})();
+
+// ============================================================
+// CHART 2: Wage Chart
+// ============================================================
+(function buildWageChart() {
+  const ctx = document.getElementById('wageChart').getContext('2d');
+
+  const labels = tantuniData.map(d => fmtDate(d.date));
+  const counts = tantuniData.map(d => d.count);
+
+  const colors = counts.map(c => {
+    if (c >= 100) return 'rgba(46,213,115,0.8)';
+    if (c >= 80)  return 'rgba(255,179,71,0.8)';
+    return 'rgba(255,71,87,0.8)';
+  });
+
+  const borderColors = counts.map(c => {
+    if (c >= 100) return '#2ed573';
+    if (c >= 80)  return '#ffb347';
+    return '#ff4757';
+  });
+
+  new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels,
+      datasets: [{
+        label: 'Asgari Ücretle Alınabilecek Tantuni',
+        data: counts,
+        backgroundColor: colors,
+        borderColor: borderColors,
+        borderWidth: 1,
+        borderRadius: 3,
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          backgroundColor: '#1e1e2e',
+          borderColor: '#2a2a3e',
+          borderWidth: 1,
+          padding: 14,
+          callbacks: {
+            label(ctx) {
+              const v = ctx.raw;
+              let emoji = v >= 100 ? '🟢' : v >= 80 ? '🟠' : '🔴';
+              return `  ${emoji} ${v.toFixed(1)} tantuni`;
+            },
+            afterLabel(ctx) {
+              const d = tantuniData[ctx.dataIndex];
+              return [`  Fiyat: ₺${d.price}`, `  Asgari: ₺${d.minWage.toLocaleString('tr-TR')}`];
+            }
+          }
+        },
+        annotation: {
+          annotations: {
+            line100: {
+              type: 'line',
+              yMin: 100, yMax: 100,
+              borderColor: 'rgba(46,213,115,0.5)',
+              borderWidth: 1.5,
+              borderDash: [6,3],
+              label: { content: '100 (iyi eşiği)', enabled: true, position: 'end', color: '#2ed573', font: {size:11} }
+            },
+            line80: {
+              type: 'line',
+              yMin: 80, yMax: 80,
+              borderColor: 'rgba(255,71,87,0.5)',
+              borderWidth: 1.5,
+              borderDash: [6,3],
+              label: { content: '80 (kritik eşik)', enabled: true, position: 'end', color: '#ff4757', font: {size:11} }
+            }
+          }
+        }
+      },
+      scales: {
+        x: {
+          grid: { color: gridColor },
+          ticks: { maxTicksLimit: 14, maxRotation: 45 }
+        },
+        y: {
+          grid: { color: gridColor },
+          ticks: { callback: v => v + ' 🌯' },
+          title: { display: true, text: 'Tantuni Adedi', color: '#9090b0' }
+        }
+      }
+    }
+  });
+})();
+
+// ============================================================
+// CHART 3: Indexed Comparison (Tantuni vs Gold)
+// ============================================================
+(function buildGoldChart() {
+  const ctx = document.getElementById('goldChart').getContext('2d');
+
+  const labels = tantuniData.map(d => fmtDate(d.date));
+
+  // Index to base date (17 Dec 2020 = 100)
+  const tantuniIndexTL  = tantuniData.map(d => (d.price / basePriceTL * 100).toFixed(1));
+  const goldIndexTL     = tantuniData.map(d => (d.goldTL / baseGoldTL * 100).toFixed(1));
+  const tantuniIndexUSD = tantuniData.map(d => (d.usd / basePriceUSD * 100).toFixed(1));
+
+  const gradOrange = ctx.createLinearGradient(0, 0, 0, 400);
+  gradOrange.addColorStop(0, 'rgba(255,140,66,0.25)');
+  gradOrange.addColorStop(1, 'rgba(255,140,66,0.0)');
+
+  const gradGold = ctx.createLinearGradient(0, 0, 0, 400);
+  gradGold.addColorStop(0, 'rgba(255,215,0,0.2)');
+  gradGold.addColorStop(1, 'rgba(255,215,0,0.0)');
+
+  new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels,
+      datasets: [
+        {
+          label: 'Tantuni Endeksi (TL)',
+          data: tantuniIndexTL,
+          borderColor: '#ff8c42',
+          backgroundColor: gradOrange,
+          borderWidth: 2.5,
+          pointRadius: 1.5,
+          pointHoverRadius: 6,
+          fill: true,
+          tension: 0.3,
+        },
+        {
+          label: 'Altın Endeksi (TL)',
+          data: goldIndexTL,
+          borderColor: '#ffd700',
+          backgroundColor: gradGold,
+          borderWidth: 2,
+          pointRadius: 1.5,
+          pointHoverRadius: 6,
+          fill: true,
+          tension: 0.3,
+          borderDash: [4,2],
+        },
+        {
+          label: 'Tantuni Endeksi ($)',
+          data: tantuniIndexUSD,
+          borderColor: '#1e90ff',
+          backgroundColor: 'transparent',
+          borderWidth: 2,
+          pointRadius: 1.5,
+          pointHoverRadius: 6,
+          fill: false,
+          tension: 0.3,
+          borderDash: [8,4],
+        }
+      ]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      interaction: { mode: 'index', intersect: false },
+      plugins: {
+        legend: { position: 'top' },
+        tooltip: {
+          backgroundColor: '#1e1e2e',
+          borderColor: '#2a2a3e',
+          borderWidth: 1,
+          padding: 14,
+          callbacks: {
+            label(ctx) {
+              return `  ${ctx.dataset.label}: ${ctx.raw}`;
+            }
+          }
+        },
+        annotation: {
+          annotations: {
+            baseline: {
+              type: 'line',
+              yMin: 100, yMax: 100,
+              borderColor: 'rgba(144,144,176,0.3)',
+              borderWidth: 1,
+              borderDash: [4,4],
+              label: { content: 'Baz: 100', enabled: true, position: 'start', color: '#9090b0', font: {size:10} }
+            }
+          }
+        }
+      },
+      scales: {
+        x: {
+          grid: { color: gridColor },
+          ticks: { maxTicksLimit: 14, maxRotation: 45 }
+        },
+        y: {
+          grid: { color: gridColor },
+          ticks: { callback: v => v },
+          title: { display: true, text: 'Endeks (17 Ara 2020 = 100)', color: '#9090b0' }
+        }
+      }
+    }
+  });
+})();
+
+// ============================================================
+// CHART 4: Inflation
+// ============================================================
+(function buildInflationChart() {
+  const ctx = document.getElementById('inflationChart').getContext('2d');
+
+  const labels = inflationData.map(d => d.label);
+  const values = inflationData.map(d => d.value);
+
+  const colors = values.map(v => {
+    if (v >= 150) return 'rgba(255,71,87,0.85)';
+    if (v >= 100) return 'rgba(255,140,66,0.85)';
+    return 'rgba(255,179,71,0.85)';
+  });
+
+  new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels,
+      datasets: [{
+        label: 'Tantuni Enflasyonu (%)',
+        data: values,
+        backgroundColor: colors,
+        borderColor: colors.map(c => c.replace('0.85', '1')),
+        borderWidth: 1,
+        borderRadius: 4,
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          backgroundColor: '#1e1e2e',
+          borderColor: '#2a2a3e',
+          borderWidth: 1,
+          padding: 14,
+          callbacks: {
+            label(ctx) { return `  Enflasyon: %${ctx.raw}`; }
+          }
+        },
+        datalabels: undefined,
+      },
+      scales: {
+        x: {
+          grid: { color: gridColor },
+          ticks: { maxRotation: 45, font: { size: 11 } }
+        },
+        y: {
+          grid: { color: gridColor },
+          ticks: { callback: v => '%' + v },
+          title: { display: true, text: 'Yıllık Artış (%)', color: '#9090b0' },
+          suggestedMax: 180
+        }
+      }
+    },
+    plugins: [{
+      id: 'valueLabels',
+      afterDatasetsDraw(chart) {
+        const { ctx, data } = chart;
+        ctx.save();
+        data.datasets.forEach((dataset, i) => {
+          const meta = chart.getDatasetMeta(i);
+          meta.data.forEach((bar, index) => {
+            const value = dataset.data[index];
+            ctx.fillStyle = '#f0f0f5';
+            ctx.font = 'bold 11px Inter, sans-serif';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'bottom';
+            ctx.fillText('%' + value, bar.x, bar.y - 4);
+          });
+        });
+        ctx.restore();
+      }
+    }]
+  });
+})();
+
+
+// ============================================================
+// SCROLL ANIMATIONS
+// ============================================================
+const sections = document.querySelectorAll('.section');
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+    }
+  });
+}, { threshold: 0.08 });
+
+sections.forEach(s => observer.observe(s));
+</script>
+
+</body>
+</html>
