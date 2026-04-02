@@ -1000,27 +1000,38 @@ const tantuniData = [
   {date:'2026-04-02', price:395, usd:8.86, minWage:28075, count:71.1, goldTL:6697.50},
 ];
 
-const inflationData = [
-  {date:'2021-10-30', value:47.1, label:'Eki 2021'},
-  {date:'2021-12-05', value:76.5, label:'Ara 2021'},
-  {date:'2022-02-27', value:83.3, label:'Şub 2022'},
-  {date:'2022-06-01', value:100.0, label:'Haz 2022'},
-  {date:'2022-07-02', value:125.0, label:'Tem 2022'},
-  {date:'2022-08-02', value:150.0, label:'Ağu 2022'},
-  {date:'2022-09-02', value:127.3, label:'Eyl 2022'},
-  {date:'2022-10-01', value:120.0, label:'Eki 2022'},
-  {date:'2022-11-02', value:120.0, label:'Kas 2022'},
-  {date:'2022-11-30', value:114.3, label:'Kas\'22 son'},
-  {date:'2022-12-23', value:133.3, label:'Ara 2022'},
-  {date:'2023-01-30', value:127.3, label:'Oca 2023'},
-  {date:'2023-03-12', value:128.6, label:'Mar 2023'},
-  {date:'2023-04-20', value:125.0, label:'Nis 2023'},
-  {date:'2023-06-27', value:150.0, label:'Haz 2023'},
-  {date:'2023-07-01', value:166.7, label:'Tem 2023'},
-  {date:'2023-09-08', value:140.0, label:'Eyl 2023'},
-  {date:'2023-12-26', value:136.4, label:'Ara 2023'},
-  {date:'2024-01-01', value:114.3, label:'Oca 2024'},
-  {date:'2024-11-04', value:73.1, label:'Kas 2024'},
+// Inflation chart data — 51 months, Ara 2021 – Şub 2026
+const inflationLabels = [
+  'Ara 21','Oca 22','Şub 22','Mar 22','Nis 22','May 22','Haz 22','Tem 22','Ağu 22','Eyl 22',
+  'Eki 22','Kas 22','Ara 22','Oca 23','Şub 23','Mar 23','Nis 23','May 23','Haz 23','Tem 23',
+  'Ağu 23','Eyl 23','Eki 23','Kas 23','Ara 23','Oca 24','Şub 24','Mar 24','Nis 24','May 24',
+  'Haz 24','Tem 24','Ağu 24','Eyl 24','Eki 24','Kas 24','Ara 24','Oca 25','Şub 25','Mar 25',
+  'Nis 25','May 25','Haz 25','Tem 25','Ağu 25','Eyl 25','Eki 25','Kas 25','Ara 25','Oca 26',
+  'Şub 26'
+];
+const tantuniInflation = [
+  76,83,94,122,122,100,125,150,127,120,
+  120,114,133,127,129,125,150,150,168,140,
+  140,136,136,117,114,100,119,94,100,110,
+  83,83,83,83,73,73,57,63,40,40,
+  30,33,27,27,27,36,33,42,53,51,
+  61
+];
+const tuikInflation = [
+  36,49,54,61,70,74,79,80,80,83,
+  86,84,64,58,55,51,44,40,38,48,
+  60,62,61,62,65,65,67,69,70,75,
+  72,62,52,49,49,47,44,42,39,38,
+  38,35,35,34,33,33,33,31,31,31,
+  32
+];
+const enagInflation = [
+  83,118,124,143,157,161,176,176,181,186,
+  185,171,138,122,127,113,105,105,109,123,
+  128,130,126,129,127,129,122,125,124,121,
+  113,101,90,89,90,87,83,81,80,75,
+  74,71,69,65,65,63,60,57,56,53,
+  54
 ];
 
 // ============================================================
@@ -1368,73 +1379,14 @@ const gridColor = 'rgba(42,42,62,0.8)';
 (function buildInflationChart() {
   const ctx = document.getElementById('inflationChart').getContext('2d');
 
-  // All unique labels from tantuni data (canonical time axis)
-  const tantuniLabels = inflationData.map(d => d.label);
-  const tantuniValues = inflationData.map(d => d.value);
-
-  // TÜİK official CPI (yıllık TÜFE) — matched to same time points as tantuni
-  const tuikData = [
-    {label:'Eki 2021', value:19.9},
-    {label:'Ara 2021', value:36.1},
-    {label:'Şub 2022', value:54.4},
-    {label:'Haz 2022', value:78.6},
-    {label:'Tem 2022', value:79.6},
-    {label:'Ağu 2022', value:80.2},
-    {label:'Eyl 2022', value:83.5},
-    {label:'Eki 2022', value:85.5},
-    {label:'Kas 2022', value:84.4},
-    {label:'Kas\'22 son', value:84.4},
-    {label:'Ara 2022', value:64.3},
-    {label:'Oca 2023', value:57.7},
-    {label:'Mar 2023', value:50.5},
-    {label:'Nis 2023', value:43.7},
-    {label:'Haz 2023', value:38.2},
-    {label:'Tem 2023', value:47.8},
-    {label:'Eyl 2023', value:61.5},
-    {label:'Ara 2023', value:64.8},
-    {label:'Oca 2024', value:64.9},
-    {label:'Kas 2024', value:47.1},
-  ];
-
-  // ENAG independent CPI (yıllık) — null where no data
-  const enagData = [
-    {label:'Eki 2021', value:47.7},
-    {label:'Ara 2021', value:82.8},
-    {label:'Şub 2022', value:105.3},
-    {label:'Haz 2022', value:175.5},
-    {label:'Tem 2022', value:176.0},
-    {label:'Ağu 2022', value:181.4},
-    {label:'Eyl 2022', value:186.3},
-    {label:'Eki 2022', value:185.3},
-    {label:'Kas 2022', value:170.7},
-    {label:'Kas\'22 son', value:170.7},
-    {label:'Ara 2022', value:137.6},
-    {label:'Oca 2023', value:121.0},
-    {label:'Mar 2023', value:106.4},
-    {label:'Nis 2023', value:101.6},
-    {label:'Haz 2023', value:105.2},
-    {label:'Tem 2023', value:122.9},
-    {label:'Eyl 2023', value:128.8},
-    {label:'Ara 2023', value:127.2},
-    {label:'Oca 2024', value:120.7},
-    {label:'Kas 2024', value:null},  // ENAG stopped publishing after early 2024
-  ];
-
-  // Build lookup maps for TÜİK and ENAG by label
-  const tuikMap = Object.fromEntries(tuikData.map(d => [d.label, d.value]));
-  const enagMap = Object.fromEntries(enagData.map(d => [d.label, d.value !== undefined ? d.value : null]));
-
-  const tuikValues = tantuniLabels.map(l => tuikMap[l] !== undefined ? tuikMap[l] : null);
-  const enagValues = tantuniLabels.map(l => enagMap[l] !== undefined ? enagMap[l] : null);
-
   new Chart(ctx, {
     type: 'line',
     data: {
-      labels: tantuniLabels,
+      labels: inflationLabels,
       datasets: [
         {
           label: 'Tantuni Enflasyonu',
-          data: tantuniValues,
+          data: tantuniInflation,
           borderColor: '#1e90ff',
           backgroundColor: 'rgba(30,144,255,0.12)',
           borderWidth: 3,
@@ -1447,7 +1399,7 @@ const gridColor = 'rgba(42,42,62,0.8)';
         },
         {
           label: 'TÜİK Resmi TÜFE',
-          data: tuikValues,
+          data: tuikInflation,
           borderColor: '#ff4757',
           backgroundColor: 'rgba(255,71,87,0.10)',
           borderWidth: 2.5,
@@ -1461,7 +1413,7 @@ const gridColor = 'rgba(42,42,62,0.8)';
         },
         {
           label: 'ENAG Bağımsız TÜFE',
-          data: enagValues,
+          data: enagInflation,
           borderColor: '#ffd700',
           backgroundColor: 'rgba(255,215,0,0.10)',
           borderWidth: 2.5,
@@ -1470,7 +1422,7 @@ const gridColor = 'rgba(42,42,62,0.8)';
           pointBackgroundColor: '#ffd700',
           fill: false,
           tension: 0.3,
-          spanGaps: false,
+          spanGaps: true,
           borderDash: [3, 3],
         },
       ]
@@ -1505,7 +1457,11 @@ const gridColor = 'rgba(42,42,62,0.8)';
       scales: {
         x: {
           grid: { color: gridColor },
-          ticks: { maxRotation: 45, font: { size: 11 } }
+          ticks: {
+            maxRotation: 45,
+            font: { size: 11 },
+            autoSkip: false,
+          }
         },
         y: {
           grid: { color: gridColor },
