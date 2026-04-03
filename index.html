@@ -680,10 +680,17 @@
 
     @media (max-width: 768px) {
       .hero-inner { grid-template-columns: 1fr; gap: 24px; }
-      .hero-right { order: 2; }
+      .hero-right { order: 2; overflow-x: auto; }
       .hero-table-row { padding: 7px 10px; }
       .hero-table-header { padding: 10px 10px; }
       .hero-table-title { padding: 10px 10px 6px; }
+      /* Price card stats: allow wrapping so 23,2x and %2.224 don't clip */
+      .hero-price-stats-row { flex-wrap: wrap; gap: 10px; }
+      .hero-price-value { font-size: clamp(1.6rem, 7vw, 2.4rem); }
+      .hero-price-since { font-size: 1rem; }
+      /* Hero table: smaller font and reduced padding to fit 4 cols */
+      .hero-table-row span { font-size: 0.72rem; }
+      .hero-table-header span { font-size: 0.65rem; }
     }
 
     @media (max-width: 600px) {
@@ -692,8 +699,11 @@
       .hero-divider { width: 50px; height: 1px; }
       .chart-card { padding: 18px 12px; }
       .section-title { font-size: 1.2rem; }
-      .hero-table-row span { font-size: 0.75rem; }
-      .hero-table-header span { font-size: 0.65rem; }
+      .hero-table-row span { font-size: 0.68rem; }
+      .hero-table-header span { font-size: 0.62rem; }
+      /* Pill badges: allow wrapping and shrink font */
+      .hero-pills-row { flex-wrap: wrap; gap: 6px; }
+      .hero-pill { font-size: 0.7rem; padding: 3px 9px; white-space: normal; }
     }
 
     /* Price change annotation inside card */
