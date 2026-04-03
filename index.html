@@ -51,12 +51,13 @@
     ::-webkit-scrollbar-track { background: var(--bg-secondary); }
     ::-webkit-scrollbar-thumb { background: var(--accent-orange); border-radius: 4px; }
 
-    /* Hero Section */
+    /* Hero Section — Option B: Full-width centered */
     .hero {
       background: linear-gradient(135deg, #0f0f13 0%, #1a0f05 40%, #0f0a05 100%);
-      padding: 48px 20px 40px;
+      padding: 52px 20px 44px;
       position: relative;
       overflow: hidden;
+      text-align: center;
     }
 
     .hero::before {
@@ -67,34 +68,30 @@
       width: 200%;
       height: 200%;
       background: radial-gradient(ellipse at center, rgba(255, 140, 66, 0.08) 0%, transparent 60%);
-      animation: pulse 6s ease-in-out infinite;
+      animation: heroPulse 6s ease-in-out infinite;
     }
 
-    @keyframes pulse {
+    @keyframes heroPulse {
       0%, 100% { transform: scale(1); opacity: 0.5; }
       50% { transform: scale(1.1); opacity: 1; }
     }
 
     .hero-inner {
-      max-width: 1400px;
+      max-width: 960px;
       margin: 0 auto;
-      display: grid;
-      grid-template-columns: 1.5fr 1fr;
-      gap: 40px;
-      align-items: center;
       position: relative;
       z-index: 1;
-    }
-
-    .hero-left {
       display: flex;
       flex-direction: column;
+      align-items: center;
       gap: 0;
     }
 
+    /* TOP: Title block */
     .hero-title-row {
       display: flex;
       align-items: center;
+      justify-content: center;
       gap: 14px;
       margin-bottom: 6px;
     }
@@ -112,7 +109,7 @@
     }
 
     .hero h1 {
-      font-size: clamp(1.8rem, 4vw, 3rem);
+      font-size: clamp(2rem, 5vw, 3.2rem);
       font-weight: 900;
       background: linear-gradient(135deg, var(--accent-orange), var(--accent-amber), #ffcc80);
       -webkit-background-clip: text;
@@ -123,144 +120,122 @@
     }
 
     .hero-tagline {
-      font-size: clamp(0.82rem, 1.5vw, 1rem);
+      font-size: clamp(0.9rem, 1.6vw, 1.05rem);
       color: var(--text-secondary);
-      margin-bottom: 20px;
+      margin-bottom: 6px;
       font-weight: 400;
     }
 
-    .hero-price-display {
+    /* MIDDLE: Big price display */
+    .hero-price-block {
+      margin: 22px 0 0;
       display: flex;
       flex-direction: column;
-      gap: 0;
-      background: rgba(255, 140, 66, 0.1);
-      border: 1px solid rgba(255, 140, 66, 0.3);
-      border-radius: 16px;
-      padding: 16px 24px 14px;
-      backdrop-filter: blur(10px);
-      margin-bottom: 12px;
-      width: fit-content;
-    }
-
-    .hero-price-stats-row {
-      display: flex;
       align-items: center;
-      gap: 16px;
+      gap: 6px;
     }
 
     .hero-price-value {
-      font-size: clamp(2rem, 4vw, 3rem);
+      font-size: 5rem;
       font-weight: 900;
       color: var(--accent-orange);
+      line-height: 1;
+      text-shadow: 0 0 30px rgba(255, 140, 66, 0.5), 0 0 60px rgba(255, 140, 66, 0.2);
+      letter-spacing: -2px;
     }
 
-    .hero-price-label {
-      font-size: 0.82rem;
-      color: var(--text-secondary);
-      text-align: left;
-    }
-
-    .hero-price-since {
-      font-size: 1.25rem;
-      font-weight: 700;
-      color: var(--accent-amber);
-    }
-
-    .hero-since-label {
-      font-size: 0.72rem;
-      color: var(--text-muted);
-    }
-
-    .hero-divider {
-      width: 1px;
-      height: 44px;
-      background: rgba(255, 140, 66, 0.3);
-    }
-
-    .hero-dollar-row {
-      font-size: 0.88rem;
-      color: var(--text-secondary);
-      margin-bottom: 12px;
-    }
-
-    .hero-dollar-row span {
-      color: var(--accent-amber);
+    .hero-price-meta {
+      font-size: 1.1rem;
       font-weight: 600;
-    }
-
-    /* Hero right — mini price table */
-    .hero-right {
-      background: rgba(30, 30, 46, 0.6);
-      border: 1px solid rgba(255, 140, 66, 0.2);
-      border-radius: 16px;
-      backdrop-filter: blur(12px);
-      overflow: hidden;
-    }
-
-    .hero-table-header {
-      background: rgba(255, 140, 66, 0.15);
-      padding: 10px 16px;
-      display: grid;
-      grid-template-columns: 1fr 1fr 1fr 1.2fr;
-      gap: 4px;
-    }
-
-    .hero-table-header span {
-      font-size: 0.72rem;
-      font-weight: 700;
       color: var(--accent-amber);
-      text-transform: uppercase;
       letter-spacing: 0.5px;
     }
 
-    .hero-table-body {
-      padding: 4px 0;
-    }
-
-    .hero-table-row {
-      display: grid;
-      grid-template-columns: 1fr 1fr 1fr 1.2fr;
-      gap: 4px;
-      padding: 7px 16px;
-      border-bottom: 1px solid rgba(255,255,255,0.04);
-      transition: background 0.15s;
-    }
-
-    .hero-table-row:last-child {
-      border-bottom: none;
-    }
-
-    .hero-table-row.current-year {
-      background: rgba(255, 140, 66, 0.12);
-      border-left: 3px solid var(--accent-orange);
-      padding-left: 13px;
-    }
-
-    .hero-table-row span {
+    .hero-price-sub {
       font-size: 0.82rem;
-      color: var(--text-secondary);
-    }
-
-    .hero-table-row span:first-child {
-      font-weight: 700;
-      color: var(--text-primary);
-    }
-
-    .hero-table-row.current-year span {
-      color: var(--accent-amber);
-    }
-
-    .hero-table-row.current-year span:first-child {
-      color: var(--accent-orange);
-    }
-
-    .hero-table-title {
-      padding: 12px 16px 8px;
-      font-size: 0.78rem;
-      font-weight: 700;
       color: var(--text-muted);
-      text-transform: uppercase;
-      letter-spacing: 0.8px;
+    }
+    .hero-price-sub .up-arrow { color: var(--accent-red); font-weight: 700; }
+    .hero-price-sub strong { color: var(--text-secondary); }
+
+    /* TIMELINE */
+    .hero-timeline {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: relative;
+      max-width: 900px;
+      width: 100%;
+      margin: 30px auto 0;
+      padding: 0 20px;
+    }
+
+    .hero-timeline::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 20px;
+      right: 20px;
+      height: 2px;
+      background: linear-gradient(90deg, #2ed573, #ffb347, #ff8c42, #ff4757);
+      transform: translateY(-50%);
+      z-index: 0;
+    }
+
+    .timeline-point {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      position: relative;
+      z-index: 1;
+    }
+
+    .timeline-dot {
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      margin: 8px 0;
+    }
+
+    .timeline-dot.current {
+      width: 20px;
+      height: 20px;
+      box-shadow: 0 0 15px rgba(255,140,66,0.6);
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { box-shadow: 0 0 10px rgba(255,140,66,0.4); }
+      50% { box-shadow: 0 0 25px rgba(255,140,66,0.8); }
+    }
+
+    .timeline-year { font-size: 0.75rem; color: var(--text-secondary); font-weight: 600; }
+    .timeline-price { font-size: 0.95rem; color: var(--text-primary); font-weight: 700; }
+    .timeline-dollar { font-size: 0.7rem; color: var(--text-muted); }
+
+    /* MINI STAT CARDS ROW */
+    .hero-mini-stats {
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-top: 28px;
+    }
+
+    .hero-mini-card {
+      background: rgba(30, 30, 46, 0.7);
+      border: 1px solid rgba(255, 140, 66, 0.2);
+      border-radius: 12px;
+      padding: 10px 20px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: var(--text-secondary);
+      backdrop-filter: blur(8px);
+      white-space: nowrap;
+    }
+
+    .hero-mini-card strong {
+      color: var(--accent-amber);
     }
 
     /* Main Container */
@@ -679,45 +654,33 @@
     .nav-links a:hover { color: var(--accent-orange); }
 
     @media (max-width: 768px) {
-      .hero-inner { grid-template-columns: 1fr; gap: 24px; }
-      .hero-right { order: 2; overflow-x: auto; }
-      .hero-table-row { padding: 7px 10px; }
-      .hero-table-header { padding: 10px 10px; }
-      .hero-table-title { padding: 10px 10px 6px; }
-      /* Price card stats: allow wrapping so 23,2x and %2.224 don't clip */
-      .hero-price-stats-row { flex-wrap: wrap; gap: 10px; }
-      .hero-price-value { font-size: clamp(1.6rem, 7vw, 2.4rem); }
-      .hero-price-since { font-size: 1rem; }
-      /* Hero table: smaller font and reduced padding to fit 4 cols */
-      .hero-table-row span { font-size: 0.72rem; }
-      .hero-table-header span { font-size: 0.65rem; }
+      .hero-price-value { font-size: 3.5rem; }
+      .hero-price-meta { font-size: 0.95rem; }
+      .timeline-year { font-size: 0.65rem; }
+      .timeline-price { font-size: 0.8rem; }
+      .timeline-dollar { font-size: 0.62rem; }
+      .timeline-dot { width: 11px; height: 11px; }
+      .timeline-dot.current { width: 16px; height: 16px; }
+      .hero-mini-card { font-size: 0.78rem; padding: 8px 14px; }
     }
 
     @media (max-width: 600px) {
       .nav-links { display: none; }
-      .hero-price-display { flex-direction: column; gap: 12px; }
-      .hero-divider { width: 50px; height: 1px; }
       .chart-card { padding: 18px 12px; }
       .section-title { font-size: 1.2rem; }
-      .hero-table-row span { font-size: 0.68rem; }
-      .hero-table-header span { font-size: 0.62rem; }
-      /* Pill badges: allow wrapping and shrink font */
       .hero-pills-row { flex-wrap: wrap; gap: 6px; }
       .hero-pill { font-size: 0.7rem; padding: 3px 9px; white-space: normal; }
     }
 
-    /* Price change annotation inside card */
-    .price-change-annotation {
-      font-size: 0.78rem;
-      color: var(--text-muted);
-      margin-top: 4px;
-    }
-    .price-change-annotation .up-arrow {
-      color: var(--accent-red);
-      font-weight: 700;
+    @media (max-width: 480px) {
+      /* Hide intermediate years, show only 2020, 2023, 2026 */
+      .timeline-point.hide-mobile { display: none; }
+      .hero-price-value { font-size: 2.8rem; letter-spacing: -1px; }
+      .hero-mini-stats { gap: 10px; }
+      .hero-mini-card { font-size: 0.72rem; padding: 7px 12px; }
     }
 
-    /* Mini info pills row */
+    /* Mini info pills row (kept for compatibility) */
     .hero-pills-row {
       display: flex;
       flex-wrap: wrap;
@@ -924,82 +887,95 @@
   </div>
 </nav>
 
-<!-- HERO -->
+<!-- HERO — Option B: Full-width centered with animated timeline -->
 <section class="hero">
   <div class="hero-inner">
-    <!-- LEFT COLUMN -->
-    <div class="hero-left">
-      <div class="hero-title-row">
-        <span class="hero-emoji">🌯</span>
-        <h1>Tantuni Endeksi</h1>
-      </div>
-      <p class="hero-tagline">Türkiye'nin en lezzetli ekonomik göstergesi</p>
-      <div class="hero-author">Prof. Dr. Oğuz Ergin</div>
 
-      <div class="hero-price-display">
-        <div class="hero-price-stats-row">
-          <div>
-            <div class="stat-label" style="color:var(--text-muted); font-size:0.72rem; letter-spacing:1px; text-transform:uppercase;">Güncel Fiyat (Mart 2026)</div>
-            <div class="hero-price-value">₺395</div>
-            <div class="price-change-annotation"><span class="up-arrow">↑</span> ₺370'den → <strong>+%6,8</strong> · 15 Şub 2026</div>
-          </div>
-          <div class="hero-divider"></div>
-          <div>
-            <div class="hero-price-since">23,2×</div>
-            <div class="hero-since-label">₺17'den bu yana</div>
-          </div>
-          <div class="hero-divider"></div>
-          <div>
-            <div class="hero-price-since">%2.224</div>
-            <div class="hero-since-label">Toplam artış (5,5 yılda)</div>
-          </div>
-        </div>
+    <!-- TOP: Title -->
+    <div class="hero-title-row">
+      <span class="hero-emoji">🌯</span>
+      <h1>Tantuni Endeksi</h1>
+    </div>
+    <p class="hero-tagline">Türkiye'nin en lezzetli ekonomik göstergesi</p>
+    <div class="hero-author">Prof. Dr. Oğuz Ergin</div>
 
-        <div class="hero-pills-row">
-          <span class="hero-pill dollar">$8,99</span>
-          <span class="hero-pill wage">71 tantuni/maaş</span>
-          <span class="hero-pill gold">🥇 16,9 tantuni/gr altın</span>
-        </div>
-      </div>
-
-      <div>
-        <span class="update-badge"><span class="update-dot"></span>Son güncelleme: 3 Nisan 2026</span>
+    <!-- MIDDLE: Big price display -->
+    <div class="hero-price-block">
+      <div class="hero-price-value">₺395</div>
+      <div class="hero-price-meta">23,2x artış &nbsp;·&nbsp; %2.224 &nbsp;·&nbsp; $8,99</div>
+      <div class="hero-price-sub">
+        <span class="up-arrow">↑</span> ₺370'den &nbsp;→&nbsp; <strong>+%6,8</strong> &nbsp;·&nbsp; 15 Şub 2026
       </div>
     </div>
 
-    <!-- RIGHT COLUMN: Mini Price Table -->
-    <div class="hero-right">
-      <div class="hero-table-title">📅 Yıllara Göre Fiyat</div>
-      <div class="hero-table-header">
-        <span>Yıl</span>
-        <span>Fiyat</span>
-        <span>Dolar</span>
-        <span>Enflasyon</span>
+    <!-- TIMELINE BAR -->
+    <div class="hero-timeline">
+
+      <!-- 2020 -->
+      <div class="timeline-point">
+        <span class="timeline-year">2020</span>
+        <div class="timeline-dot" style="background:#2ed573;"></div>
+        <span class="timeline-price">₺17</span>
+        <span class="timeline-dollar">$2,19</span>
       </div>
-      <div class="hero-table-body">
-        <div class="hero-table-row current-year">
-          <span>2026</span><span>₺395</span><span>$8,99</span><span style="color:#ff8c42">%61</span>
-        </div>
-        <div class="hero-table-row">
-          <span>2025</span><span>₺350</span><span>$8,16</span><span style="color:#ffb347">%49</span>
-        </div>
-        <div class="hero-table-row">
-          <span>2024</span><span>₺235</span><span>$6,64</span><span style="color:#ff8c42">%57</span>
-        </div>
-        <div class="hero-table-row">
-          <span>2023</span><span>₺150</span><span>$5,08</span><span style="color:#ff4757">%114</span>
-        </div>
-        <div class="hero-table-row">
-          <span>2022</span><span>₺70</span><span>$3,74</span><span style="color:#ff4757">%133</span>
-        </div>
-        <div class="hero-table-row">
-          <span>2021</span><span>₺30</span><span>$2,23</span><span style="color:#ff8c42">%76</span>
-        </div>
-        <div class="hero-table-row">
-          <span>2020</span><span>₺17</span><span>$2,19</span><span style="color:var(--text-muted)">baz</span>
-        </div>
+
+      <!-- 2021 — hide on very small screens -->
+      <div class="timeline-point hide-mobile">
+        <span class="timeline-year">2021</span>
+        <div class="timeline-dot" style="background:#7bed9f;"></div>
+        <span class="timeline-price">₺30</span>
+        <span class="timeline-dollar">$2,23</span>
       </div>
+
+      <!-- 2022 — hide on very small screens -->
+      <div class="timeline-point hide-mobile">
+        <span class="timeline-year">2022</span>
+        <div class="timeline-dot" style="background:#ffb347;"></div>
+        <span class="timeline-price">₺70</span>
+        <span class="timeline-dollar">$3,74</span>
+      </div>
+
+      <!-- 2023 -->
+      <div class="timeline-point">
+        <span class="timeline-year">2023</span>
+        <div class="timeline-dot" style="background:#ff8c42;"></div>
+        <span class="timeline-price">₺150</span>
+        <span class="timeline-dollar">$5,08</span>
+      </div>
+
+      <!-- 2024 — hide on very small screens -->
+      <div class="timeline-point hide-mobile">
+        <span class="timeline-year">2024</span>
+        <div class="timeline-dot" style="background:#ff6348;"></div>
+        <span class="timeline-price">₺235</span>
+        <span class="timeline-dollar">$6,64</span>
+      </div>
+
+      <!-- 2025 — hide on very small screens -->
+      <div class="timeline-point hide-mobile">
+        <span class="timeline-year">2025</span>
+        <div class="timeline-dot" style="background:#ff4f5a;"></div>
+        <span class="timeline-price">₺350</span>
+        <span class="timeline-dollar">$8,16</span>
+      </div>
+
+      <!-- 2026 — current, always shown -->
+      <div class="timeline-point">
+        <span class="timeline-year" style="color:var(--accent-orange); font-weight:800;">2026</span>
+        <div class="timeline-dot current" style="background:#ff4757;"></div>
+        <span class="timeline-price" style="color:var(--accent-orange);">₺395</span>
+        <span class="timeline-dollar">$8,99</span>
+      </div>
+
+    </div><!-- /hero-timeline -->
+
+    <!-- MINI STAT CARDS -->
+    <div class="hero-mini-stats">
+      <div class="hero-mini-card"><strong>71</strong> tantuni/maaş</div>
+      <div class="hero-mini-card"><strong>16,9</strong> tantuni/gr altın</div>
+      <div class="hero-mini-card">Son güncelleme: <strong>3 Nisan 2026</strong></div>
     </div>
+
   </div>
 </section>
 
