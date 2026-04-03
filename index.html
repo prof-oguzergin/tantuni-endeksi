@@ -894,6 +894,17 @@
       border-color: rgba(46, 213, 115, 0.3);
       color: var(--accent-green);
     }
+
+    .hero-author {
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+      margin-top: 2px;
+      font-style: italic;
+    }
+
+    @media (max-width: 768px) {
+      .banknot-grid { grid-template-columns: 1fr !important; }
+    }
   </style>
 </head>
 <body>
@@ -904,6 +915,7 @@
     <div class="nav-links">
       <a href="#fiyat">Fiyat</a>
       <a href="#ucret">Asgari Ücret</a>
+      <a href="#banknot">Banknot</a>
       <a href="#altin">Altın</a>
       <a href="#enflasyon">Enflasyon</a>
       <a href="#bilgi">Tespitler</a>
@@ -922,6 +934,7 @@
         <h1>Tantuni Endeksi</h1>
       </div>
       <p class="hero-tagline">Türkiye'nin en lezzetli ekonomik göstergesi</p>
+      <div class="hero-author">Prof. Dr. Oğuz Ergin</div>
 
       <div class="hero-price-display">
         <div class="hero-price-stats-row">
@@ -1024,6 +1037,23 @@
       </div>
       <div class="chart-container tall">
         <canvas id="wageChart"></canvas>
+      </div>
+    </div>
+  </section>
+
+  <!-- CHART 2b: 200 TL Banknot -->
+  <section class="section" id="banknot">
+    <div class="section-title"><span class="icon">💵</span> 200 TL ile Kaç Tantuni?</div>
+    <div class="section-subtitle">En büyük banknotun satın alma gücü — doğrusal ve logaritmik ölçek</div>
+
+    <div class="banknot-grid" style="display:grid; grid-template-columns:1fr 1fr; gap:20px;">
+      <div class="chart-card">
+        <div class="chart-card-title">Doğrusal Ölçek</div>
+        <div class="chart-container tall"><canvas id="banknotChart"></canvas></div>
+      </div>
+      <div class="chart-card">
+        <div class="chart-card-title">Logaritmik Ölçek</div>
+        <div class="chart-container tall"><canvas id="banknotLogChart"></canvas></div>
       </div>
     </div>
   </section>
@@ -1610,6 +1640,103 @@ const gridColor = 'rgba(42,42,62,0.8)';
         }
       }
     }
+  });
+})();
+
+// ============================================================
+// CHART 2b: 200 TL Banknot Charts (linear + logarithmic)
+// ============================================================
+(function buildBanknotCharts() {
+  // Filter to only data points where price changed
+  const filtered = tantuniData.filter((d, i) => i === 0 || d.price !== tantuniData[i - 1].price);
+  const labels = filtered.map(d => fmtDate(d.date));
+  const counts = filtered.map(d => parseFloat((200 / d.price).toFixed(2)));
+
+  function makeGradient(ctx) {
+    const grad = ctx.createLinearGradient(0, 0, 0, 420);
+    grad.addColorStop(0, 'rgba(46,213,115,0.3)');
+    grad.addColorStop(1, 'rgba(46,213,115,0.0)');
+    return grad;
+  }
+
+  function makeDataset(ctx) {
+    return {
+      label: '200 TL ile Alınabilecek Tantuni',
+      data: counts,
+      borderColor: '#2ed573',
+      backgroundColor: makeGradient(ctx),
+      borderWidth: 2.5,
+      pointRadius: 4,
+      pointHoverRadius: 7,
+      fill: true,
+      tension: 0.3,
+    };
+  }
+
+  function makeOptions(logScale) {
+    return {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          backgroundColor: '#1e1e2e',
+          borderColor: '#2a2a3e',
+          borderWidth: 1,
+          padding: 14,
+          callbacks: {
+            title(items) { return items[0].label; },
+            label(item) { return `  🌯 ${item.raw} tantuni`; }
+          }
+        },
+        annotation: {
+          annotations: {
+            line1: {
+              type: 'line',
+              yMin: 1, yMax: 1,
+              borderColor: 'rgba(255,71,87,0.7)',
+              borderWidth: 1.5,
+              borderDash: [6, 3],
+              label: {
+                content: '1 tantuni sınırı',
+                enabled: true,
+                position: 'start',
+                color: '#ff4757',
+                font: { size: 11 }
+              }
+            }
+          }
+        }
+      },
+      scales: {
+        x: {
+          grid: { color: gridColor },
+          ticks: { maxTicksLimit: 12, maxRotation: 45 }
+        },
+        y: {
+          type: logScale ? 'logarithmic' : 'linear',
+          grid: { color: gridColor },
+          ticks: {
+            callback: v => v + ' 🌯'
+          },
+          title: { display: true, text: 'Tantuni Adedi', color: '#9090b0' }
+        }
+      }
+    };
+  }
+
+  const ctxA = document.getElementById('banknotChart').getContext('2d');
+  new Chart(ctxA, {
+    type: 'line',
+    data: { labels, datasets: [makeDataset(ctxA)] },
+    options: makeOptions(false)
+  });
+
+  const ctxB = document.getElementById('banknotLogChart').getContext('2d');
+  new Chart(ctxB, {
+    type: 'line',
+    data: { labels, datasets: [makeDataset(ctxB)] },
+    options: makeOptions(true)
   });
 })();
 
