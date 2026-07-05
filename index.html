@@ -910,7 +910,7 @@
     <!-- MIDDLE: Big price display -->
     <div class="hero-price-block">
       <div class="hero-price-value">₺395</div>
-      <div class="hero-price-meta">23,2x artış &nbsp;·&nbsp; %2.224 &nbsp;·&nbsp; $8,76</div>
+      <div class="hero-price-meta">23,2x artış &nbsp;·&nbsp; %2.224 &nbsp;·&nbsp; $8,44</div>
       <div class="hero-price-sub">
         <span class="up-arrow">↑</span> ₺370'den &nbsp;→&nbsp; <strong>+%6,8</strong> &nbsp;·&nbsp; 15 Şub 2026
       </div>
@@ -972,7 +972,7 @@
         <span class="timeline-year" style="color:var(--accent-orange); font-weight:800;">2026</span>
         <div class="timeline-dot current" style="background:#ff4757;"></div>
         <span class="timeline-price" style="color:var(--accent-orange);">₺395</span>
-        <span class="timeline-dollar">$8,76</span>
+        <span class="timeline-dollar">$8,44</span>
       </div>
 
     </div><!-- /hero-timeline -->
@@ -981,7 +981,7 @@
     <div class="hero-mini-stats">
       <div class="hero-mini-card"><strong>71</strong> tantuni/maaş</div>
       <div class="hero-mini-card"><strong>16,7</strong> tantuni/gr altın</div>
-      <div class="hero-mini-card">Son güncelleme: <strong>1 Temmuz 2026</strong></div>
+      <div class="hero-mini-card">Son güncelleme: <strong>5 Temmuz 2026</strong></div>
     </div>
 
   </div>
@@ -1095,7 +1095,7 @@
         <span class="fun-fact-emoji">💵</span>
         <div class="fun-fact-title">Dolar Bazında Artış</div>
         <div class="fun-fact-text">
-          Tantuni fiyatı dolar bazında da <span class="fun-fact-highlight">4,0 kat</span> arttı: $2,19'dan $8,76'a.
+          Tantuni fiyatı dolar bazında da <span class="fun-fact-highlight">3,9 kat</span> arttı: $2,19'dan $8,44'a.
           Bu, sadece kur etkisiyle değil, gerçek bir fiyat artışı olduğunu gösteriyor.
         </div>
       </div>
@@ -1362,7 +1362,7 @@ const tantuniData = [
   {date:'2026-04-02', price:395, usd:8.86, minWage:28075, count:71.1, goldTL:6697.50},
   {date:'2026-05-03', price:395, usd:8.76, minWage:28075, count:71.1, goldTL:6610.51},
   {date:'2026-06-10', price:395, usd:8.55, minWage:28075, count:71.1, goldTL:6322.36},
-  {date:'2026-07-01', price:395, usd:8.76, minWage:28075, count:71.1, goldTL:6610.51},
+  {date:'2026-07-05', price:395, usd:8.44, minWage:28075, count:71.1, goldTL:6610.51},
 ];
 
 // Inflation chart data — 55 months, Ara 2021 – Haz 2026
@@ -1634,8 +1634,8 @@ const gridColor = 'rgba(42,42,62,0.8)';
 // CHART 2b: 200 TL Banknot Charts (linear + logarithmic)
 // ============================================================
 (function buildBanknotCharts() {
-  // Filter to only data points where price changed
-  const filtered = tantuniData.filter((d, i) => i === 0 || d.price !== tantuniData[i - 1].price);
+  // Filter to price-change points, plus always the latest date so the line reaches today
+  const filtered = tantuniData.filter((d, i) => i === 0 || i === tantuniData.length - 1 || d.price !== tantuniData[i - 1].price);
   const labels = filtered.map(d => fmtDate(d.date));
   const counts = filtered.map(d => parseFloat((200 / d.price).toFixed(2)));
 
