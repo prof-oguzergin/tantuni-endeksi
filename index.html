@@ -3,6 +3,20 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#0f0f13">
+  <script>
+    // Tema: kayıtlı seçim, yoksa cihazın ayarı. Sayfa boyanmadan uygulanır, ekran yanıp sönmez.
+    (function () {
+      var t = null;
+      try { t = localStorage.getItem('tantuni-tema'); } catch (e) {}
+      if (t !== 'light' && t !== 'dark') {
+        t = (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) ? 'light' : 'dark';
+      }
+      document.documentElement.setAttribute('data-theme', t);
+      var m = document.querySelector('meta[name="theme-color"]');
+      if (m) m.setAttribute('content', t === 'light' ? '#faf7f2' : '#0f0f13');
+    })();
+  </script>
   <!-- Google Analytics -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-5Y0Q4R5GRR"></script>
   <script>
@@ -50,6 +64,82 @@
       --text-muted: #8585a5;
       --border: #2a2a3e;
       --shadow: 0 8px 32px rgba(0,0,0,0.4);
+      color-scheme: dark;
+      --hero-bg: linear-gradient(135deg, #0f0f13 0%, #1a0f05 40%, #0f0a05 100%);
+      --nav-bg: rgba(15, 15, 19, 0.95);
+      --mini-card-bg: rgba(30, 30, 46, 0.7);
+      --code-bg: #12121a;
+      --code-text: #c9d1d9;
+      --title-grad: linear-gradient(135deg, #ff8c42, #ffb347, #ffcc80);
+      --price-glow: 0 0 30px rgba(255, 140, 66, 0.5), 0 0 60px rgba(255, 140, 66, 0.2);
+      --badge-orange-text: var(--accent-orange);
+      --badge-red-text: #ff4757;
+      --badge-green-text: var(--accent-green);
+      --btn-hover-text: #fff;
+    }
+
+    /* Aydınlık tema: düğmeyle seçildiğinde ya da cihaz aydınlıksa */
+    :root[data-theme="light"] {
+      color-scheme: light;
+      --bg-primary: #faf7f2;
+      --bg-secondary: #f1ece4;
+      --bg-card: #ffffff;
+      --bg-card-hover: #fffaf3;
+      --accent-orange: #c2410c;
+      --accent-amber: #b45309;
+      --accent-red: #dc2626;
+      --accent-green: #15803d;
+      --accent-blue: #2563eb;
+      --accent-purple: #7c3aed;
+      --text-primary: #1c1b29;
+      --text-secondary: #4a4a63;
+      --text-muted: #66667f;
+      --border: #e6dfd3;
+      --shadow: 0 6px 24px rgba(60, 40, 20, 0.08);
+      --hero-bg: linear-gradient(135deg, #fffaf3 0%, #ffefdc 45%, #fff6ea 100%);
+      --nav-bg: rgba(250, 247, 242, 0.92);
+      --mini-card-bg: rgba(255, 255, 255, 0.8);
+      --code-bg: #f6f2eb;
+      --code-text: #2d2b3a;
+      --title-grad: linear-gradient(135deg, #c2410c, #ea580c, #d97706);
+      --price-glow: 0 0 28px rgba(234, 88, 12, 0.18);
+      --badge-orange-text: #c2410c;
+      --badge-red-text: #b91c1c;
+      --badge-green-text: #15803d;
+      --btn-hover-text: #7c2d12;
+    }
+
+    /* Betik çalışmazsa cihaz ayarına uy */
+    @media (prefers-color-scheme: light) {
+      :root:not([data-theme]) {
+        color-scheme: light;
+        --bg-primary: #faf7f2;
+        --bg-secondary: #f1ece4;
+        --bg-card: #ffffff;
+        --bg-card-hover: #fffaf3;
+        --accent-orange: #c2410c;
+        --accent-amber: #b45309;
+        --accent-red: #dc2626;
+        --accent-green: #15803d;
+        --accent-blue: #2563eb;
+        --accent-purple: #7c3aed;
+        --text-primary: #1c1b29;
+        --text-secondary: #4a4a63;
+        --text-muted: #66667f;
+        --border: #e6dfd3;
+        --shadow: 0 6px 24px rgba(60, 40, 20, 0.08);
+        --hero-bg: linear-gradient(135deg, #fffaf3 0%, #ffefdc 45%, #fff6ea 100%);
+        --nav-bg: rgba(250, 247, 242, 0.92);
+        --mini-card-bg: rgba(255, 255, 255, 0.8);
+        --code-bg: #f6f2eb;
+        --code-text: #2d2b3a;
+        --title-grad: linear-gradient(135deg, #c2410c, #ea580c, #d97706);
+        --price-glow: 0 0 28px rgba(234, 88, 12, 0.18);
+        --badge-orange-text: #c2410c;
+        --badge-red-text: #b91c1c;
+        --badge-green-text: #15803d;
+        --btn-hover-text: #7c2d12;
+      }
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -60,6 +150,7 @@
       color: var(--text-primary);
       line-height: 1.6;
       overflow-x: hidden;
+      transition: background-color 0.3s, color 0.3s;
     }
 
     /* Scrollbar */
@@ -69,7 +160,7 @@
 
     /* Hero Section — Option B: Full-width centered */
     .hero {
-      background: linear-gradient(135deg, #0f0f13 0%, #1a0f05 40%, #0f0a05 100%);
+      background: var(--hero-bg);
       padding: 52px 20px 44px;
       position: relative;
       overflow: hidden;
@@ -127,7 +218,7 @@
     .hero h1 {
       font-size: clamp(2rem, 5vw, 3.2rem);
       font-weight: 900;
-      background: linear-gradient(135deg, var(--accent-orange), var(--accent-amber), #ffcc80);
+      background: var(--title-grad);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
@@ -156,7 +247,7 @@
       font-weight: 900;
       color: var(--accent-orange);
       line-height: 1;
-      text-shadow: 0 0 30px rgba(255, 140, 66, 0.5), 0 0 60px rgba(255, 140, 66, 0.2);
+      text-shadow: var(--price-glow);
       letter-spacing: -2px;
     }
 
@@ -239,7 +330,7 @@
     }
 
     .hero-mini-card {
-      background: rgba(30, 30, 46, 0.7);
+      background: var(--mini-card-bg);
       border: 1px solid rgba(255, 140, 66, 0.2);
       border-radius: 12px;
       padding: 10px 20px;
@@ -562,9 +653,9 @@
       font-weight: 600;
     }
 
-    .badge-orange { background: rgba(255, 140, 66, 0.15); color: var(--accent-orange); }
-    .badge-red { background: rgba(255, 71, 87, 0.15); color: #ff4757; }
-    .badge-green { background: rgba(46, 213, 115, 0.15); color: var(--accent-green); }
+    .badge-orange { background: rgba(255, 140, 66, 0.15); color: var(--badge-orange-text); }
+    .badge-red { background: rgba(255, 71, 87, 0.15); color: var(--badge-red-text); }
+    .badge-green { background: rgba(46, 213, 115, 0.15); color: var(--badge-green-text); }
 
     /* Footer */
     footer {
@@ -631,7 +722,7 @@
 
     /* Top Navigation */
     nav {
-      background: rgba(15, 15, 19, 0.95);
+      background: var(--nav-bg);
       backdrop-filter: blur(10px);
       border-bottom: 1px solid var(--border);
       padding: 12px 20px;
@@ -668,6 +759,26 @@
     }
 
     .nav-links a:hover { color: var(--accent-orange); }
+
+    .nav-right { display: flex; align-items: center; gap: 20px; }
+
+    .theme-toggle {
+      background: transparent;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      width: 36px;
+      height: 36px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1rem;
+      line-height: 1;
+      cursor: pointer;
+      flex-shrink: 0;
+      transition: border-color 0.2s, background 0.2s;
+    }
+    .theme-toggle:hover { border-color: var(--accent-orange); background: var(--bg-card); }
+    .theme-toggle:focus-visible { outline: 2px solid var(--accent-orange); outline-offset: 2px; }
 
     @media (max-width: 768px) {
       .hero-price-value { font-size: 3.5rem; }
@@ -831,7 +942,7 @@
 
     .cite-box {
       position: relative;
-      background: #12121a;
+      background: var(--code-bg);
       border: 1px solid var(--border);
       border-radius: 10px;
       padding: 16px 110px 16px 18px;
@@ -840,7 +951,7 @@
     .cite-box code {
       font-family: 'Courier New', Courier, monospace;
       font-size: 0.82rem;
-      color: #c9d1d9;
+      color: var(--code-text);
       line-height: 1.7;
       white-space: pre-wrap;
       overflow-wrap: anywhere;
@@ -865,7 +976,7 @@
 
     .cite-copy-btn:hover {
       background: rgba(255, 140, 66, 0.28);
-      color: #fff;
+      color: var(--btn-hover-text);
     }
 
     .cite-copy-btn.copied {
@@ -938,6 +1049,7 @@
 <nav>
   <div class="nav-inner">
     <a href="#" class="nav-brand" style="text-decoration:none; color:inherit;">🌯 Tantuni Endeksi</a>
+    <div class="nav-right">
     <div class="nav-links">
       <a href="#fiyat">Fiyat</a>
       <a href="#ucret">Asgari Ücret</a>
@@ -947,6 +1059,8 @@
       <a href="#bilgi">Tespitler</a>
       <a href="#yontem">Yöntem</a>
       <a href="#atif">Atıf</a>
+    </div>
+    <button type="button" id="theme-toggle" class="theme-toggle" aria-label="Aydınlık temaya geç" title="Aydınlık temaya geç">☀️</button>
     </div>
   </div>
 </nav>
@@ -1319,6 +1433,39 @@
   }, { threshold: 0.08 });
   sections.forEach(s => observer.observe(s));
 })();
+
+// Tema düğmesi: seçim tarayıcıda saklanır, grafikler yeni renklerle yeniden kurulur
+(function themeToggle() {
+  const btn = document.getElementById('theme-toggle');
+  if (!btn) return;
+  const root = document.documentElement;
+  const meta = document.querySelector('meta[name="theme-color"]');
+  const isLight = () => root.getAttribute('data-theme') === 'light';
+  const sync = () => {
+    const light = isLight();
+    const label = light ? 'Karanlık temaya geç' : 'Aydınlık temaya geç';
+    btn.textContent = light ? '🌙' : '☀️';
+    btn.setAttribute('aria-label', label);
+    btn.title = label;
+    if (meta) meta.setAttribute('content', light ? '#faf7f2' : '#0f0f13');
+  };
+  const apply = (theme, remember) => {
+    root.setAttribute('data-theme', theme);
+    if (remember) { try { localStorage.setItem('tantuni-tema', theme); } catch (e) {} }
+    sync();
+    try { if (typeof buildCharts === 'function') buildCharts(); } catch (e) {}
+  };
+  sync();
+  btn.addEventListener('click', () => apply(isLight() ? 'dark' : 'light', true));
+  const mq = window.matchMedia ? window.matchMedia('(prefers-color-scheme: light)') : null;
+  if (mq && mq.addEventListener) {
+    mq.addEventListener('change', (e) => {
+      let saved = null;
+      try { saved = localStorage.getItem('tantuni-tema'); } catch (err) {}
+      if (!saved) apply(e.matches ? 'light' : 'dark', false);
+    });
+  }
+})();
 </script>
 
 <script>
@@ -1552,18 +1699,39 @@ const baseGoldTL = baseEntry.goldTL;   // 466.99
 // ============================================================
 // CHART DEFAULTS
 // ============================================================
-Chart.defaults.color = '#9090b0';
 Chart.defaults.font.family = "'Inter', sans-serif";
 Chart.defaults.font.size = 12;
 Chart.defaults.plugins.legend.labels.usePointStyle = true;
 Chart.defaults.plugins.legend.labels.padding = 20;
 
-const gridColor = 'rgba(42,42,62,0.8)';
+// Grafik renkleri temaya göre. Aydınlık temada çizgiler beyaz zeminde seçilecek kadar koyudur.
+const PALETTES = {
+  dark: {
+    text: '#9090b0', grid: 'rgba(42,42,62,0.8)', legend: '#c0c0d8',
+    tooltipBg: '#1e1e2e', tooltipBorder: '#2a2a3e', tooltipText: '#f0f0f5', labelBg: 'rgba(0,0,0,0.8)',
+    orange: '#ff8c42', blue: '#1e90ff', red: '#ff4757', green: '#2ed573', gold: '#ffd700', amber: '#ffb347',
+  },
+  light: {
+    text: '#4a4a63', grid: 'rgba(28,27,41,0.08)', legend: '#4a4a63',
+    tooltipBg: '#ffffff', tooltipBorder: '#e6dfd3', tooltipText: '#1c1b29', labelBg: 'rgba(255,255,255,0.95)',
+    orange: '#ea580c', blue: '#2563eb', red: '#dc2626', green: '#16a34a', gold: '#ca8a04', amber: '#d97706',
+  },
+};
+let P = PALETTES.dark;
+let gridColor = P.grid;
+
+function applyChartTheme() {
+  P = document.documentElement.getAttribute('data-theme') === 'light' ? PALETTES.light : PALETTES.dark;
+  gridColor = P.grid;
+  Chart.defaults.color = P.text;
+  Chart.defaults.plugins.tooltip.titleColor = P.tooltipText;
+  Chart.defaults.plugins.tooltip.bodyColor = P.tooltipText;
+}
 
 // ============================================================
 // CHART 1: Price (TL + USD)
 // ============================================================
-(function buildPriceChart() {
+function buildPriceChart() {
   const ctx = document.getElementById('priceChart').getContext('2d');
 
   const labels = tantuniData.map(d => fmtDate(d.date));
@@ -1588,12 +1756,12 @@ const gridColor = 'rgba(42,42,62,0.8)';
         {
           label: 'Tantuni Fiyatı (₺)',
           data: priceTL,
-          borderColor: '#ff8c42',
+          borderColor: P.orange,
           backgroundColor: gradTL,
           borderWidth: 2.5,
           pointRadius: 2,
           pointHoverRadius: 6,
-          pointBackgroundColor: '#ff8c42',
+          pointBackgroundColor: P.orange,
           fill: true,
           tension: 0.3,
           yAxisID: 'yTL',
@@ -1601,12 +1769,12 @@ const gridColor = 'rgba(42,42,62,0.8)';
         {
           label: 'Tantuni Fiyatı ($)',
           data: priceUSD,
-          borderColor: '#1e90ff',
+          borderColor: P.blue,
           backgroundColor: gradUSD,
           borderWidth: 2,
           pointRadius: 2,
           pointHoverRadius: 6,
-          pointBackgroundColor: '#1e90ff',
+          pointBackgroundColor: P.blue,
           fill: true,
           tension: 0.3,
           yAxisID: 'yUSD',
@@ -1621,8 +1789,8 @@ const gridColor = 'rgba(42,42,62,0.8)';
       plugins: {
         legend: { position: 'top' },
         tooltip: {
-          backgroundColor: '#1e1e2e',
-          borderColor: '#2a2a3e',
+          backgroundColor: P.tooltipBg,
+          borderColor: P.tooltipBorder,
           borderWidth: 1,
           padding: 14,
           callbacks: {
@@ -1647,9 +1815,9 @@ const gridColor = 'rgba(42,42,62,0.8)';
           grid: { color: gridColor },
           ticks: {
             callback: v => '₺' + v,
-            color: '#ff8c42'
+            color: P.orange
           },
-          title: { display: true, text: 'Türk Lirası (₺)', color: '#ff8c42' }
+          title: { display: true, text: 'Türk Lirası (₺)', color: P.orange }
         },
         yUSD: {
           type: 'linear',
@@ -1657,19 +1825,19 @@ const gridColor = 'rgba(42,42,62,0.8)';
           grid: { drawOnChartArea: false },
           ticks: {
             callback: v => '$' + v.toFixed(1),
-            color: '#1e90ff'
+            color: P.blue
           },
-          title: { display: true, text: 'ABD Doları ($)', color: '#1e90ff' }
+          title: { display: true, text: 'ABD Doları ($)', color: P.blue }
         }
       }
     }
   });
-})();
+}
 
 // ============================================================
 // CHART 2: Wage Chart
 // ============================================================
-(function buildWageChart() {
+function buildWageChart() {
   const ctx = document.getElementById('wageChart').getContext('2d');
 
   const labels = tantuniData.map(d => fmtDate(d.date));
@@ -1682,9 +1850,9 @@ const gridColor = 'rgba(42,42,62,0.8)';
   });
 
   const borderColors = counts.map(c => {
-    if (c >= 100) return '#2ed573';
-    if (c >= 80)  return '#ffb347';
-    return '#ff4757';
+    if (c >= 100) return P.green;
+    if (c >= 80)  return P.amber;
+    return P.red;
   });
 
   new Chart(ctx, {
@@ -1706,8 +1874,8 @@ const gridColor = 'rgba(42,42,62,0.8)';
       plugins: {
         legend: { display: false },
         tooltip: {
-          backgroundColor: '#1e1e2e',
-          borderColor: '#2a2a3e',
+          backgroundColor: P.tooltipBg,
+          borderColor: P.tooltipBorder,
           borderWidth: 1,
           padding: 14,
           callbacks: {
@@ -1730,7 +1898,7 @@ const gridColor = 'rgba(42,42,62,0.8)';
               borderColor: 'rgba(46,213,115,0.5)',
               borderWidth: 1.5,
               borderDash: [6,3],
-              label: { content: '100 (iyi eşiği)', display: true, position: 'end', color: '#2ed573', font: {size:11} }
+              label: { content: '100 (iyi eşiği)', display: true, backgroundColor: P.labelBg, borderColor: P.tooltipBorder, borderWidth: 1, position: 'end', color: P.green, font: {size:11} }
             },
             line80: {
               type: 'line',
@@ -1738,7 +1906,7 @@ const gridColor = 'rgba(42,42,62,0.8)';
               borderColor: 'rgba(255,71,87,0.5)',
               borderWidth: 1.5,
               borderDash: [6,3],
-              label: { content: '80 (kritik eşik)', display: true, position: 'end', color: '#ff4757', font: {size:11} }
+              label: { content: '80 (kritik eşik)', display: true, backgroundColor: P.labelBg, borderColor: P.tooltipBorder, borderWidth: 1, position: 'end', color: P.red, font: {size:11} }
             }
           }
         }
@@ -1751,17 +1919,17 @@ const gridColor = 'rgba(42,42,62,0.8)';
         y: {
           grid: { color: gridColor },
           ticks: { callback: v => v + ' 🌯' },
-          title: { display: true, text: 'Tantuni Adedi', color: '#9090b0' }
+          title: { display: true, text: 'Tantuni Adedi', color: P.text }
         }
       }
     }
   });
-})();
+}
 
 // ============================================================
 // CHART 2b: 200 TL Banknot Charts (linear + logarithmic)
 // ============================================================
-(function buildBanknotCharts() {
+function buildBanknotCharts() {
   // Filter to price-change points, plus always the latest date so the line reaches today
   const filtered = tantuniData.filter((d, i) => i === 0 || i === tantuniData.length - 1 || d.price !== tantuniData[i - 1].price);
   const labels = filtered.map(d => fmtDate(d.date));
@@ -1778,7 +1946,7 @@ const gridColor = 'rgba(42,42,62,0.8)';
     return {
       label: '200 TL ile Alınabilecek Tantuni',
       data: counts,
-      borderColor: '#2ed573',
+      borderColor: P.green,
       backgroundColor: makeGradient(ctx),
       borderWidth: 2.5,
       pointRadius: 4,
@@ -1795,8 +1963,8 @@ const gridColor = 'rgba(42,42,62,0.8)';
       plugins: {
         legend: { display: false },
         tooltip: {
-          backgroundColor: '#1e1e2e',
-          borderColor: '#2a2a3e',
+          backgroundColor: P.tooltipBg,
+          borderColor: P.tooltipBorder,
           borderWidth: 1,
           padding: 14,
           callbacks: {
@@ -1815,8 +1983,11 @@ const gridColor = 'rgba(42,42,62,0.8)';
               label: {
                 content: '1 tantuni sınırı',
                 display: true,
+                backgroundColor: P.labelBg,
+                borderColor: P.tooltipBorder,
+                borderWidth: 1,
                 position: 'start',
-                color: '#ff4757',
+                color: P.red,
                 font: { size: 11 }
               }
             }
@@ -1834,7 +2005,7 @@ const gridColor = 'rgba(42,42,62,0.8)';
           ticks: {
             callback: v => v + ' 🌯'
           },
-          title: { display: true, text: 'Tantuni Adedi', color: '#9090b0' }
+          title: { display: true, text: 'Tantuni Adedi', color: P.text }
         }
       }
     };
@@ -1853,12 +2024,12 @@ const gridColor = 'rgba(42,42,62,0.8)';
     data: { labels, datasets: [makeDataset(ctxB)] },
     options: makeOptions(true)
   });
-})();
+}
 
 // ============================================================
 // CHART 3: Indexed Comparison (Tantuni vs Gold)
 // ============================================================
-(function buildGoldChart() {
+function buildGoldChart() {
   const ctx = document.getElementById('goldChart').getContext('2d');
 
   const labels = tantuniData.map(d => fmtDate(d.date));
@@ -1884,7 +2055,7 @@ const gridColor = 'rgba(42,42,62,0.8)';
         {
           label: 'Tantuni Endeksi (TL)',
           data: tantuniIndexTL,
-          borderColor: '#ff8c42',
+          borderColor: P.orange,
           backgroundColor: gradOrange,
           borderWidth: 2.5,
           pointRadius: 1.5,
@@ -1895,7 +2066,7 @@ const gridColor = 'rgba(42,42,62,0.8)';
         {
           label: 'Altın Endeksi (TL)',
           data: goldIndexTL,
-          borderColor: '#ffd700',
+          borderColor: P.gold,
           backgroundColor: gradGold,
           borderWidth: 2,
           pointRadius: 1.5,
@@ -1907,7 +2078,7 @@ const gridColor = 'rgba(42,42,62,0.8)';
         {
           label: 'Tantuni Endeksi ($)',
           data: tantuniIndexUSD,
-          borderColor: '#1e90ff',
+          borderColor: P.blue,
           backgroundColor: 'transparent',
           borderWidth: 2,
           pointRadius: 1.5,
@@ -1925,8 +2096,8 @@ const gridColor = 'rgba(42,42,62,0.8)';
       plugins: {
         legend: { position: 'top' },
         tooltip: {
-          backgroundColor: '#1e1e2e',
-          borderColor: '#2a2a3e',
+          backgroundColor: P.tooltipBg,
+          borderColor: P.tooltipBorder,
           borderWidth: 1,
           padding: 14,
           callbacks: {
@@ -1943,7 +2114,7 @@ const gridColor = 'rgba(42,42,62,0.8)';
               borderColor: 'rgba(144,144,176,0.3)',
               borderWidth: 1,
               borderDash: [4,4],
-              label: { content: 'Baz: 100', display: true, position: 'start', color: '#9090b0', font: {size:10} }
+              label: { content: 'Baz: 100', display: true, backgroundColor: P.labelBg, borderColor: P.tooltipBorder, borderWidth: 1, position: 'start', color: P.text, font: {size:10} }
             }
           }
         }
@@ -1956,17 +2127,17 @@ const gridColor = 'rgba(42,42,62,0.8)';
         y: {
           grid: { color: gridColor },
           ticks: { callback: v => v },
-          title: { display: true, text: 'Endeks (17 Ara 2020 = 100)', color: '#9090b0' }
+          title: { display: true, text: 'Endeks (17 Ara 2020 = 100)', color: P.text }
         }
       }
     }
   });
-})();
+}
 
 // ============================================================
 // CHART 4: Inflation Comparison (Tantuni vs TÜİK vs ENAG)
 // ============================================================
-(function buildInflationChart() {
+function buildInflationChart() {
   const ctx = document.getElementById('inflationChart').getContext('2d');
 
   new Chart(ctx, {
@@ -1977,12 +2148,12 @@ const gridColor = 'rgba(42,42,62,0.8)';
         {
           label: 'Tantuni Enflasyonu',
           data: tantuniInflation,
-          borderColor: '#1e90ff',
+          borderColor: P.blue,
           backgroundColor: 'rgba(30,144,255,0.12)',
           borderWidth: 3,
           pointRadius: 5,
           pointHoverRadius: 8,
-          pointBackgroundColor: '#1e90ff',
+          pointBackgroundColor: P.blue,
           fill: false,
           tension: 0.3,
           spanGaps: true,
@@ -1990,12 +2161,12 @@ const gridColor = 'rgba(42,42,62,0.8)';
         {
           label: 'TÜİK Resmi TÜFE',
           data: tuikInflation,
-          borderColor: '#ff4757',
+          borderColor: P.red,
           backgroundColor: 'rgba(255,71,87,0.10)',
           borderWidth: 2.5,
           pointRadius: 4,
           pointHoverRadius: 7,
-          pointBackgroundColor: '#ff4757',
+          pointBackgroundColor: P.red,
           fill: false,
           tension: 0.3,
           spanGaps: true,
@@ -2004,12 +2175,12 @@ const gridColor = 'rgba(42,42,62,0.8)';
         {
           label: 'ENAG Bağımsız TÜFE',
           data: enagInflation,
-          borderColor: '#ffd700',
+          borderColor: P.gold,
           backgroundColor: 'rgba(255,215,0,0.10)',
           borderWidth: 2.5,
           pointRadius: 4,
           pointHoverRadius: 7,
-          pointBackgroundColor: '#ffd700',
+          pointBackgroundColor: P.gold,
           fill: false,
           tension: 0.3,
           spanGaps: true,
@@ -2028,12 +2199,12 @@ const gridColor = 'rgba(42,42,62,0.8)';
           labels: {
             usePointStyle: true,
             padding: 20,
-            color: '#c0c0d8',
+            color: P.legend,
           }
         },
         tooltip: {
-          backgroundColor: '#1e1e2e',
-          borderColor: '#2a2a3e',
+          backgroundColor: P.tooltipBg,
+          borderColor: P.tooltipBorder,
           borderWidth: 1,
           padding: 14,
           callbacks: {
@@ -2055,15 +2226,26 @@ const gridColor = 'rgba(42,42,62,0.8)';
         y: {
           grid: { color: gridColor },
           ticks: { callback: v => '%' + v },
-          title: { display: true, text: 'Yıllık Artış (%)', color: '#9090b0' },
+          title: { display: true, text: 'Yıllık Artış (%)', color: P.text },
           suggestedMin: 0,
           suggestedMax: 200
         }
       }
     }
   });
-})();
+}
 
+// Grafikleri kur: ilk yüklemede ve tema değişince çağrılır
+function buildCharts() {
+  Object.values(Chart.instances).forEach(c => c.destroy());
+  applyChartTheme();
+  buildPriceChart();
+  buildWageChart();
+  buildBanknotCharts();
+  buildGoldChart();
+  buildInflationChart();
+}
+buildCharts();
 
 </script>
 
