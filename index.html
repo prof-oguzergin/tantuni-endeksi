@@ -17,11 +17,19 @@
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://tantuni.oguzergin.net/">
   <meta property="og:image" content="https://tantuni.oguzergin.net/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Tantuni Endeksi: 2020'de ₺17, 2026'da ₺420">
   <meta property="og:locale" content="tr_TR">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Tantuni Endeksi 🌯">
   <meta name="twitter:description" content="2020'de ₺17, şimdi ₺420. Türkiye'nin en lezzetli ekonomik göstergesi.">
+  <meta name="twitter:image" content="https://tantuni.oguzergin.net/og-image.png">
+  <meta name="twitter:image:alt" content="Tantuni Endeksi: 2020'de ₺17, 2026'da ₺420">
   <meta name="description" content="Tantuni Endeksi - Türkiye'nin en lezzetli ekonomik göstergesi. Tantuni fiyatını dolar, altın, asgari ücret ve enflasyonla karşılaştırın. 2020-2026.">
+  <link rel="canonical" href="https://tantuni.oguzergin.net/">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22%3E%3Ctext y=%22.9em%22 font-size=%2290%22%3E🌯%3C/text%3E%3C/svg%3E">
+  <noscript><style>.section { opacity: 1 !important; transform: none !important; }</style></noscript>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@3.0.1/dist/chartjs-plugin-annotation.min.js"></script>
@@ -39,7 +47,7 @@
       --accent-purple: #a855f7;
       --text-primary: #f0f0f5;
       --text-secondary: #9090b0;
-      --text-muted: #5a5a7a;
+      --text-muted: #8585a5;
       --border: #2a2a3e;
       --shadow: 0 8px 32px rgba(0,0,0,0.4);
     }
@@ -835,7 +843,7 @@
       color: #c9d1d9;
       line-height: 1.7;
       white-space: pre-wrap;
-      word-break: break-all;
+      overflow-wrap: anywhere;
     }
 
     .cite-copy-btn {
@@ -875,6 +883,11 @@
 
     @media (max-width: 768px) {
       .banknot-grid { grid-template-columns: 1fr !important; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation: none !important; transition: none !important; }
+      .section { opacity: 1; transform: none; }
     }
   </style>
 </head>
@@ -932,7 +945,7 @@
         <span class="timeline-year">2021</span>
         <div class="timeline-dot" style="background:#7bed9f;"></div>
         <span class="timeline-price">₺30</span>
-        <span class="timeline-dollar">$2,23</span>
+        <span class="timeline-dollar">$2,17</span>
       </div>
 
       <!-- 2022 — hide on very small screens -->
@@ -940,7 +953,7 @@
         <span class="timeline-year">2022</span>
         <div class="timeline-dot" style="background:#ffb347;"></div>
         <span class="timeline-price">₺70</span>
-        <span class="timeline-dollar">$3,74</span>
+        <span class="timeline-dollar">$3,73</span>
       </div>
 
       <!-- 2023 -->
@@ -956,7 +969,7 @@
         <span class="timeline-year">2024</span>
         <div class="timeline-dot" style="background:#ff6348;"></div>
         <span class="timeline-price">₺235</span>
-        <span class="timeline-dollar">$6,64</span>
+        <span class="timeline-dollar">$6,68</span>
       </div>
 
       <!-- 2025 — hide on very small screens -->
@@ -991,93 +1004,84 @@
 
   <!-- CHART 1: Fiyat Grafiği -->
   <section class="section" id="fiyat">
-    <div class="section-title"><span class="icon">📈</span> Tantuni Fiyat Grafiği</div>
+    <h2 class="section-title"><span class="icon">📈</span> Tantuni Fiyat Grafiği</h2>
     <div class="section-subtitle">TL ve dolar bazında zaman içindeki fiyat değişimi</div>
 
     <div class="chart-card">
-      <div class="chart-card-title">🌯 Tantuni Fiyatı — TL & Dolar</div>
+      <h3 class="chart-card-title">🌯 TL ve Dolar Bazında Tantuni Fiyatı</h3>
       <div class="chart-card-desc">Sol eksen: Türk Lirası fiyatı | Sağ eksen: ABD Doları fiyatı. Tüm veri noktaları işaretlenmiştir.</div>
-      <div class="legend-row">
-        <div class="legend-item"><div class="legend-dot" style="background:var(--accent-orange)"></div>Fiyat (TL)</div>
-        <div class="legend-item"><div class="legend-dot" style="background:var(--accent-blue)"></div>Fiyat ($)</div>
-      </div>
       <div class="chart-container tall">
-        <canvas id="priceChart"></canvas>
+        <canvas id="priceChart" role="img" aria-label="Tantuni fiyatının 2020'den bu yana TL ve dolar cinsinden seyri"></canvas>
       </div>
     </div>
   </section>
 
   <!-- CHART 2: Asgari Ücret -->
   <section class="section" id="ucret">
-    <div class="section-title"><span class="icon">💰</span> Asgari Ücretle Kaç Tantuni?</div>
-    <div class="section-subtitle">Net asgari ücretle alınabilecek tantuni adedi — satın alma gücü göstergesi</div>
+    <h2 class="section-title"><span class="icon">💰</span> Asgari Ücretle Kaç Tantuni?</h2>
+    <div class="section-subtitle">Net asgari ücretle alınabilecek tantuni adedi, satın alma gücünün göstergesi</div>
 
     <div class="chart-card">
-      <div class="chart-card-title">🧮 Asgari Ücretle Tantuni Sayısı</div>
+      <h3 class="chart-card-title">🧮 Asgari Ücretle Tantuni Sayısı</h3>
       <div class="chart-card-desc">
         <span class="badge badge-green">🟢 100+ : İyi dönem</span> &nbsp;
         <span class="badge badge-orange">🟠 80–100 : Orta dönem</span> &nbsp;
         <span class="badge badge-red">🔴 80 altı : Zor dönem</span>
       </div>
       <div class="chart-container tall">
-        <canvas id="wageChart"></canvas>
+        <canvas id="wageChart" role="img" aria-label="Net asgari ücretle alınabilecek tantuni sayısının zaman içindeki değişimi"></canvas>
       </div>
     </div>
   </section>
 
   <!-- CHART 2b: 200 TL Banknot -->
   <section class="section" id="banknot">
-    <div class="section-title"><span class="icon">💵</span> 200 TL ile Kaç Tantuni?</div>
-    <div class="section-subtitle">En büyük banknotun satın alma gücü — doğrusal ve logaritmik ölçek</div>
+    <h2 class="section-title"><span class="icon">💵</span> 200 TL ile Kaç Tantuni?</h2>
+    <div class="section-subtitle">En büyük banknotun satın alma gücü, doğrusal ve logaritmik ölçekte</div>
 
     <div class="banknot-grid" style="display:grid; grid-template-columns:1fr 1fr; gap:20px;">
       <div class="chart-card">
-        <div class="chart-card-title">Doğrusal Ölçek</div>
-        <div class="chart-container tall"><canvas id="banknotChart"></canvas></div>
+        <h3 class="chart-card-title">Doğrusal Ölçek</h3>
+        <div class="chart-container tall"><canvas id="banknotChart" role="img" aria-label="200 TL ile alınabilecek tantuni sayısı, doğrusal ölçek"></canvas></div>
       </div>
       <div class="chart-card">
-        <div class="chart-card-title">Logaritmik Ölçek</div>
-        <div class="chart-container tall"><canvas id="banknotLogChart"></canvas></div>
+        <h3 class="chart-card-title">Logaritmik Ölçek</h3>
+        <div class="chart-container tall"><canvas id="banknotLogChart" role="img" aria-label="200 TL ile alınabilecek tantuni sayısı, logaritmik ölçek"></canvas></div>
       </div>
     </div>
   </section>
 
   <!-- CHART 3: Tantuni vs Altın (indexlenmiş) -->
   <section class="section" id="altin">
-    <div class="section-title"><span class="icon">🥇</span> Tantuni vs Altın Karşılaştırması</div>
+    <h2 class="section-title"><span class="icon">🥇</span> Tantuni vs Altın Karşılaştırması</h2>
     <div class="section-subtitle">Her ikisi de 17 Aralık 2020 baz tarihine göre 100'e endekslenmiştir</div>
 
     <div class="chart-card">
-      <div class="chart-card-title">📊 Endekslenmiş Karşılaştırma (Baz: 17 Aralık 2020 = 100)</div>
+      <h3 class="chart-card-title">📊 Endekslenmiş Karşılaştırma (Baz: 17 Aralık 2020 = 100)</h3>
       <div class="chart-card-desc">Tantuni fiyatı ve altın fiyatı hangi hızda büyüdü?</div>
-      <div class="legend-row">
-        <div class="legend-item"><div class="legend-dot" style="background:var(--accent-orange)"></div>Tantuni Endeksi (TL)</div>
-        <div class="legend-item"><div class="legend-dot" style="background:#ffd700)"></div>Altın Endeksi (TL)</div>
-        <div class="legend-item"><div class="legend-dot" style="background:var(--accent-blue)"></div>Tantuni Endeksi ($)</div>
-      </div>
       <div class="chart-container tall">
-        <canvas id="goldChart"></canvas>
+        <canvas id="goldChart" role="img" aria-label="Tantuni ve altın fiyatlarının 17 Aralık 2020 = 100 endeksli karşılaştırması"></canvas>
       </div>
     </div>
   </section>
 
   <!-- CHART 4: Enflasyon -->
   <section class="section" id="enflasyon">
-    <div class="section-title"><span class="icon">🔥</span> Tantuni Enflasyonu</div>
+    <h2 class="section-title"><span class="icon">🔥</span> Tantuni Enflasyonu</h2>
     <div class="section-subtitle">Yıllık tantuni-spesifik enflasyon oranları</div>
 
     <div class="chart-card">
-      <div class="chart-card-title">📉 Tantuni vs TÜİK vs ENAG Enflasyonu</div>
-      <div class="chart-card-desc">Yıllık enflasyon oranları karşılaştırması. Tantuni (turuncu), TÜİK resmi TÜFE (kırmızı), ENAG bağımsız TÜFE (altın).</div>
+      <h3 class="chart-card-title">📉 Tantuni vs TÜİK vs ENAG Enflasyonu</h3>
+      <div class="chart-card-desc">Yıllık enflasyon oranları karşılaştırması. Tantuni (mavi), TÜİK resmi TÜFE (kırmızı), ENAG bağımsız TÜFE (altın).</div>
       <div class="chart-container medium">
-        <canvas id="inflationChart"></canvas>
+        <canvas id="inflationChart" role="img" aria-label="Tantuni, TÜİK ve ENAG yıllık enflasyon oranlarının aylık karşılaştırması"></canvas>
       </div>
     </div>
   </section>
 
   <!-- FUN FACTS -->
   <section class="section" id="bilgi">
-    <div class="section-title"><span class="icon">🎯</span> İlginç Tespitler</div>
+    <h2 class="section-title"><span class="icon">🎯</span> İlginç Tespitler</h2>
     <div class="section-subtitle">Tantuni endeksinin anlattığı hikaye</div>
 
     <div class="fun-facts">
@@ -1106,7 +1110,7 @@
         <div class="fun-fact-text">
           2020'de asgari ücretli işçi <span class="fun-fact-highlight">137 tantuni</span> alabiliyordu.
           Eylül 2026'da aynı işçi sadece <span class="fun-fact-highlight">67 tantuni</span> alabiliyor.
-          5 yılda satın alma gücü yarıya düştü.
+          Yaklaşık 6 yılda satın alma gücü yarıya düştü.
         </div>
       </div>
 
@@ -1114,8 +1118,8 @@
         <span class="fun-fact-emoji">📅</span>
         <div class="fun-fact-title">En Büyük Sıçrama</div>
         <div class="fun-fact-text">
-          En hızlı fiyat artışı <span class="fun-fact-highlight">Kasım–Aralık 2021</span> döneminde yaşandı:
-          ₺25'ten ₺30'a ve ardından kısa sürede ₺70'e. Döviz kriziyle birlikte tantuni de zorlandı.
+          <span class="fun-fact-highlight">Kasım–Aralık 2021</span> kur krizinde fiyat iki haftada ₺25'ten ₺30'a çıktı,
+          bir yıl sonra ₺70'i buldu. Yıllık tantuni enflasyonu <span class="fun-fact-highlight">Haziran 2023'te %167</span> ile zirve yaptı.
         </div>
       </div>
 
@@ -1123,7 +1127,7 @@
         <span class="fun-fact-emoji">🏆</span>
         <div class="fun-fact-title">En Verimli Dönem</div>
         <div class="fun-fact-text">
-          Şubat–Mart 2021 en verimli dönemdi: asgari ücret artışıyla
+          Şubat–Mayıs 2021 en verimli dönemdi: asgari ücret artışıyla
           <span class="fun-fact-highlight">156,9 tantuni</span> alınabiliyordu.
           Bu zirve 2026'da hâlâ kırılamamıştır.
         </div>
@@ -1143,7 +1147,7 @@
 
   <!-- CITATION SECTION -->
   <section class="section" id="atif">
-    <div class="section-title"><span class="icon">📚</span> Atıf ve Kaynak</div>
+    <h2 class="section-title"><span class="icon">📚</span> Atıf ve Kaynak</h2>
     <p class="section-subtitle">Bu endeksi akademik veya medya çalışmalarınızda kullanmak isterseniz, aşağıdaki formatlardan birini tercih edebilirsiniz.</p>
 
     <div style="display:flex; flex-direction:column; gap:20px; max-width:860px;">
@@ -1208,6 +1212,18 @@
     © 2020–2026 Prof. Dr. Oğuz Ergin. Tüm hakları saklıdır.
   </div>
 </footer>
+
+<script>
+// Bolumleri gorunur yapan kod grafik betiginden ayri: CDN ya da grafik hatasi sayfayi bos birakmasin.
+(function revealSections() {
+  const sections = document.querySelectorAll('.section');
+  if (!('IntersectionObserver' in window)) { sections.forEach(s => s.classList.add('visible')); return; }
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => { if (entry.isIntersecting) entry.target.classList.add('visible'); });
+  }, { threshold: 0.08 });
+  sections.forEach(s => observer.observe(s));
+})();
+</script>
 
 <script>
 // ============================================================
@@ -1380,9 +1396,9 @@ const inflationLabels = [
 ];
 const tantuniInflation = [
   76.5,83.3,94.4,122.2,122.2,100.0,125.0,150.0,127.3,120.0,
-  120.0,114.3,133.3,127.3,128.6,125.0,150.0,150.0,167.7,140.0,
+  120.0,114.3,133.3,127.3,128.6,125.0,150.0,150.0,166.7,140.0,
   140.0,136.4,136.4,116.7,114.3,100.0,118.8,94.4,100.0,110.0,
-  83.3,83.3,83.3,83.3,73.1,73.1,56.7,63.3,40.0,40.0,
+  83.3,83.3,83.3,69.2,73.1,73.1,56.7,63.3,40.0,40.0,
   30.0,33.3,27.3,27.3,27.3,36.4,33.3,42.2,53.2,51.0,
   61.2,61.2,51.9,41.1,41.1,41.1,41.1
 ];
@@ -1606,7 +1622,7 @@ const gridColor = 'rgba(42,42,62,0.8)';
               borderColor: 'rgba(46,213,115,0.5)',
               borderWidth: 1.5,
               borderDash: [6,3],
-              label: { content: '100 (iyi eşiği)', enabled: true, position: 'end', color: '#2ed573', font: {size:11} }
+              label: { content: '100 (iyi eşiği)', display: true, position: 'end', color: '#2ed573', font: {size:11} }
             },
             line80: {
               type: 'line',
@@ -1614,7 +1630,7 @@ const gridColor = 'rgba(42,42,62,0.8)';
               borderColor: 'rgba(255,71,87,0.5)',
               borderWidth: 1.5,
               borderDash: [6,3],
-              label: { content: '80 (kritik eşik)', enabled: true, position: 'end', color: '#ff4757', font: {size:11} }
+              label: { content: '80 (kritik eşik)', display: true, position: 'end', color: '#ff4757', font: {size:11} }
             }
           }
         }
@@ -1690,7 +1706,7 @@ const gridColor = 'rgba(42,42,62,0.8)';
               borderDash: [6, 3],
               label: {
                 content: '1 tantuni sınırı',
-                enabled: true,
+                display: true,
                 position: 'start',
                 color: '#ff4757',
                 font: { size: 11 }
@@ -1819,7 +1835,7 @@ const gridColor = 'rgba(42,42,62,0.8)';
               borderColor: 'rgba(144,144,176,0.3)',
               borderWidth: 1,
               borderDash: [4,4],
-              label: { content: 'Baz: 100', enabled: true, position: 'start', color: '#9090b0', font: {size:10} }
+              label: { content: 'Baz: 100', display: true, position: 'start', color: '#9090b0', font: {size:10} }
             }
           }
         }
@@ -1926,7 +1942,6 @@ const gridColor = 'rgba(42,42,62,0.8)';
           ticks: {
             maxRotation: 45,
             font: { size: 11 },
-            autoSkip: false,
           }
         },
         y: {
@@ -1942,19 +1957,6 @@ const gridColor = 'rgba(42,42,62,0.8)';
 })();
 
 
-// ============================================================
-// SCROLL ANIMATIONS
-// ============================================================
-const sections = document.querySelectorAll('.section');
-const observer = new IntersectionObserver((entries) => {
-  entries.forEach(entry => {
-    if (entry.isIntersecting) {
-      entry.target.classList.add('visible');
-    }
-  });
-}, { threshold: 0.08 });
-
-sections.forEach(s => observer.observe(s));
 </script>
 
 </body>

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<!--
+  Tantuni Endeksi paylaşım görseli (og-image.png, 1200x630) şablonu.
+  Fiyat değişince aşağıdaki iki yeri güncelle: .now (₺ fiyat) ve .yr-now (yıl), sonra:
+  chrome --headless=new --hide-scrollbars --window-size=1200,880 --screenshot=og-full.png tools/og-image.html
+  ve çıktının üst 1200x630 bölümünü kırpıp depo köküne og-image.png olarak kaydet.
+-->
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;700;800;900&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { width: 1200px; height: 630px; background: #0f0f13; }
+  body {
+    font-family: 'Inter', sans-serif;
+    color: #f0f0f5;
+    background:
+      radial-gradient(ellipse 70% 80% at 50% 45%, rgba(255,140,66,0.16) 0%, transparent 65%),
+      linear-gradient(135deg, #0f0f13 0%, #1a0f05 45%, #0f0a05 100%);
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    position: relative; overflow: hidden;
+  }
+  .title { display: flex; align-items: center; gap: 22px; }
+  .emoji { font-size: 84px; line-height: 1; font-family: 'Segoe UI Emoji', 'Apple Color Emoji', sans-serif; }
+  h1 {
+    font-size: 92px; font-weight: 900; letter-spacing: -2px; line-height: 1;
+    background: linear-gradient(90deg, #ff8c42, #ffb347);
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+  }
+  .tagline { margin-top: 18px; font-size: 32px; font-weight: 500; color: #b8b8d0; }
+  .prices { margin-top: 46px; display: flex; align-items: flex-end; gap: 34px; }
+  .p { display: flex; flex-direction: column; align-items: center; }
+  .yr { font-size: 26px; font-weight: 700; color: #7a7a9a; margin-bottom: 4px; }
+  .yr-now { color: #ff8c42; }
+  .then { font-size: 76px; font-weight: 800; color: #2ed573; line-height: 1; }
+  .now { font-size: 110px; font-weight: 900; color: #ff8c42; line-height: 1;
+         text-shadow: 0 0 48px rgba(255,140,66,0.45); }
+  .arrow { font-size: 64px; font-weight: 800; color: #5a5a7a; padding-bottom: 14px; }
+  .foot { position: absolute; bottom: 30px; left: 0; right: 0; display: flex; justify-content: space-between;
+          padding: 0 48px; font-size: 22px; font-weight: 500; color: #7a7a9a; }
+  .foot b { color: #ffb347; font-weight: 700; }
+</style>
+</head>
+<body>
+  <div class="title"><span class="emoji">🌯</span><h1>Tantuni Endeksi</h1></div>
+  <div class="tagline">Türkiye'nin en lezzetli ekonomik göstergesi</div>
+  <div class="prices">
+    <div class="p"><span class="yr">2020</span><span class="then">₺17</span></div>
+    <div class="arrow">→</div>
+    <div class="p"><span class="yr yr-now">2026</span><span class="now">₺420</span></div>
+  </div>
+  <div class="foot"><span>Dolar · Altın · Asgari ücret · Enflasyon</span><b>tantuni.oguzergin.net</b></div>
+</body>
+</html>
