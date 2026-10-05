@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<!--
+  Aylık enflasyon paylaşım kartı (1200x675, X ve LinkedIn için).
+  Yeni ay geldiğinde güncellenecek yerler: .ay başlığı, üç .deger, üç .bar genişliği (yüzde / 50 x 100),
+  .alt satırındaki fiyat ve tarih. Sonra:
+  chrome --headless=new --hide-scrollbars --window-size=1200,900 --screenshot=kart.png tools/enflasyon-karti.html
+  ve çıktının üst 1200x675 bölümünü kırp.
+-->
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { width: 1200px; height: 675px; }
+  body {
+    font-family: 'Inter', sans-serif;
+    color: #f0f0f5;
+    background:
+      radial-gradient(ellipse 60% 70% at 72% 40%, rgba(255,140,66,0.13) 0%, transparent 62%),
+      linear-gradient(135deg, #0f0f13 0%, #1a0f05 48%, #0f0a05 100%);
+    padding: 44px 56px 0;
+    position: relative;
+  }
+  .ust { display: flex; align-items: baseline; justify-content: space-between; }
+  .ay { font-size: 40px; font-weight: 900; letter-spacing: -0.8px; }
+  .ay span { color: #ff8c42; }
+  .etiket { font-size: 19px; font-weight: 600; color: #8585a5; }
+
+  .satirlar { margin-top: 34px; display: flex; flex-direction: column; gap: 21px; }
+  .satir { display: grid; grid-template-columns: 196px 1fr 190px; align-items: center; gap: 22px; }
+  .ad { font-size: 22px; font-weight: 700; color: #c7c7dd; }
+  .ad small { display: block; font-size: 14px; font-weight: 500; color: #8585a5; margin-top: 2px; }
+  .yol { height: 40px; background: rgba(255,255,255,0.045); border-radius: 9px; overflow: hidden; }
+  .bar { height: 100%; border-radius: 9px; }
+  .deger { font-size: 42px; font-weight: 900; text-align: right; letter-spacing: -1.2px; }
+
+  .enag .bar { background: linear-gradient(90deg, #b8960b, #ffd700); }
+  .enag .deger { color: #ffd700; }
+  .tuik .bar { background: linear-gradient(90deg, #b32a36, #ff4757); }
+  .tuik .deger { color: #ff6b78; }
+
+  .tantuni .ad { font-size: 25px; color: #fff; }
+  .tantuni .yol { height: 52px; box-shadow: 0 0 0 1px rgba(255,140,66,0.3); }
+  .tantuni .bar { background: linear-gradient(90deg, #d2641f, #ff8c42, #ffb347); }
+  .tantuni .deger { font-size: 56px; color: #ff8c42; text-shadow: 0 0 34px rgba(255,140,66,0.45); }
+
+  .vurgu {
+    margin-top: 26px; padding: 14px 22px;
+    background: rgba(255,140,66,0.08); border-left: 3px solid #ff8c42; border-radius: 10px;
+    font-size: 20px; font-weight: 500; color: #d8d8ea; line-height: 1.5;
+  }
+  .vurgu b { color: #ffb347; font-weight: 700; }
+
+  .gidisat { margin-top: 20px; }
+  .gidisat-ust {
+    display: flex; justify-content: space-between; align-items: baseline;
+    font-size: 15px; color: #8585a5; font-weight: 500; margin-bottom: 4px;
+  }
+  .gidisat-ust b { color: #c7c7dd; font-weight: 600; }
+  .trend { display: block; width: 100%; height: 176px; }
+
+  .alt {
+    position: absolute; left: 56px; right: 56px; bottom: 30px;
+    display: flex; justify-content: space-between; align-items: center;
+    font-size: 18px; color: #8585a5; font-weight: 500;
+    border-top: 1px solid rgba(255,255,255,0.07); padding-top: 18px;
+  }
+  .alt b { color: #ffb347; font-weight: 700; }
+  .marka { font-weight: 700; color: #ff8c42; }
+</style>
+</head>
+<body>
+  <div class="ust">
+    <div class="ay">Eylül 2026 <span>yıllık enflasyon</span></div>
+    <div class="etiket">🌯 Tantuni Endeksi</div>
+  </div>
+
+  <div class="satirlar">
+    <div class="satir enag">
+      <div class="ad">ENAG<small>bağımsız ölçüm</small></div>
+      <div class="yol"><div class="bar" style="width:93.2%"></div></div>
+      <div class="deger">%46,6</div>
+    </div>
+    <div class="satir tantuni">
+      <div class="ad">Tantuni<small>Ankara, tek işletme</small></div>
+      <div class="yol"><div class="bar" style="width:80.0%"></div></div>
+      <div class="deger">%40,0</div>
+    </div>
+    <div class="satir tuik">
+      <div class="ad">TÜİK<small>resmî ölçüm</small></div>
+      <div class="yol"><div class="bar" style="width:59.4%"></div></div>
+      <div class="deger">%29,7</div>
+    </div>
+  </div>
+
+  <div class="vurgu">
+    Tantuni enflasyonu ikisinin arasında. TÜİK'in yıllık oranı <b>Kasım 2021'den beri ilk kez</b> %30'un altında.
+  </div>
+
+  <div class="gidisat">
+    <div class="gidisat-ust">
+      <span><b>58 ayın gidişatı</b> · Aralık 2021 - Eylül 2026</span>
+      <span>kesikli çizgi %100</span>
+    </div>
+    <svg class="trend" viewBox="0 0 1088 150" preserveAspectRatio="none" aria-hidden="true">
+      <line x1="0" y1="69.0" x2="1088" y2="69.0" stroke="rgba(255,255,255,0.08)" stroke-width="1" stroke-dasharray="5 5"/>
+      <polyline points="0.0,79.1 19.1,58.4 38.2,55.0 57.3,43.9 76.4,35.4 95.4,33.1 114.5,24.4 133.6,24.2 152.7,21.0 171.8,18.1 190.9,18.7 210.0,27.3 229.1,46.9 248.1,56.3 267.2,53.1 286.3,61.6 305.4,65.9 324.5,65.8 343.6,63.9 362.7,55.5 381.8,52.4 400.8,51.2 419.9,53.5 439.0,51.7 458.1,53.0 477.2,51.8 496.3,56.0 515.4,54.5 534.5,54.6 553.5,56.8 572.6,61.3 591.7,68.5 610.8,74.7 629.9,75.7 649.0,75.0 668.1,76.8 687.2,78.8 706.2,80.2 725.3,81.1 744.4,83.6 763.5,84.4 782.6,86.0 801.7,87.5 820.8,89.6 839.9,89.4 858.9,90.7 878.0,92.6 897.1,94.5 916.2,94.9 935.3,96.5 954.4,96.1 973.5,95.8 992.6,95.3 1011.6,96.7 1030.7,97.6 1049.8,98.2 1068.9,99.1 1088.0,100.5" fill="none" stroke="#ffd700" stroke-width="2.4" stroke-linejoin="round" opacity="0.9"/>
+      <polyline points="0.0,106.7 19.1,99.3 38.2,95.9 57.3,92.0 76.4,86.7 95.4,84.6 114.5,81.6 133.6,81.0 152.7,80.7 171.8,78.7 190.9,77.6 210.0,78.2 229.1,90.1 248.1,94.0 267.2,95.4 286.3,98.2 305.4,102.2 324.5,104.6 343.6,105.5 362.7,99.8 381.8,92.7 400.8,91.7 419.9,91.8 439.0,91.4 458.1,89.8 477.2,89.7 496.3,88.4 515.4,87.6 534.5,86.8 553.5,83.5 572.6,85.8 591.7,91.5 610.8,97.3 629.9,98.9 649.0,99.3 668.1,100.2 687.2,101.8 706.2,103.2 725.3,104.9 744.4,105.5 763.5,105.6 782.6,107.1 801.7,107.3 820.8,108.2 839.9,108.5 858.9,108.4 878.0,108.6 897.1,109.7 916.2,109.8 935.3,109.9 954.4,109.4 973.5,109.8 992.6,108.9 1011.6,108.8 1030.7,109.1 1049.8,109.2 1068.9,109.4 1088.0,110.5" fill="none" stroke="#ff4757" stroke-width="2.4" stroke-linejoin="round" opacity="0.9"/>
+      <polyline points="0.0,82.9 19.1,78.9 38.2,72.3 57.3,55.9 76.4,55.9 95.4,69.0 114.5,54.2 133.6,39.5 152.7,52.9 171.8,57.2 190.9,57.2 210.0,60.6 229.1,49.4 248.1,52.9 267.2,52.1 286.3,54.2 305.4,39.5 324.5,39.5 343.6,29.6 362.7,45.4 381.8,45.4 400.8,47.5 419.9,47.5 439.0,59.1 458.1,60.6 477.2,69.0 496.3,57.9 515.4,72.3 534.5,69.0 553.5,63.1 572.6,78.9 591.7,78.9 610.8,78.9 629.9,87.2 649.0,84.9 668.1,84.9 687.2,94.5 706.2,90.7 725.3,104.4 744.4,104.4 763.5,110.3 782.6,108.4 801.7,111.9 820.8,111.9 839.9,111.9 858.9,106.5 878.0,108.4 897.1,103.1 916.2,96.6 935.3,97.9 954.4,91.9 973.5,91.9 992.6,97.4 1011.6,103.8 1030.7,103.8 1049.8,103.8 1068.9,103.8 1088.0,104.4" fill="none" stroke="#ff8c42" stroke-width="3.4" stroke-linejoin="round"/>
+          <circle cx="1088.0" cy="100.5" r="4.5" fill="#ffd700"/><circle cx="1088.0" cy="104.4" r="4.5" fill="#ff8c42"/><circle cx="1088.0" cy="110.5" r="4.5" fill="#ff4757"/>
+    </svg>
+  </div>
+
+  <div class="alt">
+    <div>30 Eylül 2026 · tantuni <b>₺420</b> · 2020'de ₺17 idi</div>
+    <div class="marka">tantuni.oguzergin.net</div>
+  </div>
+</body>
+</html>
