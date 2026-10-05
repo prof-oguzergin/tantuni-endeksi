@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<!--
+  LinkedIn paylaşım kartı (1200x1500, dikey 4:5). X kartının kapsamlı sürümü.
+  Yeni ay geldiğinde: başlık ayı, üç .deger ve .bar genişliği (yüzde / 50 x 100),
+  .kutu içindeki altı yıl rakamları, alt satırdaki tarih. Gidişat çizgisi betikle üretilir.
+  chrome --headless=new --hide-scrollbars --window-size=1200,1700 --screenshot=... tools/enflasyon-karti-linkedin.html
+-->
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { width: 1200px; height: 1500px; }
+  body {
+    font-family: 'Inter', sans-serif; color: #f0f0f5;
+    background:
+      radial-gradient(ellipse 58% 42% at 74% 22%, rgba(255,140,66,0.13) 0%, transparent 62%),
+      linear-gradient(160deg, #0f0f13 0%, #1a0f05 52%, #0f0a05 100%);
+    padding: 56px 60px 0; position: relative;
+  }
+  .ust { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 6px; }
+  .marka { font-size: 23px; font-weight: 700; color: #ff8c42; }
+  .marka span { color: #8585a5; font-weight: 500; }
+  .tarih { font-size: 19px; color: #8585a5; font-weight: 500; }
+  h1 { font-size: 54px; font-weight: 900; letter-spacing: -1.4px; line-height: 1.12; margin-top: 18px; }
+  h1 span { color: #ff8c42; }
+  .girus { margin-top: 20px; font-size: 21px; color: #a8a8c4; font-weight: 500; line-height: 1.5; }
+
+  .bolum { margin-top: 56px; }
+  .bolum-ad {
+    font-size: 15px; font-weight: 700; letter-spacing: 1.6px; text-transform: uppercase;
+    color: #8585a5; margin-bottom: 18px;
+  }
+
+  .satir { display: grid; grid-template-columns: 210px 1fr 200px; align-items: center; gap: 24px; margin-bottom: 24px; }
+  .ad { font-size: 23px; font-weight: 700; color: #c7c7dd; }
+  .ad small { display: block; font-size: 14.5px; font-weight: 500; color: #8585a5; margin-top: 3px; }
+  .yol { height: 42px; background: rgba(255,255,255,0.045); border-radius: 9px; overflow: hidden; }
+  .bar { height: 100%; border-radius: 9px; }
+  .deger { font-size: 46px; font-weight: 900; text-align: right; letter-spacing: -1.4px; }
+  .enag .bar { background: linear-gradient(90deg, #b8960b, #ffd700); }
+  .enag .deger { color: #ffd700; }
+  .tuik .bar { background: linear-gradient(90deg, #b32a36, #ff4757); }
+  .tuik .deger { color: #ff6b78; }
+  .tantuni .ad { font-size: 26px; color: #fff; }
+  .tantuni .yol { height: 54px; box-shadow: 0 0 0 1px rgba(255,140,66,0.32); }
+  .tantuni .bar { background: linear-gradient(90deg, #d2641f, #ff8c42, #ffb347); }
+  .tantuni .deger { font-size: 60px; color: #ff8c42; text-shadow: 0 0 36px rgba(255,140,66,0.45); }
+
+  .not {
+    margin-top: 16px; padding: 18px 22px;
+    background: rgba(255,140,66,0.08); border-left: 3px solid #ff8c42; border-radius: 10px;
+    font-size: 20px; color: #d8d8ea; line-height: 1.55;
+  }
+  .not b { color: #ffb347; font-weight: 700; }
+
+  .trend-ust { display: flex; justify-content: space-between; align-items: baseline; font-size: 15px; color: #8585a5; margin-bottom: 2px; }
+  .trend { display: block; width: 100%; height: 240px; }
+  .lejant { display: flex; gap: 26px; font-size: 15.5px; color: #a8a8c4; margin-top: 14px; }
+  .lejant i { display: inline-block; width: 15px; height: 3.5px; border-radius: 2px; margin-right: 8px; vertical-align: middle; }
+
+  .kutular { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+  .kutu { background: rgba(255,255,255,0.035); border: 1px solid rgba(255,255,255,0.07); border-radius: 14px; padding: 26px 20px; }
+  .kutu-ad { font-size: 14.5px; color: #8585a5; font-weight: 600; margin-bottom: 14px; }
+  .kutu-deger { font-size: 20px; font-weight: 800; color: #f0f0f5; line-height: 1.35; }
+  .kutu-deger .eski { color: #7a7a96; font-weight: 600; }
+  .kutu-deger .ok { color: #ff8c42; margin: 0 7px; }
+
+  .alt {
+    position: absolute; left: 60px; right: 60px; bottom: 44px;
+    border-top: 1px solid rgba(255,255,255,0.08); padding-top: 20px;
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .alt-sol { font-size: 17px; color: #8585a5; line-height: 1.5; max-width: 740px; }
+  .alt-sag { font-size: 21px; font-weight: 700; color: #ff8c42; white-space: nowrap; }
+</style>
+</head>
+<body>
+  <div class="ust">
+    <div class="marka">🌯 Tantuni Endeksi <span>· tantuni.oguzergin.net</span></div>
+    <div class="tarih">5 Ekim 2026</div>
+  </div>
+
+  <h1>Eylül 2026 enflasyonu<br><span>ve bir dürümün altı yılı</span></h1>
+  <div class="girus">
+    Ankara'da tek bir işletmenin et tantunisi, Ekim 2020'den beri kayıt altında.
+    Tek dükkân, tek ürün, kesintisiz fiyat takibi.
+  </div>
+
+  <div class="bolum">
+    <div class="bolum-ad">Eylül 2026 · yıllık enflasyon</div>
+    <div class="satir enag">
+      <div class="ad">ENAG<small>bağımsız ölçüm</small></div>
+      <div class="yol"><div class="bar" style="width:93.2%"></div></div>
+      <div class="deger">%46,6</div>
+    </div>
+    <div class="satir tantuni">
+      <div class="ad">Tantuni<small>bu endeks</small></div>
+      <div class="yol"><div class="bar" style="width:80.0%"></div></div>
+      <div class="deger">%40,0</div>
+    </div>
+    <div class="satir tuik">
+      <div class="ad">TÜİK<small>resmî ölçüm</small></div>
+      <div class="yol"><div class="bar" style="width:59.4%"></div></div>
+      <div class="deger">%29,7</div>
+    </div>
+    <div class="not">
+      Tantuni ikisinin arasında kaldı, 58 ayın <b>53'ünde</b> TÜİK'in üstünde seyretti.
+      TÜİK'in yıllık oranı ise <b>Kasım 2021'den beri ilk kez</b> %30'un altında.
+    </div>
+  </div>
+
+  <div class="bolum">
+    <div class="bolum-ad">58 ayın gidişatı</div>
+    <div class="trend-ust"><span>Aralık 2021 - Eylül 2026</span><span>kesikli çizgi %100</span></div>
+    <svg class="trend" viewBox="0 0 1080 240" preserveAspectRatio="none" aria-hidden="true">
+      <line x1="0" y1="119.0" x2="1080" y2="119.0" stroke="rgba(255,255,255,0.09)" stroke-width="1" stroke-dasharray="6 6"/>
+      <polyline points="0.0,137.1 18.9,100.2 37.9,94.0 56.8,74.3 75.8,59.3 94.7,55.2 113.7,39.6 132.6,39.2 151.6,33.5 170.5,28.4 189.5,29.4 208.4,44.8 227.4,79.6 246.3,96.3 265.3,90.8 284.2,105.9 303.2,113.5 322.1,113.2 341.1,110.0 360.0,95.0 378.9,89.5 397.9,87.4 416.8,91.5 435.8,88.2 454.7,90.4 473.7,88.4 492.6,95.9 511.6,93.2 530.5,93.4 549.5,97.3 568.4,105.2 587.4,118.1 606.3,129.2 625.3,131.0 644.2,129.7 663.2,132.9 682.1,136.4 701.1,138.9 720.0,140.5 738.9,145.0 757.9,146.4 776.8,149.2 795.8,151.9 814.7,155.6 833.7,155.2 852.6,157.6 871.6,161.0 890.5,164.4 909.5,165.1 928.4,167.9 947.4,167.2 966.3,166.7 985.3,165.8 1004.2,168.2 1023.2,169.9 1042.1,171.0 1061.1,172.6 1080.0,175.1" fill="none" stroke="#ffd700" stroke-width="2.6" stroke-linejoin="round" opacity="0.92"/>
+      <polyline points="0.0,186.1 18.9,172.9 37.9,166.9 56.8,159.8 75.8,150.5 94.7,146.8 113.7,141.5 132.6,140.4 151.6,139.8 170.5,136.3 189.5,134.2 208.4,135.4 227.4,156.5 246.3,163.4 265.3,166.0 284.2,171.0 303.2,178.1 322.1,182.4 341.1,183.9 360.0,173.8 378.9,161.1 397.9,159.4 416.8,159.5 435.8,158.9 454.7,156.0 473.7,155.9 492.6,153.5 511.6,152.1 530.5,150.7 549.5,144.8 568.4,148.8 587.4,159.1 606.3,169.4 625.3,172.1 644.2,173.0 663.2,174.5 682.1,177.4 701.1,179.8 720.0,182.9 738.9,184.0 757.9,184.2 776.8,186.8 795.8,187.2 814.7,188.8 833.7,189.3 852.6,189.0 871.6,189.5 890.5,191.3 909.5,191.6 928.4,191.9 947.4,190.9 966.3,191.6 985.3,190.0 1004.2,189.8 1023.2,190.3 1042.1,190.6 1061.1,190.9 1080.0,192.8" fill="none" stroke="#ff4757" stroke-width="2.6" stroke-linejoin="round" opacity="0.92"/>
+      <polyline points="0.0,143.7 18.9,136.5 37.9,124.9 56.8,95.7 75.8,95.7 94.7,119.0 113.7,92.8 132.6,66.5 151.6,90.3 170.5,98.0 189.5,98.0 208.4,104.0 227.4,84.0 246.3,90.3 265.3,89.0 284.2,92.8 303.2,66.5 322.1,66.5 341.1,49.0 360.0,77.0 378.9,77.0 397.9,80.8 416.8,80.8 435.8,101.5 454.7,104.0 473.7,119.0 492.6,99.3 511.6,124.9 530.5,119.0 549.5,108.5 568.4,136.5 587.4,136.5 606.3,136.5 625.3,151.3 644.2,147.2 663.2,147.2 682.1,164.5 701.1,157.5 720.0,182.0 738.9,182.0 757.9,192.5 776.8,189.0 795.8,195.3 814.7,195.3 833.7,195.3 852.6,185.8 871.6,189.0 890.5,179.7 909.5,168.1 928.4,170.4 947.4,159.7 966.3,159.7 985.3,169.5 1004.2,180.8 1023.2,180.8 1042.1,180.8 1061.1,180.8 1080.0,182.0" fill="none" stroke="#ff8c42" stroke-width="3.8" stroke-linejoin="round"/>
+      <circle cx="1080" cy="175.1" r="5" fill="#ffd700"/>
+      <circle cx="1080" cy="182.0" r="5.6" fill="#ff8c42"/>
+      <circle cx="1080" cy="192.8" r="5" fill="#ff4757"/>
+    </svg>
+    <div class="lejant">
+      <span><i style="background:#ffd700"></i>ENAG</span>
+      <span><i style="background:#ff8c42;height:4.5px"></i>Tantuni</span>
+      <span><i style="background:#ff4757"></i>TÜİK</span>
+    </div>
+  </div>
+
+  <div class="bolum">
+    <div class="bolum-ad">Aralık 2020'den bugüne</div>
+    <div class="kutular">
+      <div class="kutu">
+        <div class="kutu-ad">Fiyat</div>
+        <div class="kutu-deger"><span class="eski">₺17</span><span class="ok">→</span>₺420</div>
+      </div>
+      <div class="kutu">
+        <div class="kutu-ad">Dolar karşılığı</div>
+        <div class="kutu-deger"><span class="eski">$2,19</span><span class="ok">→</span>$8,56</div>
+      </div>
+      <div class="kutu">
+        <div class="kutu-ad">Asgari ücretle</div>
+        <div class="kutu-deger"><span class="eski">137</span><span class="ok">→</span>67 adet</div>
+      </div>
+      <div class="kutu">
+        <div class="kutu-ad">1 gram altınla</div>
+        <div class="kutu-deger"><span class="eski">27,5</span><span class="ok">→</span>15,7 adet</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="alt">
+    <div class="alt-sol">
+      Resmî bir gösterge değildir, tek işletmenin tek ürününe dayanır.<br>
+      Veri, yöntem ve bütün grafikler sitede açık.
+    </div>
+    <div class="alt-sag">tantuni.oguzergin.net</div>
+  </div>
+</body>
+</html>
