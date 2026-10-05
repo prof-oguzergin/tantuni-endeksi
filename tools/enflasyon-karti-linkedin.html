@@ -25,9 +25,9 @@
   .tarih { font-size: 19px; color: #8585a5; font-weight: 500; }
   h1 { font-size: 54px; font-weight: 900; letter-spacing: -1.4px; line-height: 1.12; margin-top: 18px; }
   h1 span { color: #ff8c42; }
-  .girus { margin-top: 20px; font-size: 21px; color: #a8a8c4; font-weight: 500; line-height: 1.5; }
+  .girus { margin-top: 16px; font-size: 21px; color: #a8a8c4; font-weight: 500; line-height: 1.5; }
 
-  .bolum { margin-top: 56px; }
+  .bolum { margin-top: 46px; }
   .bolum-ad {
     font-size: 15px; font-weight: 700; letter-spacing: 1.6px; text-transform: uppercase;
     color: #8585a5; margin-bottom: 18px;
@@ -56,16 +56,20 @@
   .not b { color: #ffb347; font-weight: 700; }
 
   .trend-ust { display: flex; justify-content: space-between; align-items: baseline; font-size: 15px; color: #8585a5; margin-bottom: 2px; }
-  .trend { display: block; width: 100%; height: 240px; }
+  .trend { display: block; width: 100%; height: 196px; }
   .lejant { display: flex; gap: 26px; font-size: 15.5px; color: #a8a8c4; margin-top: 14px; }
   .lejant i { display: inline-block; width: 15px; height: 3.5px; border-radius: 2px; margin-right: 8px; vertical-align: middle; }
 
-  .kutular { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
-  .kutu { background: rgba(255,255,255,0.035); border: 1px solid rgba(255,255,255,0.07); border-radius: 14px; padding: 26px 20px; }
-  .kutu-ad { font-size: 14.5px; color: #8585a5; font-weight: 600; margin-bottom: 14px; }
-  .kutu-deger { font-size: 20px; font-weight: 800; color: #f0f0f5; line-height: 1.35; }
-  .kutu-deger .eski { color: #7a7a96; font-weight: 600; }
-  .kutu-deger .ok { color: #ff8c42; margin: 0 7px; }
+  .kutular { display: grid; grid-template-columns: repeat(2, 1fr); gap: 18px; }
+  .kutu {
+    background: rgba(255,255,255,0.035); border: 1px solid rgba(255,255,255,0.07);
+    border-radius: 16px; padding: 22px 28px;
+    display: flex; align-items: baseline; justify-content: space-between; gap: 18px;
+  }
+  .kutu-ad { font-size: 19px; color: #9a9ab8; font-weight: 600; white-space: nowrap; }
+  .kutu-deger { font-size: 38px; font-weight: 800; color: #f0f0f5; line-height: 1.2; white-space: nowrap; letter-spacing: -0.5px; }
+  .kutu-deger .eski { color: #80809c; font-weight: 700; }
+  .kutu-deger .ok { color: #ff8c42; margin: 0 10px; font-weight: 700; }
 
   .alt {
     position: absolute; left: 60px; right: 60px; bottom: 44px;
@@ -114,14 +118,14 @@
   <div class="bolum">
     <div class="bolum-ad">58 ayın gidişatı</div>
     <div class="trend-ust"><span>Aralık 2021 - Eylül 2026</span><span>kesikli çizgi %100</span></div>
-    <svg class="trend" viewBox="0 0 1080 240" preserveAspectRatio="none" aria-hidden="true">
-      <line x1="0" y1="119.0" x2="1080" y2="119.0" stroke="rgba(255,255,255,0.09)" stroke-width="1" stroke-dasharray="6 6"/>
-      <polyline points="0.0,137.1 18.9,100.2 37.9,94.0 56.8,74.3 75.8,59.3 94.7,55.2 113.7,39.6 132.6,39.2 151.6,33.5 170.5,28.4 189.5,29.4 208.4,44.8 227.4,79.6 246.3,96.3 265.3,90.8 284.2,105.9 303.2,113.5 322.1,113.2 341.1,110.0 360.0,95.0 378.9,89.5 397.9,87.4 416.8,91.5 435.8,88.2 454.7,90.4 473.7,88.4 492.6,95.9 511.6,93.2 530.5,93.4 549.5,97.3 568.4,105.2 587.4,118.1 606.3,129.2 625.3,131.0 644.2,129.7 663.2,132.9 682.1,136.4 701.1,138.9 720.0,140.5 738.9,145.0 757.9,146.4 776.8,149.2 795.8,151.9 814.7,155.6 833.7,155.2 852.6,157.6 871.6,161.0 890.5,164.4 909.5,165.1 928.4,167.9 947.4,167.2 966.3,166.7 985.3,165.8 1004.2,168.2 1023.2,169.9 1042.1,171.0 1061.1,172.6 1080.0,175.1" fill="none" stroke="#ffd700" stroke-width="2.6" stroke-linejoin="round" opacity="0.92"/>
-      <polyline points="0.0,186.1 18.9,172.9 37.9,166.9 56.8,159.8 75.8,150.5 94.7,146.8 113.7,141.5 132.6,140.4 151.6,139.8 170.5,136.3 189.5,134.2 208.4,135.4 227.4,156.5 246.3,163.4 265.3,166.0 284.2,171.0 303.2,178.1 322.1,182.4 341.1,183.9 360.0,173.8 378.9,161.1 397.9,159.4 416.8,159.5 435.8,158.9 454.7,156.0 473.7,155.9 492.6,153.5 511.6,152.1 530.5,150.7 549.5,144.8 568.4,148.8 587.4,159.1 606.3,169.4 625.3,172.1 644.2,173.0 663.2,174.5 682.1,177.4 701.1,179.8 720.0,182.9 738.9,184.0 757.9,184.2 776.8,186.8 795.8,187.2 814.7,188.8 833.7,189.3 852.6,189.0 871.6,189.5 890.5,191.3 909.5,191.6 928.4,191.9 947.4,190.9 966.3,191.6 985.3,190.0 1004.2,189.8 1023.2,190.3 1042.1,190.6 1061.1,190.9 1080.0,192.8" fill="none" stroke="#ff4757" stroke-width="2.6" stroke-linejoin="round" opacity="0.92"/>
-      <polyline points="0.0,143.7 18.9,136.5 37.9,124.9 56.8,95.7 75.8,95.7 94.7,119.0 113.7,92.8 132.6,66.5 151.6,90.3 170.5,98.0 189.5,98.0 208.4,104.0 227.4,84.0 246.3,90.3 265.3,89.0 284.2,92.8 303.2,66.5 322.1,66.5 341.1,49.0 360.0,77.0 378.9,77.0 397.9,80.8 416.8,80.8 435.8,101.5 454.7,104.0 473.7,119.0 492.6,99.3 511.6,124.9 530.5,119.0 549.5,108.5 568.4,136.5 587.4,136.5 606.3,136.5 625.3,151.3 644.2,147.2 663.2,147.2 682.1,164.5 701.1,157.5 720.0,182.0 738.9,182.0 757.9,192.5 776.8,189.0 795.8,195.3 814.7,195.3 833.7,195.3 852.6,185.8 871.6,189.0 890.5,179.7 909.5,168.1 928.4,170.4 947.4,159.7 966.3,159.7 985.3,169.5 1004.2,180.8 1023.2,180.8 1042.1,180.8 1061.1,180.8 1080.0,182.0" fill="none" stroke="#ff8c42" stroke-width="3.8" stroke-linejoin="round"/>
-      <circle cx="1080" cy="175.1" r="5" fill="#ffd700"/>
-      <circle cx="1080" cy="182.0" r="5.6" fill="#ff8c42"/>
-      <circle cx="1080" cy="192.8" r="5" fill="#ff4757"/>
+    <svg class="trend" viewBox="0 0 1080 196" preserveAspectRatio="none" aria-hidden="true">
+      <line x1="0" y1="97.0" x2="1080" y2="97.0" stroke="rgba(255,255,255,0.09)" stroke-width="1" stroke-dasharray="6 6"/>
+      <polyline points="0.0,111.3 18.9,82.1 37.9,77.2 56.8,61.6 75.8,49.8 94.7,46.5 113.7,34.3 132.6,33.9 151.6,29.4 170.5,25.4 189.5,26.2 208.4,38.3 227.4,65.9 246.3,79.1 265.3,74.7 284.2,86.6 303.2,92.7 322.1,92.4 341.1,89.9 360.0,78.0 378.9,73.7 397.9,72.0 416.8,75.3 435.8,72.7 454.7,74.4 473.7,72.8 492.6,78.7 511.6,76.6 530.5,76.7 549.5,79.8 568.4,86.1 587.4,96.3 606.3,105.1 625.3,106.5 644.2,105.5 663.2,108.0 682.1,110.8 701.1,112.8 720.0,114.0 738.9,117.6 757.9,118.7 776.8,120.9 795.8,123.0 814.7,126.0 833.7,125.6 852.6,127.5 871.6,130.2 890.5,132.9 909.5,133.4 928.4,135.7 947.4,135.1 966.3,134.7 985.3,134.0 1004.2,135.9 1023.2,137.3 1042.1,138.1 1061.1,139.3 1080.0,141.3" fill="none" stroke="#ffd700" stroke-width="2.6" stroke-linejoin="round" opacity="0.92"/>
+      <polyline points="0.0,150.0 18.9,139.6 37.9,134.8 56.8,129.3 75.8,121.9 94.7,119.0 113.7,114.8 132.6,113.9 151.6,113.4 170.5,110.7 189.5,109.0 208.4,109.9 227.4,126.6 246.3,132.1 265.3,134.2 284.2,138.1 303.2,143.7 322.1,147.1 341.1,148.3 360.0,140.3 378.9,130.3 397.9,129.0 416.8,129.0 435.8,128.5 454.7,126.2 473.7,126.1 492.6,124.3 511.6,123.1 530.5,122.1 549.5,117.4 568.4,120.6 587.4,128.7 606.3,136.8 625.3,139.0 644.2,139.7 663.2,140.9 682.1,143.1 701.1,145.1 720.0,147.5 738.9,148.4 757.9,148.5 776.8,150.6 795.8,150.9 814.7,152.2 833.7,152.6 852.6,152.4 871.6,152.7 890.5,154.2 909.5,154.4 928.4,154.6 947.4,153.9 966.3,154.4 985.3,153.1 1004.2,152.9 1023.2,153.4 1042.1,153.6 1061.1,153.9 1080.0,155.3" fill="none" stroke="#ff4757" stroke-width="2.6" stroke-linejoin="round" opacity="0.92"/>
+      <polyline points="0.0,116.5 18.9,110.9 37.9,101.6 56.8,78.6 75.8,78.6 94.7,97.0 113.7,76.2 132.6,55.5 151.6,74.3 170.5,80.4 189.5,80.4 208.4,85.1 227.4,69.4 246.3,74.3 265.3,73.3 284.2,76.2 303.2,55.5 322.1,55.5 341.1,41.6 360.0,63.8 378.9,63.8 397.9,66.8 416.8,66.8 435.8,83.1 454.7,85.1 473.7,97.0 492.6,81.4 511.6,101.6 530.5,97.0 549.5,88.7 568.4,110.9 587.4,110.9 606.3,110.9 625.3,122.6 644.2,119.3 663.2,119.3 682.1,132.9 701.1,127.5 720.0,146.8 738.9,146.8 757.9,155.1 776.8,152.4 795.8,157.3 814.7,157.3 833.7,157.3 852.6,149.8 871.6,152.4 890.5,145.0 909.5,135.8 928.4,137.7 947.4,129.2 966.3,129.2 985.3,136.9 1004.2,145.9 1023.2,145.9 1042.1,145.9 1061.1,145.9 1080.0,146.8" fill="none" stroke="#ff8c42" stroke-width="3.8" stroke-linejoin="round"/>
+      <circle cx="1080" cy="141.3" r="5" fill="#ffd700"/>
+      <circle cx="1080" cy="146.8" r="5.6" fill="#ff8c42"/>
+      <circle cx="1080" cy="155.3" r="5" fill="#ff4757"/>
     </svg>
     <div class="lejant">
       <span><i style="background:#ffd700"></i>ENAG</span>
@@ -142,12 +146,12 @@
         <div class="kutu-deger"><span class="eski">$2,19</span><span class="ok">→</span>$8,56</div>
       </div>
       <div class="kutu">
-        <div class="kutu-ad">Asgari ücretle</div>
-        <div class="kutu-deger"><span class="eski">137</span><span class="ok">→</span>67 adet</div>
+        <div class="kutu-ad">Asgari ücretle adet</div>
+        <div class="kutu-deger"><span class="eski">137</span><span class="ok">→</span>67</div>
       </div>
       <div class="kutu">
-        <div class="kutu-ad">1 gram altınla</div>
-        <div class="kutu-deger"><span class="eski">27,5</span><span class="ok">→</span>15,7 adet</div>
+        <div class="kutu-ad">1 gram altınla adet</div>
+        <div class="kutu-deger"><span class="eski">27,5</span><span class="ok">→</span>15,7</div>
       </div>
     </div>
   </div>
