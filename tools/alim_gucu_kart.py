@@ -3,6 +3,7 @@
 index.html'deki tantuniData'dan basamaklı çizgi üretir, iki şablon yazar:
   tools/alim-gucu-karti.html           1200x675  (X)
   tools/alim-gucu-karti-linkedin.html  1200x1500 (LinkedIn)
+  tools/alim-gucu-karti-instagram.html 1080x1080 (Instagram)
 Sonra başsız Chrome ile çekilir (pencere yüksekliği karttan uzun, çıktı kırpılır).
 """
 import re
@@ -179,12 +180,45 @@ li_html = HEAD + f"""<style>{ORTAK_CSS}
   <div class="grafik">{svg(1080, 680, yazi=1.15)}</div>
   <div class="lejant"><span><i style="background:#ff8c42"></i>tantuni sayısı</span><span><i style="background:#ff4757"></i>her yılın en yüksek değeri</span></div>
   <div class="not">Her yılbaşı zammı sayıyı yukarı çekiyor, ama her yılın zirvesi bir öncekinin altında kalıyor.
-    2021'de <b>{round(zirve[2021][1])}</b> olan zirve 2026'da <b>{round(zirve[2026][1])}</b>'e indi. Tantuni bugün ₺{fiyat}.</div>
+    2021'de <b>{round(zirve[2021][1])}</b> olan zirve 2026'da <b>{round(zirve[2026][1])}</b>'e indi. Altı yılda asgari ücretlinin alım gücü <b>yarının altına</b> indi.</div>
   <div class="alt"><span class="site">tantuni.oguzergin.net</span></div>
 </body>
 </html>
 """
 
+ig_html = HEAD + f"""<style>{ORTAK_CSS}
+  html, body {{ width: 1080px; height: 1080px; }}
+  body {{ padding: 46px 48px 0; }}
+  .marka {{ font-size: 21px; }} .tarih {{ font-size: 18px; }}
+  h1 {{ font-size: 52px; margin-top: 20px; }}
+  .alt-yazi {{ font-size: 19px; margin-top: 10px; }}
+  .satir {{ display: flex; align-items: baseline; gap: 22px; margin-top: 22px; }}
+  .satir .sayi {{ font-size: 76px; }}
+  .satir .donem {{ font-size: 19px; color: #9a9ab8; font-weight: 600; }}
+  .grafik {{ margin-top: 14px; }}
+  .sonuc {{ margin-top: 22px; padding: 18px 24px; background: rgba(255,140,66,0.09); border-left: 3px solid #ff8c42;
+           border-radius: 10px; font-size: 27px; font-weight: 600; color: #f0f0f5; }}
+  .sonuc b {{ color: #ffb347; }}
+  .alt {{ position: absolute; left: 48px; right: 48px; bottom: 30px; display: flex; justify-content: space-between; align-items: center; }}
+</style>
+</head>
+<body>
+  <div class="ust"><div class="marka">🌯 Tantuni Endeksi</div><div class="tarih">{tarih} · tantuni ₺{fiyat}</div></div>
+  <h1>Asgari ücretle <span>kaç tantuni?</span></h1>
+  <div class="alt-yazi">Net asgari ücretle alınabilen et tantuni sayısı, Ankara, aynı işletme</div>
+  <div class="satir"><div class="sayi"><span class="eski">{round(baz)}</span><span class="ok">→</span><span class="yeni">{round(son)}</span></div>
+    <div class="donem">Aralık 2020 → {AYLAR[son_d.month - 1]} {son_d.year}</div></div>
+  <div class="grafik">{svg(984, 600, yazi=1.1)}</div>
+  <div class="sonuc">Altı yılda asgari ücretlinin alım gücü <b>yarının altına</b> indi.</div>
+  <div class="alt">
+    <div class="lejant"><span><i style="background:#ff8c42"></i>tantuni sayısı</span><span><i style="background:#ff4757"></i>her yılın en yüksek değeri</span></div>
+    <div class="site">tantuni.oguzergin.net</div>
+  </div>
+</body>
+</html>
+"""
+
+(KOK / 'tools' / 'alim-gucu-karti-instagram.html').write_text(ig_html, encoding='utf-8', newline='\n')
 (KOK / 'tools' / 'alim-gucu-karti.html').write_text(x_html, encoding='utf-8', newline='\n')
 (KOK / 'tools' / 'alim-gucu-karti-linkedin.html').write_text(li_html, encoding='utf-8', newline='\n')
 print(f'baz {baz:.1f} son {son:.1f} kayip %{kayip:.1f} yillik %{yillik:.1f} ({yil:.2f} yil) zirveler {zirveler}')
