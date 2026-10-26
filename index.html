@@ -1049,6 +1049,7 @@
       <a href="#banknot">Banknot</a>
       <a href="#altin">Altın</a>
       <a href="#enflasyon">Enflasyon</a>
+      <a href="#bigmac">Big Mac</a>
       <a href="#bilgi">Tespitler</a>
       <a href="#yontem">Yöntem</a>
       <a href="#atif">Atıf</a>
@@ -1229,6 +1230,47 @@
     </div>
   </section>
 
+  <!-- CHART 5: Big Mac -->
+  <section class="section" id="bigmac">
+    <h2 class="section-title"><span class="icon">🍔</span> Tantuni ve Big Mac</h2>
+    <div class="section-subtitle">The Economist'in yılda iki Big Mac ölçümüyle karşılaştırma (Ocak ve Temmuz)</div>
+
+    <div class="chart-card">
+      <h3 class="chart-card-title">💵 Dolar Karşılığı Fiyatlar</h3>
+      <div class="chart-card-desc">Ankara'da aynı işletmenin et tantunisi ve dört ülkede Big Mac. Dolar karşılıkları The Economist'in o tarihteki kuruyla hesaplanır. Dubai için BAE, Zürih için İsviçre fiyatı kullanılır, ABD fiyatı ulusal fiyattır.</div>
+      <div class="chart-container tall">
+        <canvas id="bigMacChart" role="img" aria-label="Tantuni ile Türkiye, Zürih, ABD ve Dubai Big Mac fiyatlarının dolar karşılığı, Ocak 2021'den bu yana"></canvas>
+      </div>
+    </div>
+
+    <div class="fun-facts" style="margin-top:20px;">
+      <div class="fun-fact">
+        <span class="fun-fact-emoji">🔁</span>
+        <div class="fun-fact-title">Aynı Hızda Pahalandılar</div>
+        <div class="fun-fact-text" id="bm-fact-tl">
+          Ocak 2021'den Temmuz 2026'ya Türkiye'de Big Mac <span class="fun-fact-highlight">21,7 kat</span>, tantuni <span class="fun-fact-highlight">23,2 kat</span> pahalandı.
+          Birbirinden bağımsız iki ürün neredeyse aynı yolu izledi.
+        </div>
+      </div>
+      <div class="fun-fact">
+        <span class="fun-fact-emoji">🌍</span>
+        <div class="fun-fact-title">Türkiye'de Big Mac Pahalılaştı</div>
+        <div class="fun-fact-text" id="bm-fact-usd">
+          Temmuz 2026'da Big Mac Türkiye'de <span class="fun-fact-highlight">$6,91</span>, ABD'de $6,22, Dubai'de $5,17.
+          Ocak 2021'de Türkiye'deki fiyat Dubai'dekinin %50'si kadardı.
+        </div>
+      </div>
+      <div class="fun-fact">
+        <span class="fun-fact-emoji">💰</span>
+        <div class="fun-fact-title">Asgari Ücretle Kaç Tane?</div>
+        <div class="fun-fact-text" id="bm-fact-wage">
+          Ocak 2021'de net asgari ücretle 188 Big Mac ya da 166 tantuni alınabiliyordu.
+          Temmuz 2026'da <span class="fun-fact-highlight">86 Big Mac</span> ya da <span class="fun-fact-highlight">71 tantuni</span> alınabiliyor.
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- FUN FACTS -->
   <section class="section" id="bilgi">
     <h2 class="section-title"><span class="icon">🎯</span> İlginç Tespitler</h2>
@@ -1335,6 +1377,12 @@
         <h3>📊 TÜİK ve ENAG</h3>
         <p>Resmî karşılaştırma için TÜİK'in, bağımsız karşılaştırma için Enflasyon Araştırma Grubu'nun (ENAG) yıllık tüketici enflasyonu kullanılır. TÜİK veriyi izleyen ayın 3'ünde, bu gün hafta sonuna denk gelirse ardından gelen Pazartesi açıklar. İki veri de açıklandığı gün eklenir.</p>
         <div class="method-src"><a href="https://veriportali.tuik.gov.tr/" target="_blank" rel="noopener">TÜİK veri portalı ↗</a><a href="https://enagrup.org/" target="_blank" rel="noopener">ENAG ↗</a></div>
+      </div>
+
+      <div class="method-card">
+        <h3>🍔 Big Mac</h3>
+        <p>Big Mac fiyatları The Economist'in yılda iki kez (Ocak ve Temmuz) yayımladığı ölçümlerden alınır. Her ölçüm tarihinde o gün geçerli tantuni fiyatı karşılaştırılır, iki ürünün dolar karşılığı da Economist'in o tarihteki kuruyla hesaplanır. Asgari ücret o tarihte yürürlükteki net ücrettir.</p>
+        <div class="method-src"><a href="https://github.com/TheEconomist/big-mac-data" target="_blank" rel="noopener">The Economist Big Mac verisi ↗</a></div>
       </div>
     </div>
 
@@ -1699,12 +1747,12 @@ const PALETTES = {
   dark: {
     text: '#9090b0', grid: 'rgba(42,42,62,0.8)', legend: '#c0c0d8',
     tooltipBg: '#1e1e2e', tooltipBorder: '#2a2a3e', tooltipText: '#f0f0f5', labelBg: 'rgba(0,0,0,0.8)',
-    orange: '#ff8c42', blue: '#1e90ff', red: '#ff4757', green: '#2ed573', gold: '#ffd700', amber: '#ffb347',
+    orange: '#ff8c42', blue: '#1e90ff', red: '#ff4757', green: '#2ed573', gold: '#ffd700', amber: '#ffb347', purple: '#c08cff',
   },
   light: {
     text: '#4a4a63', grid: 'rgba(28,27,41,0.08)', legend: '#4a4a63',
     tooltipBg: '#ffffff', tooltipBorder: '#e6dfd3', tooltipText: '#1c1b29', labelBg: 'rgba(255,255,255,0.95)',
-    orange: '#ea580c', blue: '#2563eb', red: '#dc2626', green: '#16a34a', gold: '#ca8a04', amber: '#d97706',
+    orange: '#ea580c', blue: '#2563eb', red: '#dc2626', green: '#16a34a', gold: '#ca8a04', amber: '#d97706', purple: '#7c3aed',
   },
 };
 let P = PALETTES.dark;
@@ -2225,6 +2273,101 @@ function buildInflationChart() {
   });
 }
 
+// ============================================================
+// CHART 5: Big Mac (The Economist, source-data/big-mac-source-data-v2.csv)
+// Yerel fiyat ve dolar kuru; Türkiye, ABD, BAE (Dubai), İsviçre (Zürih).
+// minWage: ölçüm tarihinde yürürlükteki net asgari ücret.
+// ============================================================
+const bigMacData = [
+  {date:'2021-01-01', tr:14.99, kur:7.4705, us:4.89, are:14.75, areKur:3.67315, che:6.5, cheKur:0.89155, minWage:2825},
+  {date:'2021-07-01', tr:19.99, kur:8.55725, us:4.93, are:14.75, areKur:3.67315, che:6.5, cheKur:0.92275, minWage:2825},
+  {date:'2022-01-01', tr:24.99, kur:13.4155, us:5.04, are:17, areKur:3.67305, che:6.5, cheKur:0.93105, minWage:4253},
+  {date:'2022-07-01', tr:47, kur:17.565, us:5.15, are:18, areKur:3.67305, che:6.5, cheKur:0.96845, minWage:5500},
+  {date:'2023-01-01', tr:75, kur:18.8055, us:5.36, are:18, areKur:3.673, che:6.7, cheKur:0.92315, minWage:8506},
+  {date:'2023-07-01', tr:95, kur:26.92675, us:5.58, are:18, areKur:3.67305, che:6.7, cheKur:0.86685, minWage:11402},
+  {date:'2024-01-01', tr:120, kur:30.25475, us:5.69, are:18, areKur:3.67295, che:7.1, cheKur:0.86935, minWage:17002},
+  {date:'2024-07-01', tr:155, kur:33.1104, us:5.69, are:18, areKur:3.673, che:7.1, cheKur:0.88025, minWage:17002},
+  {date:'2025-01-01', tr:190, kur:35.74025, us:5.79, are:18, areKur:3.6729, che:7.2, cheKur:0.90085, minWage:22104},
+  {date:'2025-07-01', tr:225, kur:40.22, us:6.01, are:19, areKur:3.67305, che:7.2, cheKur:0.80065, minWage:22104},
+  {date:'2026-01-01', tr:255, kur:43.1945, us:6.12, are:19, areKur:3.673, che:7.3, cheKur:0.8036, minWage:28075},
+  {date:'2026-07-01', tr:325, kur:47.0275, us:6.22, are:19, areKur:3.67285, che:7.3, cheKur:0.80735, minWage:28075},
+];
+
+// Her ölçüm tarihinde geçerli tantuni fiyatı ve dolar karşılıkları
+const bigMacRows = bigMacData.map(b => {
+  const t = tantuniData.filter(d => d.date <= b.date).pop().price;
+  return { ...b, t, tUsd: t / b.kur, trUsd: b.tr / b.kur, areUsd: b.are / b.areKur, cheUsd: b.che / b.cheKur };
+});
+
+const BM_AY = ['Ocak','Şubat','Mart','Nisan','Mayıs','Haziran','Temmuz','Ağustos','Eylül','Ekim','Kasım','Aralık'];
+function bmDonem(d) { return BM_AY[+d.slice(5, 7) - 1] + ' ' + d.slice(0, 4); }
+// Yılın okunuşuna göre ek: 2021'de, 2026'ya, 2023'ten
+function bmEk(d, tip) {
+  const ekler = { yonelme: ['a','e','ye','e','e','e','ya','ye','e','a'],
+                  bulunma: ['da','de','de','te','te','te','da','de','de','da'],
+                  ayrilma: ['dan','den','den','ten','ten','ten','dan','den','den','dan'] };
+  return "'" + ekler[tip][+d.slice(3, 4)];
+}
+function bmSayi(x, nd) { return x.toLocaleString('tr-TR', { minimumFractionDigits: nd, maximumFractionDigits: nd }); }
+
+(function bigMacFacts() {
+  const a = bigMacRows[0], z = bigMacRows[bigMacRows.length - 1];
+  const hl = s => '<span class="fun-fact-highlight">' + s + '</span>';
+  const tl = document.getElementById('bm-fact-tl');
+  const usd = document.getElementById('bm-fact-usd');
+  const wage = document.getElementById('bm-fact-wage');
+  if (tl) tl.innerHTML = bmDonem(a.date) + bmEk(a.date, 'ayrilma') + ' ' + bmDonem(z.date) + bmEk(z.date, 'yonelme') + " Türkiye'de Big Mac " + hl(bmSayi(z.tr / a.tr, 1) + ' kat') +
+    ', tantuni ' + hl(bmSayi(z.t / a.t, 1) + ' kat') + ' pahalandı. Birbirinden bağımsız iki ürün neredeyse aynı yolu izledi.';
+  if (usd) usd.innerHTML = bmDonem(z.date) + bmEk(z.date, 'bulunma') + " Big Mac Türkiye'de " + hl('$' + bmSayi(z.trUsd, 2)) + ", ABD'de $" + bmSayi(z.us, 2) +
+    ", Dubai'de $" + bmSayi(z.areUsd, 2) + '. ' + bmDonem(a.date) + bmEk(a.date, 'bulunma') + " Türkiye'deki fiyat Dubai'dekinin %" +
+    Math.round(a.trUsd / a.areUsd * 100) + "'si kadardı.";
+  if (wage) wage.innerHTML = bmDonem(a.date) + bmEk(a.date, 'bulunma') + ' net asgari ücretle ' + Math.round(a.minWage / a.tr) + ' Big Mac ya da ' +
+    Math.round(a.minWage / a.t) + ' tantuni alınabiliyordu. ' + bmDonem(z.date) + bmEk(z.date, 'bulunma') + ' ' + hl(Math.round(z.minWage / z.tr) + ' Big Mac') +
+    ' ya da ' + hl(Math.round(z.minWage / z.t) + ' tantuni') + ' alınabiliyor.';
+})();
+
+function buildBigMacChart() {
+  const ctx = document.getElementById('bigMacChart').getContext('2d');
+  const seri = (label, key, color, width, dash) => ({
+    label, data: bigMacRows.map(r => +r[key].toFixed(2)), borderColor: color, backgroundColor: color,
+    borderWidth: width, pointRadius: 4, pointHoverRadius: 7, pointBackgroundColor: color,
+    fill: false, tension: 0.25, borderDash: dash || [],
+  });
+  new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: bigMacRows.map(r => (r.date.slice(5, 7) === '01' ? 'Oca ' : 'Tem ') + r.date.slice(2, 4)),
+      datasets: [
+        seri('Tantuni (Ankara)', 'tUsd', P.orange, 3.5),
+        seri('Big Mac Türkiye', 'trUsd', P.gold, 3),
+        seri('Big Mac Zürih', 'cheUsd', P.purple, 2, [6, 3]),
+        seri('Big Mac ABD (ulusal)', 'us', P.blue, 2, [6, 3]),
+        seri('Big Mac Dubai', 'areUsd', P.green, 2, [6, 3]),
+      ]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      interaction: { mode: 'index', intersect: false },
+      plugins: {
+        legend: { display: true, position: 'top', labels: { usePointStyle: true, padding: 18, color: P.legend } },
+        tooltip: {
+          backgroundColor: P.tooltipBg, borderColor: P.tooltipBorder, borderWidth: 1, padding: 14,
+          callbacks: { label: c => `  ${c.dataset.label}: $${bmSayi(c.raw, 2)}` }
+        },
+      },
+      scales: {
+        x: { grid: { color: gridColor } },
+        y: {
+          grid: { color: gridColor }, beginAtZero: true,
+          ticks: { callback: v => '$' + v },
+          title: { display: true, text: 'Dolar karşılığı', color: P.text }
+        }
+      }
+    }
+  });
+}
+
 // Grafikleri kur: ilk yüklemede ve tema değişince çağrılır
 function buildCharts() {
   Object.values(Chart.instances).forEach(c => c.destroy());
@@ -2234,6 +2377,7 @@ function buildCharts() {
   buildBanknotCharts();
   buildGoldChart();
   buildInflationChart();
+  buildBigMacChart();
 }
 buildCharts();
 
