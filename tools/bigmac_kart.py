@@ -1,4 +1,4 @@
-"""Tantuni ile Big Mac karşılaştırma kartı (1200x675).
+"""Tantuni ile Big Mac karşılaştırma kartı (1200x675): Türkiye, Dubai (BAE), Zürih (İsviçre), ABD.
 
 Big Mac verisi The Economist'in açık verisi (github.com/TheEconomist/big-mac-data,
 source-data/big-mac-source-data-v2.csv). Her Big Mac ölçüm tarihinde (Ocak ve Temmuz)
@@ -34,17 +34,19 @@ def tantuni(d):
 
 bm = {}
 for r in csv.DictReader(open(sys.argv[1], encoding='utf-8')):
-    if r['iso_a3'] in ('TUR', 'USA') and r['date'] >= '2021-01-01':
+    if r['iso_a3'] in ('TUR', 'USA', 'ARE', 'CHE') and r['date'] >= '2021-01-01':
         bm.setdefault(r['date'], {})[r['iso_a3']] = (float(r['local_price']), float(r['dollar_ex']))
 
 veri = []
 for d in sorted(bm):
-    if set(bm[d]) != {'TUR', 'USA'}:
+    if set(bm[d]) != {'TUR', 'USA', 'ARE', 'CHE'}:
         continue
     D = dt.date.fromisoformat(d)
     (p, k), (pu, _) = bm[d]['TUR'], bm[d]['USA']
     t = tantuni(D)
-    veri.append(dict(d=D, bm=p, kur=k, bm_usd=p / k, us=pu, t=t, t_usd=t / k, w=ucret(D)))
+    are = bm[d]['ARE'][0] / bm[d]['ARE'][1]
+    che = bm[d]['CHE'][0] / bm[d]['CHE'][1]
+    veri.append(dict(d=D, bm=p, kur=k, bm_usd=p / k, us=pu, are=are, che=che, t=t, t_usd=t / k, w=ucret(D)))
 
 ilk, son = veri[0], veri[-1]
 AY = {1: 'Ocak', 7: 'Temmuz'}
@@ -57,26 +59,27 @@ def tr(x, nd=2):
 
 def svg(W=720, H=440, pl=44, pr=96, pt=22, pb=36):
     n = len(veri)
-    ymax = 9.0
+    ymax = 10.0
     X = lambda i: pl + i * (W - pl - pr) / (n - 1)
     Y = lambda v: pt + (1 - v / ymax) * (H - pt - pb)
     o = [f'<svg viewBox="0 0 {W} {H}" width="{W}" height="{H}" xmlns="http://www.w3.org/2000/svg">']
-    for v in (2, 4, 6, 8):
+    for v in (2, 4, 6, 8, 10):
         o.append(f'<line x1="{pl}" x2="{W - pr + 20}" y1="{Y(v):.1f}" y2="{Y(v):.1f}" stroke="rgba(255,255,255,0.07)" stroke-dasharray="4 6"/>')
         o.append(f'<text x="0" y="{Y(v) + 5:.1f}" fill="#6e6e8c" font-size="14">${v}</text>')
     o.append(f'<line x1="{pl}" x2="{W - pr + 20}" y1="{Y(0):.1f}" y2="{Y(0):.1f}" stroke="rgba(255,255,255,0.14)"/>')
     for i, v in enumerate(veri):
         if v['d'].month == 1:
             o.append(f'<text x="{X(i):.1f}" y="{H - 10}" text-anchor="middle" fill="#8585a5" font-size="15" font-weight="600">{v["d"].year}</text>')
-    seriler = [('us', '#4aa3ff', 'Big Mac ABD'), ('bm_usd', '#ffd700', 'Big Mac Türkiye'), ('t_usd', '#ff8c42', 'Tantuni')]
+    seriler = [('are', '#2ed573', 'Big Mac Dubai'), ('us', '#4aa3ff', 'Big Mac ABD'), ('che', '#c08cff', 'Big Mac Zürih'),
+               ('bm_usd', '#ffd700', 'Big Mac Türkiye'), ('t_usd', '#ff8c42', 'Tantuni')]
     for key, renk, ad in seriler:
-        kal = 4 if key == 't_usd' else 3
+        kal = 4.4 if key == 't_usd' else (3.4 if key == 'bm_usd' else 2.6)
         o.append('<polyline points="' + ' '.join(f'{X(i):.1f},{Y(v[key]):.1f}' for i, v in enumerate(veri)) +
                  f'" fill="none" stroke="{renk}" stroke-width="{kal}" stroke-linejoin="round"/>')
         for i, v in enumerate(veri):
             o.append(f'<circle cx="{X(i):.1f}" cy="{Y(v[key]):.1f}" r="3.6" fill="{renk}"/>')
         y_son = Y(son[key])
-        o.append(f'<text x="{X(n - 1) + 12:.1f}" y="{y_son + 6:.1f}" fill="{renk}" font-size="21" font-weight="800">${tr(son[key])}</text>')
+        o.append(f'<text x="{X(n - 1) + 12:.1f}" y="{y_son + 6:.1f}" fill="{renk}" font-size="19" font-weight="800">${tr(son[key])}</text>')
     o.append('</svg>')
     return '\n'.join(o)
 
@@ -119,11 +122,11 @@ html = f"""<!DOCTYPE html>
 </head>
 <body>
   <div class="ust"><div class="marka">🌯 Tantuni Endeksi × 🍔 Big Mac</div><div class="tarih">{AY[ilk['d'].month]} {ilk['d'].year} - {AY[son['d'].month]} {son['d'].year}</div></div>
-  <h1>Ankara'da tantuni, <span>ABD'de Big Mac'ten pahalı</span></h1>
-  <div class="alt-yazi">Dolar karşılığı fiyatlar, The Economist'in yılda iki Big Mac ölçümünde</div>
+  <h1>Türkiye'de Big Mac, <span>Dubai'yi ve ABD'yi geçti</span></h1>
+  <div class="alt-yazi">Dolar karşılığı fiyatlar, The Economist'in yılda iki Big Mac ölçümünde. Tantuni Ankara'da aynı işletme.</div>
   <div class="govde">
     <div>
-      <div class="lejant"><span><i style="background:#ff8c42"></i>Tantuni (Ankara)</span><span><i style="background:#ffd700"></i>Big Mac Türkiye</span><span><i style="background:#4aa3ff"></i>Big Mac ABD</span></div>
+      <div class="lejant"><span><i style="background:#ff8c42"></i>Tantuni</span><span><i style="background:#ffd700"></i>Big Mac Türkiye</span><span><i style="background:#c08cff"></i>Zürih</span><span><i style="background:#4aa3ff"></i>ABD</span><span><i style="background:#2ed573"></i>Dubai</span></div>
       {svg()}
     </div>
     <div class="yan">
@@ -133,15 +136,15 @@ html = f"""<!DOCTYPE html>
       <div class="kutu"><div class="kutu-ad">Net asgari ücretle kaç tane?</div>
         <div class="sat"><span>Tantuni</span><b class="t">{round(ilk['w'] / ilk['t'])} → {round(son['w'] / son['t'])}</b></div>
         <div class="sat"><span>Big Mac</span><b class="b">{round(ilk['w'] / ilk['bm'])} → {round(son['w'] / son['bm'])}</b></div></div>
-      <div class="not">Big Mac Endeksi'ne göre TL, Ocak 2021'de dolara karşı <b>%{tr(-(ilk['bm_usd'] / ilk['us'] - 1) * 100, 0)} değerinin altındaydı</b>.
-        Temmuz 2026'da <b>%{tr((son['bm_usd'] / son['us'] - 1) * 100, 0)} değerinin üstünde</b>, 2014'ten beri ilk kez.</div>
+      <div class="not">Türkiye'de Big Mac Ocak 2021'de Dubai'dekinin <b>yarı fiyatınaydı</b>, Temmuz 2026'da <b>%{tr((son['bm_usd'] / son['are'] - 1) * 100, 0)} pahalı</b>.
+        Big Mac Endeksi'ne göre TL 2014'ten beri ilk kez değerinin üstünde (+%{tr((son['bm_usd'] / son['us'] - 1) * 100, 0)}).</div>
     </div>
   </div>
-  <div class="alt"><span>Big Mac verisi: The Economist</span><span class="site">tantuni.oguzergin.net</span></div>
+  <div class="alt"><span>Big Mac verisi: The Economist, ülke fiyatı (Dubai için BAE, Zürih için İsviçre)</span><span class="site">tantuni.oguzergin.net</span></div>
 </body>
 </html>
 """
 (KOK / 'tools' / 'bigmac-karti.html').write_text(html, encoding='utf-8', newline='\n')
 for v in veri:
-    print(v['d'], f"BM {v['bm']:.2f} ${v['bm_usd']:.2f} US ${v['us']:.2f} | T {v['t']:.0f} ${v['t_usd']:.2f} | t/BM {v['t']/v['bm']:.2f} | ucret {v['w']} BM {v['w']/v['bm']:.0f} T {v['w']/v['t']:.0f}")
+    print(v['d'], f"ARE ${v['are']:.2f} CHE ${v['che']:.2f} BM {v['bm']:.2f} ${v['bm_usd']:.2f} US ${v['us']:.2f} | T {v['t']:.0f} ${v['t_usd']:.2f} | t/BM {v['t']/v['bm']:.2f} | ucret {v['w']} BM {v['w']/v['bm']:.0f} T {v['w']/v['t']:.0f}")
 print('TL kat: tantuni', round(tl_t, 2), 'bigmac', round(tl_b, 2))
