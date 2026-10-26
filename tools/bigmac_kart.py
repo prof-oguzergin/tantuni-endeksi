@@ -126,7 +126,7 @@ html = f"""<!DOCTYPE html>
   <div class="alt-yazi">Dolar karşılığı fiyatlar, The Economist'in yılda iki Big Mac ölçümünde. Tantuni Ankara'da aynı işletme.</div>
   <div class="govde">
     <div>
-      <div class="lejant"><span><i style="background:#ff8c42"></i>Tantuni</span><span><i style="background:#ffd700"></i>Big Mac Türkiye</span><span><i style="background:#c08cff"></i>Zürih</span><span><i style="background:#4aa3ff"></i>ABD</span><span><i style="background:#2ed573"></i>Dubai</span></div>
+      <div class="lejant"><span><i style="background:#ff8c42"></i>Tantuni</span><span><i style="background:#ffd700"></i>Big Mac Türkiye</span><span><i style="background:#c08cff"></i>Zürih</span><span><i style="background:#4aa3ff"></i>ABD (ulusal fiyat)</span><span><i style="background:#2ed573"></i>Dubai</span></div>
       {svg()}
     </div>
     <div class="yan">
