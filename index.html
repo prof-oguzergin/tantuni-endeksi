@@ -75,6 +75,7 @@
       --badge-orange-text: var(--accent-orange);
       --badge-red-text: #ff4757;
       --badge-green-text: var(--accent-green);
+      --badge-yellow-text: #ffd700;
       --btn-hover-text: #fff;
     }
 
@@ -106,6 +107,7 @@
       --badge-orange-text: #c2410c;
       --badge-red-text: #b91c1c;
       --badge-green-text: #15803d;
+      --badge-yellow-text: #a16207;
       --btn-hover-text: #7c2d12;
     }
 
@@ -138,6 +140,7 @@
         --badge-orange-text: #c2410c;
         --badge-red-text: #b91c1c;
         --badge-green-text: #15803d;
+        --badge-yellow-text: #a16207;
         --btn-hover-text: #7c2d12;
       }
     }
@@ -656,6 +659,7 @@
     .badge-orange { background: rgba(255, 140, 66, 0.15); color: var(--badge-orange-text); }
     .badge-red { background: rgba(255, 71, 87, 0.15); color: var(--badge-red-text); }
     .badge-green { background: rgba(46, 213, 115, 0.15); color: var(--badge-green-text); }
+    .badge-yellow { background: rgba(255, 215, 0, 0.15); color: var(--badge-yellow-text); }
 
     /* Footer */
     footer {
@@ -1175,10 +1179,11 @@
     <div class="chart-card">
       <h3 class="chart-card-title">🧮 Asgari Ücretle Tantuni Sayısı</h3>
       <div class="chart-card-desc">
-        <span class="badge badge-green">🟢 100+ : İyi dönem</span> &nbsp;
-        <span class="badge badge-orange">🟠 80–100 : Orta dönem</span> &nbsp;
-        <span class="badge badge-red">🔴 80 altı : Zor dönem</span>
-        <div style="margin-top:8px;">Mor kesikli çizgi Aralık 2020'deki 137 tantuninin yarısını, mavi kesikli çizgi 30 günlük bir ayda her gün iki tantuniyi gösterir.</div>
+        <span class="badge badge-green">🟢 120+ : günde 4 ve üstü</span> &nbsp;
+        <span class="badge badge-yellow">🟡 90–120 : günde 3</span> &nbsp;
+        <span class="badge badge-orange">🟠 60–90 : günde 2</span> &nbsp;
+        <span class="badge badge-red">🔴 60 altı : günde 2'den az</span>
+        <div style="margin-top:8px;">Gri çizgiler 30 günlük bir ayda asgari ücretle her gün kaç tantuni alınabildiğini gösterir. Mor çizgi Aralık 2020'deki 137 tantuninin yarısıdır.</div>
       </div>
       <div class="chart-container tall">
         <canvas id="wageChart" role="img" aria-label="Net asgari ücretle alınabilecek tantuni sayısının zaman içindeki değişimi"></canvas>
@@ -1883,17 +1888,10 @@ function buildWageChart() {
   const counts = tantuniData.map(d => d.count);
   const yariCizgi = tantuniData.find(d => d.date === '2020-12-17').count / 2;
 
-  const colors = counts.map(c => {
-    if (c >= 100) return 'rgba(46,213,115,0.8)';
-    if (c >= 80)  return 'rgba(255,179,71,0.8)';
-    return 'rgba(255,71,87,0.8)';
-  });
-
-  const borderColors = counts.map(c => {
-    if (c >= 100) return P.green;
-    if (c >= 80)  return P.amber;
-    return P.red;
-  });
+  // Bantlar 30 günlük bir ayda her gün kaç tantuni alınabildiğine göre: 120 = günde 4, 90 = 3, 60 = 2
+  const bantRengi = c => c >= 120 ? P.green : c >= 90 ? P.gold : c >= 60 ? P.orange : P.red;
+  const colors = counts.map(c => bantRengi(c) + 'cc');
+  const borderColors = counts.map(bantRengi);
 
   new Chart(ctx, {
     type: 'bar',
@@ -1921,8 +1919,8 @@ function buildWageChart() {
           callbacks: {
             label(ctx) {
               const v = ctx.raw;
-              let emoji = v >= 100 ? '🟢' : v >= 80 ? '🟠' : '🔴';
-              return `  ${emoji} ${v.toFixed(1)} tantuni`;
+              const emoji = v >= 120 ? '🟢' : v >= 90 ? '🟡' : v >= 60 ? '🟠' : '🔴';
+              return `  ${emoji} ${v.toFixed(1)} tantuni (günde ${(v / 30).toLocaleString('tr-TR', { maximumFractionDigits: 1 })})`;
             },
             afterLabel(ctx) {
               const d = tantuniData[ctx.dataIndex];
@@ -1932,22 +1930,14 @@ function buildWageChart() {
         },
         annotation: {
           annotations: {
-            line100: {
+            ...Object.fromEntries([2, 3, 4, 5].map(n => [`gunde${n}`, {
               type: 'line',
-              yMin: 100, yMax: 100,
-              borderColor: 'rgba(46,213,115,0.5)',
-              borderWidth: 1.5,
-              borderDash: [6,3],
-              label: { content: '100 (iyi eşiği)', display: true, backgroundColor: P.labelBg, borderColor: P.tooltipBorder, borderWidth: 1, position: 'end', color: P.green, font: {size:11} }
-            },
-            line80: {
-              type: 'line',
-              yMin: 80, yMax: 80,
-              borderColor: 'rgba(255,71,87,0.5)',
-              borderWidth: 1.5,
-              borderDash: [6,3],
-              label: { content: '80 (kritik eşik)', display: true, backgroundColor: P.labelBg, borderColor: P.tooltipBorder, borderWidth: 1, position: 'end', color: P.red, font: {size:11} }
-            },
+              yMin: n * 30, yMax: n * 30,
+              borderColor: P.text + '99',
+              borderWidth: 1.2,
+              borderDash: [6, 4],
+              label: { content: `günde ${n}`, display: true, backgroundColor: P.labelBg, borderColor: P.tooltipBorder, borderWidth: 1, position: 'end', color: P.text, font: {size:11} }
+            }])),
             // Aralık 2020 baz değerinin yarısı: "alım gücü yarıya indi" çizgisi
             lineYari: {
               type: 'line',
@@ -1956,15 +1946,6 @@ function buildWageChart() {
               borderWidth: 2,
               borderDash: [3,3],
               label: { content: `${Math.round(yariCizgi)} (2020'nin yarısı)`, display: true, backgroundColor: P.labelBg, borderColor: P.tooltipBorder, borderWidth: 1, position: 'start', color: P.purple, font: {size:11} }
-            },
-            // 30 günlük bir ayda günde iki tantuni
-            line60: {
-              type: 'line',
-              yMin: 60, yMax: 60,
-              borderColor: P.blue + 'b3',
-              borderWidth: 2,
-              borderDash: [3,3],
-              label: { content: '60 (günde iki tantuni)', display: true, backgroundColor: P.labelBg, borderColor: P.tooltipBorder, borderWidth: 1, position: 'end', color: P.blue, font: {size:11} }
             }
           }
         }
