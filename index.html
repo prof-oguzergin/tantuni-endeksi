@@ -1178,6 +1178,7 @@
         <span class="badge badge-green">🟢 100+ : İyi dönem</span> &nbsp;
         <span class="badge badge-orange">🟠 80–100 : Orta dönem</span> &nbsp;
         <span class="badge badge-red">🔴 80 altı : Zor dönem</span>
+        <div style="margin-top:8px;">Mor kesikli çizgi Aralık 2020'deki 137 tantuninin yarısını, mavi kesikli çizgi 30 günlük bir ayda her gün iki tantuniyi gösterir.</div>
       </div>
       <div class="chart-container tall">
         <canvas id="wageChart" role="img" aria-label="Net asgari ücretle alınabilecek tantuni sayısının zaman içindeki değişimi"></canvas>
@@ -1880,6 +1881,7 @@ function buildWageChart() {
 
   const labels = tantuniData.map(d => fmtDate(d.date));
   const counts = tantuniData.map(d => d.count);
+  const yariCizgi = tantuniData.find(d => d.date === '2020-12-17').count / 2;
 
   const colors = counts.map(c => {
     if (c >= 100) return 'rgba(46,213,115,0.8)';
@@ -1945,6 +1947,24 @@ function buildWageChart() {
               borderWidth: 1.5,
               borderDash: [6,3],
               label: { content: '80 (kritik eşik)', display: true, backgroundColor: P.labelBg, borderColor: P.tooltipBorder, borderWidth: 1, position: 'end', color: P.red, font: {size:11} }
+            },
+            // Aralık 2020 baz değerinin yarısı: "alım gücü yarıya indi" çizgisi
+            lineYari: {
+              type: 'line',
+              yMin: yariCizgi, yMax: yariCizgi,
+              borderColor: P.purple + 'b3',
+              borderWidth: 2,
+              borderDash: [3,3],
+              label: { content: `${Math.round(yariCizgi)} (2020'nin yarısı)`, display: true, backgroundColor: P.labelBg, borderColor: P.tooltipBorder, borderWidth: 1, position: 'start', color: P.purple, font: {size:11} }
+            },
+            // 30 günlük bir ayda günde iki tantuni
+            line60: {
+              type: 'line',
+              yMin: 60, yMax: 60,
+              borderColor: P.blue + 'b3',
+              borderWidth: 2,
+              borderDash: [3,3],
+              label: { content: '60 (günde iki tantuni)', display: true, backgroundColor: P.labelBg, borderColor: P.tooltipBorder, borderWidth: 1, position: 'end', color: P.blue, font: {size:11} }
             }
           }
         }
