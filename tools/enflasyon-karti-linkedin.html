@@ -56,15 +56,18 @@
   .not b { color: #ffb347; font-weight: 700; }
 
   .trend-ust { display: flex; justify-content: space-between; align-items: baseline; font-size: 15px; color: #8585a5; margin-bottom: 2px; }
-  .trend { display: block; width: 100%; height: 196px; }
+  .trend { display: block; width: 100%; height: 500px; }
+  .trend text { font-family: 'Inter', sans-serif; font-size: 13px; fill: #6f6f8c; font-weight: 600; }
+  .alt-blok { display: grid; grid-template-columns: 1fr 360px; gap: 30px; margin-top: 40px; }
+  .alt-blok .bolum { margin-top: 0; }
   .lejant { display: flex; gap: 26px; font-size: 15.5px; color: #a8a8c4; margin-top: 14px; }
   .lejant i { display: inline-block; width: 15px; height: 3.5px; border-radius: 2px; margin-right: 8px; vertical-align: middle; }
 
-  .kutular { display: grid; grid-template-columns: repeat(2, 1fr); gap: 18px; }
+  .kutular { display: grid; grid-template-columns: 1fr; gap: 14px; }
   .kutu {
     background: rgba(255,255,255,0.035); border: 1px solid rgba(255,255,255,0.07);
-    border-radius: 16px; padding: 22px 28px;
-    display: flex; align-items: baseline; justify-content: space-between; gap: 18px;
+    border-radius: 16px; padding: 16px 24px;
+    display: flex; flex-direction: column; gap: 4px;
   }
   .kutu-ad { font-size: 19px; color: #9a9ab8; font-weight: 600; white-space: nowrap; }
   .kutu-deger { font-size: 38px; font-weight: 800; color: #f0f0f5; line-height: 1.2; white-space: nowrap; letter-spacing: -0.5px; }
@@ -111,28 +114,39 @@
     </div>
   </div>
 
-  <div class="bolum">
-    <div class="bolum-ad">59 ayın gidişatı</div>
-    <div class="trend-ust"><span>Aralık 2021 - Ekim 2026</span><span>kesikli çizgi %100</span></div>
-    <svg class="trend" viewBox="0 0 1080 196" preserveAspectRatio="none" aria-hidden="true">
-      <line x1="0" y1="97.0" x2="1080" y2="97.0" stroke="rgba(255,255,255,0.09)" stroke-width="1" stroke-dasharray="6 6"/>
-      <polyline points="0.0,111.3 18.6,82.1 37.2,77.2 55.9,61.6 74.5,49.8 93.1,46.5 111.7,34.3 130.3,33.9 149.0,29.4 167.6,25.4 186.2,26.2 204.8,38.3 223.4,65.9 242.1,79.1 260.7,74.7 279.3,86.6 297.9,92.7 316.6,92.4 335.2,89.9 353.8,78.0 372.4,73.7 391.0,72.0 409.7,75.3 428.3,72.7 446.9,74.4 465.5,72.8 484.1,78.7 502.8,76.6 521.4,76.7 540.0,79.8 558.6,86.1 577.2,96.3 595.9,105.1 614.5,106.5 633.1,105.5 651.7,108.0 670.3,110.8 689.0,112.8 707.6,114.0 726.2,117.6 744.8,118.7 763.4,120.9 782.1,123.0 800.7,126.0 819.3,125.6 837.9,127.5 856.6,130.2 875.2,132.9 893.8,133.4 912.4,135.7 931.0,135.1 949.7,134.7 968.3,134.0 986.9,135.9 1005.5,137.3 1024.1,138.1 1042.8,139.3 1061.4,141.3 1080.0,142.6" fill="none" stroke="#ffd700" stroke-width="2.6" stroke-linejoin="round" opacity="0.92"/>
-      <polyline points="0.0,150.0 18.6,139.6 37.2,134.8 55.9,129.3 74.5,121.9 93.1,119.0 111.7,114.8 130.3,113.9 149.0,113.4 167.6,110.7 186.2,109.0 204.8,109.9 223.4,126.6 242.1,132.1 260.7,134.2 279.3,138.1 297.9,143.7 316.6,147.1 335.2,148.3 353.8,140.3 372.4,130.3 391.0,129.0 409.7,129.0 428.3,128.5 446.9,126.2 465.5,126.1 484.1,124.3 502.8,123.1 521.4,122.1 540.0,117.4 558.6,120.6 577.2,128.7 595.9,136.8 614.5,139.0 633.1,139.7 651.7,140.9 670.3,143.1 689.0,145.1 707.6,147.5 726.2,148.4 744.8,148.5 763.4,150.6 782.1,150.9 800.7,152.2 819.3,152.6 837.9,152.4 856.6,152.7 875.2,154.2 893.8,154.4 912.4,154.6 931.0,153.9 949.7,154.4 968.3,153.1 986.9,152.9 1005.5,153.4 1024.1,153.6 1042.8,153.9 1061.4,155.3 1080.0,155.3" fill="none" stroke="#ff4757" stroke-width="2.6" stroke-linejoin="round" opacity="0.92"/>
-      <polyline points="0.0,116.5 18.6,110.9 37.2,101.6 55.9,78.6 74.5,78.6 93.1,97.0 111.7,76.2 130.3,55.5 149.0,74.3 167.6,80.4 186.2,80.4 204.8,85.1 223.4,69.4 242.1,74.3 260.7,73.3 279.3,76.2 297.9,55.5 316.6,55.5 335.2,41.6 353.8,63.8 372.4,63.8 391.0,66.8 409.7,66.8 428.3,83.1 446.9,85.1 465.5,97.0 484.1,81.4 502.8,101.6 521.4,97.0 540.0,88.7 558.6,110.9 577.2,110.9 595.9,110.9 614.5,122.6 633.1,119.3 651.7,119.3 670.3,132.9 689.0,127.5 707.6,146.8 726.2,146.8 744.8,155.1 763.4,152.4 782.1,157.3 800.7,157.3 819.3,157.3 837.9,149.8 856.6,152.4 875.2,145.0 893.8,135.8 912.4,137.7 931.0,129.2 949.7,129.2 968.3,136.9 986.9,145.9 1005.5,145.9 1024.1,145.9 1042.8,145.9 1061.4,146.8 1080.0,141.2" fill="none" stroke="#ff8c42" stroke-width="3.8" stroke-linejoin="round"/>
-      <circle cx="1080" cy="142.6" r="5" fill="#ffd700"/>
-      <circle cx="1080" cy="141.2" r="5" fill="#ff8c42"/>
-      <circle cx="1080" cy="155.3" r="5" fill="#ff4757"/>
-    </svg>
-    <div class="lejant">
-      <span><i style="background:#ffd700"></i>ENAG</span>
-      <span><i style="background:#ff8c42;height:4.5px"></i>Tantuni</span>
-      <span><i style="background:#ff4757"></i>TÜİK</span>
+  <div class="alt-blok">
+    <div class="bolum">
+      <div class="bolum-ad">59 ayın gidişatı</div>
+      <div class="trend-ust"><span>Aralık 2021 - Ekim 2026</span></div>
+      <svg class="trend" viewBox="0 0 690 500" aria-hidden="true">
+      <line x1="34" y1="389.9" x2="682" y2="389.9" stroke="rgba(255,255,255,0.06)" stroke-width="1" stroke-dasharray="6 6"/>
+      <text x="0" y="393.9">%50</text>
+      <line x1="34" y1="253.8" x2="682" y2="253.8" stroke="rgba(255,255,255,0.12)" stroke-width="1" stroke-dasharray="6 6"/>
+      <text x="0" y="257.8">%100</text>
+      <line x1="34" y1="117.7" x2="682" y2="117.7" stroke="rgba(255,255,255,0.06)" stroke-width="1" stroke-dasharray="6 6"/>
+      <text x="0" y="121.7">%150</text>
+      <text x="45.2" y="496" text-anchor="middle">2022</text>
+      <text x="179.2" y="496" text-anchor="middle">2023</text>
+      <text x="313.3" y="496" text-anchor="middle">2024</text>
+      <text x="447.4" y="496" text-anchor="middle">2025</text>
+      <text x="581.4" y="496" text-anchor="middle">2026</text>
+      <polyline transform="translate(34 0) scale(0.9501 1)" points="0.0,300.6 11.8,205.1 23.5,189.0 35.3,137.8 47.0,98.9 58.8,88.3 70.6,48.0 82.3,46.9 94.1,32.2 105.8,18.9 117.6,21.6 129.3,61.3 141.1,151.7 152.9,195.0 164.6,180.6 176.4,219.8 188.1,239.6 199.9,238.8 211.7,230.4 223.4,191.5 235.2,177.3 246.9,171.9 258.7,182.5 270.4,174.0 282.2,179.8 294.0,174.6 305.7,193.9 317.5,186.8 329.2,187.4 341.0,197.4 352.8,218.1 364.5,251.3 376.3,280.2 388.0,284.8 399.8,281.6 411.6,289.7 423.3,299.0 435.1,305.5 446.8,309.6 458.6,321.3 470.3,324.8 482.1,332.2 493.9,339.0 505.6,348.8 517.4,347.7 529.1,354.0 540.9,362.7 552.7,371.4 564.4,373.3 576.2,380.6 587.9,378.7 599.7,377.4 611.4,375.2 623.2,381.4 635.0,385.8 646.7,388.5 658.5,392.6 670.2,399.1 682.0,403.2" fill="none" stroke="#ffd700" stroke-width="2.8" stroke-linejoin="round" opacity="0.92"/>
+      <polyline transform="translate(34 0) scale(0.9501 1)" points="0.0,427.7 11.8,393.4 23.5,377.9 35.3,359.7 47.0,335.4 58.8,325.9 70.6,312.0 82.3,309.3 94.1,307.7 105.8,298.7 117.6,293.3 129.3,296.2 141.1,351.0 152.9,368.9 164.6,375.7 176.4,388.5 188.1,407.0 199.9,418.2 211.7,422.0 223.4,395.9 235.2,362.9 246.9,358.6 258.7,358.9 270.4,357.2 282.2,349.6 294.0,349.3 305.7,343.3 317.5,339.5 329.2,336.0 341.0,320.7 352.8,331.1 364.5,357.8 376.3,384.4 388.0,391.5 399.8,393.7 411.6,397.8 423.3,405.1 435.1,411.4 446.8,419.6 458.6,422.3 470.3,422.8 482.1,429.6 493.9,430.7 505.6,434.8 517.4,436.2 529.1,435.3 540.9,436.4 552.7,441.3 564.4,441.9 576.2,442.7 587.9,440.2 599.7,441.9 611.4,437.8 623.2,437.2 635.0,438.6 646.7,439.4 658.5,440.2 670.2,445.1 682.0,444.9" fill="none" stroke="#ff4757" stroke-width="2.8" stroke-linejoin="round" opacity="0.92"/>
+      <polyline transform="translate(34 0) scale(0.9501 1)" points="0.0,317.8 11.8,299.2 23.5,269.0 35.3,193.4 47.0,193.4 58.8,253.8 70.6,185.7 82.3,117.7 94.1,179.5 105.8,199.3 117.6,199.3 129.3,214.9 141.1,163.1 152.9,179.5 164.6,175.9 176.4,185.7 188.1,117.7 199.9,117.7 211.7,72.2 223.4,144.9 235.2,144.9 246.9,154.7 258.7,154.7 270.4,208.3 282.2,214.9 294.0,253.8 305.7,202.6 317.5,269.0 329.2,253.8 341.0,226.6 352.8,299.2 364.5,299.2 376.3,299.2 388.0,337.6 399.8,327.0 411.6,327.0 423.3,371.6 435.1,353.7 446.8,417.1 458.6,417.1 470.3,444.3 482.1,435.3 493.9,451.7 505.6,451.7 517.4,451.7 529.1,426.9 540.9,435.3 552.7,411.1 564.4,381.2 576.2,387.2 587.9,359.4 599.7,359.4 611.4,384.7 623.2,414.1 635.0,414.1 646.7,414.1 658.5,414.1 670.2,417.1 682.0,398.9" fill="none" stroke="#ff8c42" stroke-width="4.0" stroke-linejoin="round"/>
+      <circle cx="682" cy="403.2" r="5" fill="#ffd700"/>
+      <circle cx="682" cy="398.9" r="5" fill="#ff8c42"/>
+      <circle cx="682" cy="444.9" r="5" fill="#ff4757"/>
+      </svg>
+      <div class="lejant">
+        <span><i style="background:#ffd700"></i>ENAG</span>
+        <span><i style="background:#ff8c42;height:4.5px"></i>Tantuni</span>
+        <span><i style="background:#ff4757"></i>TÜİK</span>
+      </div>
     </div>
-  </div>
 
-  <div class="bolum">
-    <div class="bolum-ad">Aralık 2020'den bugüne</div>
-    <div class="kutular">
+    <div class="bolum">
+      <div class="bolum-ad">Aralık 2020'den bugüne</div>
+      <div class="kutular">
       <div class="kutu">
         <div class="kutu-ad">Fiyat</div>
         <div class="kutu-deger"><span class="eski">₺17</span><span class="ok">→</span>₺440</div>
@@ -148,6 +162,7 @@
       <div class="kutu">
         <div class="kutu-ad">1 gram altınla adet</div>
         <div class="kutu-deger"><span class="eski">27,5</span><span class="ok">→</span>14,1</div>
+      </div>
       </div>
     </div>
   </div>

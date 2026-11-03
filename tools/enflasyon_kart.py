@@ -94,8 +94,22 @@ x_govde = f'''<body>
 </html>
 '''
 
-# LinkedIn kartı
-cz, y100 = cizgiler(1080, 180, 0.83, 3.8, 2.6, 0.92)
+# LinkedIn kartı: dikey grafik solda, Aralık 2020 kutuları sağda
+LG, LY = 690, 500                      # grafik alanı (piksel, svg ölçeğiyle bire bir)
+ust_v = max(max(s) for s in seri.values()) + 4
+alt_v = min(min(s) for s in seri.values()) - 6
+li_k = (LY - 40) / (ust_v - alt_v)     # altta yıl etiketlerine yer kalır
+li_y0 = 8 + ust_v * li_k
+cz, _ = cizgiler(LG - 8, li_y0, li_k, 4.0, 2.8, 0.92)
+izgara = '\n'.join(
+    f'      <line x1="34" y1="{li_y0 - li_k * v:.1f}" x2="{LG - 8}" y2="{li_y0 - li_k * v:.1f}" stroke="rgba(255,255,255,{0.12 if v == 100 else 0.06})" stroke-width="1" stroke-dasharray="6 6"/>\n'
+    f'      <text x="0" y="{li_y0 - li_k * v + 4:.1f}">%{v}</text>'
+    for v in (50, 100, 150) if alt_v < v < ust_v)
+izgara += '\n' + '\n'.join(
+    f'      <text x="{34 + i * (LG - 42) / (n - 1):.1f}" y="{LY - 4}" text-anchor="middle">20{e.split()[1]}</text>'
+    for i, e in enumerate(etiketler) if e.startswith('Oca'))
+cz = cz.replace('<polyline points="', '<polyline transform="translate(34 0) scale(%.4f 1)" points="' % ((LG - 42) / (LG - 8)))
+cz = re.sub(r'<circle cx="[\d.]+"', f'<circle cx="{LG - 8}"', cz)
 kutu = lambda ad, eski, yeni: (f'      <div class="kutu">\n        <div class="kutu-ad">{ad}</div>\n'
                                f'        <div class="kutu-deger"><span class="eski">{eski}</span><span class="ok">→</span>{yeni}</div>\n      </div>\n')
 li_govde = f'''<body>
@@ -116,24 +130,26 @@ li_govde = f'''<body>
     </div>
   </div>
 
-  <div class="bolum">
-    <div class="bolum-ad">{n} ayın gidişatı</div>
-    <div class="trend-ust"><span>{ilk_ay} - {son_ay}</span><span>kesikli çizgi %100</span></div>
-    <svg class="trend" viewBox="0 0 1080 196" preserveAspectRatio="none" aria-hidden="true">
-      <line x1="0" y1="{y100:.1f}" x2="1080" y2="{y100:.1f}" stroke="rgba(255,255,255,0.09)" stroke-width="1" stroke-dasharray="6 6"/>
+  <div class="alt-blok">
+    <div class="bolum">
+      <div class="bolum-ad">{n} ayın gidişatı</div>
+      <div class="trend-ust"><span>{ilk_ay} - {son_ay}</span></div>
+      <svg class="trend" viewBox="0 0 {LG} {LY}" aria-hidden="true">
+{izgara}
 {cz}
-    </svg>
-    <div class="lejant">
-      <span><i style="background:#ffd700"></i>ENAG</span>
-      <span><i style="background:#ff8c42;height:4.5px"></i>Tantuni</span>
-      <span><i style="background:#ff4757"></i>TÜİK</span>
+      </svg>
+      <div class="lejant">
+        <span><i style="background:#ffd700"></i>ENAG</span>
+        <span><i style="background:#ff8c42;height:4.5px"></i>Tantuni</span>
+        <span><i style="background:#ff4757"></i>TÜİK</span>
+      </div>
     </div>
-  </div>
 
-  <div class="bolum">
-    <div class="bolum-ad">Aralık 2020'den bugüne</div>
-    <div class="kutular">
-{kutu('Fiyat', '₺' + baz[1], '₺' + son[1])}{kutu('Dolar karşılığı', '$' + virgul(float(baz[2]), 2), '$' + virgul(float(son[2]), 2))}{kutu('Asgari ücretle adet', round(float(baz[3])), round(float(son[3])))}{kutu('1 gram altınla adet', virgul(float(baz[4]) / int(baz[1])), virgul(float(son[4]) / int(son[1])))}    </div>
+    <div class="bolum">
+      <div class="bolum-ad">Aralık 2020'den bugüne</div>
+      <div class="kutular">
+{kutu('Fiyat', '₺' + baz[1], '₺' + son[1])}{kutu('Dolar karşılığı', '$' + virgul(float(baz[2]), 2), '$' + virgul(float(son[2]), 2))}{kutu('Asgari ücretle adet', round(float(baz[3])), round(float(son[3])))}{kutu('1 gram altınla adet', virgul(float(baz[4]) / int(baz[1])), virgul(float(son[4]) / int(son[1])))}      </div>
+    </div>
   </div>
 
   <div class="alt">tantuni.oguzergin.net</div>
